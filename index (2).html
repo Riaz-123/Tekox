@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tekox - Home</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    header {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #00ffe1;
+      text-shadow: 2px 2px 10px #00ffe1;
+      margin-bottom: 2rem;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .welcome {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      animation: slideIn 2s ease-out;
+    }
+
+    .about-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid #00ffe1;
+      border-radius: 12px;
+      padding: 1.5rem;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 255, 225, 0.3);
+      animation: popUp 1.5s ease-in-out;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #aaa;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes popUp {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 2rem;
+      }
+      .welcome {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>Tekox</header>
+
+  <div class="welcome">
+    👋 Welcome to Tekox — A Creative Tech World
+  </div>
+
+  <div class="about-box">
+    <h2>About Developer</h2>
+    <p>Hello! My Name is <strong>Riaz Hussain</strong>. <br>
+    Basically, I am an IT expert and Web Master. <br>
+    Since 2020, I have been actively involved in the world of internet 🛜.</p>
+  </div>
+
+  <footer>
+    &copy; Riaz Hussain 2025
+  </footer>
+
+</body>
+</html>

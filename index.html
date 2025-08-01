@@ -3,108 +3,203 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Riaz - Home</title>
+  <title>Tekox | A Creative Tech World 🌎</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      font-family: 'Poppins', sans-serif;
+      background: #0d0d0d;
       color: #fff;
+    }
+    header {
+      background: #1e1e1e;
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      color: #00ffcc;
+      letter-spacing: 2px;
+    }
+    nav a {
+      margin-left: 25px;
+      text-decoration: none;
+      color: #ccc;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #00ffcc;
+    }
+    .hero {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-
-    header {
-      font-size: 3rem;
-      font-weight: bold;
-      color: #00ffe1;
-      text-shadow: 2px 2px 10px #00ffe1;
-      margin-bottom: 2rem;
-      animation: fadeIn 2s ease-in-out;
-    }
-
-    .welcome {
-      font-size: 1.5rem;
-      margin-bottom: 2rem;
+      height: 90vh;
       text-align: center;
-      animation: slideIn 2s ease-out;
+      padding: 0 20px;
     }
-
-    .about-box {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 2px solid #00ffe1;
-      border-radius: 12px;
-      padding: 1.5rem;
+    .hero h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(to right, #00ffcc, #00ccff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 1.2rem;
       max-width: 600px;
-      text-align: center;
-      box-shadow: 0 0 15px rgba(0, 255, 225, 0.3);
-      animation: popUp 1.5s ease-in-out;
+      color: #bbb;
     }
-
+    .btn {
+      margin-top: 30px;
+      padding: 12px 30px;
+      background: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #00ccff;
+    }
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2rem;
+      color: #00ffcc;
+      margin-bottom: 30px;
+    }
+    .service-cards, .tech-expertise {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .card {
+      background: #1e1e1e;
+      padding: 30px;
+      width: 250px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.2);
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      color: #00ccff;
+    }
+    .about p {
+      max-width: 800px;
+      margin: 0 auto;
+      color: #ccc;
+      line-height: 1.6;
+    }
     footer {
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #aaa;
+      padding: 20px;
       text-align: center;
+      background: #1e1e1e;
+      color: #999;
+      font-size: 14px;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .socials a {
+      margin: 0 10px;
+      color: #00ffcc;
+      text-decoration: none;
+      font-size: 18px;
     }
-
-    @keyframes slideIn {
-      from { transform: translateY(-30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes popUp {
-      0% {
-        transform: scale(0.8);
-        opacity: 0;
+    @media (max-width: 768px) {
+      .service-cards, .tech-expertise {
+        flex-direction: column;
+        align-items: center;
       }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 600px) {
-      header {
-        font-size: 2rem;
-      }
-      .welcome {
-        font-size: 1.2rem;
+      .hero h1 {
+        font-size: 2.5rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <header>Tekox</header>
+  <header>
+    <div class="logo">TEKOX</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#tech">Tech</a>
+      <a href="#about">About</a>
+    </nav>
+  </header>
 
-  <div class="welcome">
-    👋 Welcome to Tekox — A Creative Tech World
-  </div>
+  <section class="hero" id="home">
+    <h1>Welcome to Tekox</h1>
+    <p>A Creative Tech World 🌎 — Innovating Tomorrow, Today!</p>
+    <button class="btn">Explore Now</button>
+  </section>
 
-  <div class="about-box">
-    <h2>About Developer</h2>
-    <p>Hello! My Name is <strong>Riaz Hussain</strong>. <br>
-    Basically, I am an IT expert and Web Master. <br>
-    Since 2020, I have been actively involved in the world of internet 🛜.</p>
-  </div>
+  <section class="services" id="services">
+    <h2>Our Services</h2>
+    <div class="service-cards">
+      <div class="card">
+        <h3>Web Development</h3>
+        <p>Modern websites, web apps & full-stack solutions for businesses.</p>
+      </div>
+      <div class="card">
+        <h3>Graphic Design</h3>
+        <p>Creative logos, social media posts, and stunning visual branding.</p>
+      </div>
+      <div class="card">
+        <h3>Freelancing Help</h3>
+        <p>Learn how to start earning online using Fiverr, Upwork & more.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="tech" id="tech">
+    <h2>Tech Expertise</h2>
+    <div class="tech-expertise">
+      <div class="card">
+        <h3>Artificial Intelligence</h3>
+        <p>Integrating AI into web, automation, and smart systems.</p>
+      </div>
+      <div class="card">
+        <h3>Cybersecurity</h3>
+        <p>Secure your data, devices & infrastructure from modern threats.</p>
+      </div>
+      <div class="card">
+        <h3>Internet of Things (IoT)</h3>
+        <p>Smart solutions that connect the physical and digital world.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <h2>About Tekox</h2>
+    <p>
+      Tekox is more than just a brand — it's a movement toward innovation, creativity, and digital empowerment.
+      Founded by Riaz Hussain, Tekox brings futuristic tech solutions to the world, from coding to design, automation to education.
+      Our mission is to make technology accessible, creative, and impactful for all.
+    </p>
+  </section>
 
   <footer>
-    &copy; Riaz Hussain 2025
+    <div class="socials">
+      <a href="#">🌐</a>
+      <a href="#">📘</a>
+      <a href="#">📸</a>
+    </div>
+    <p>&copy; Riaz Hussain 2025 | Tekox - A Creative Tech World 🌎</p>
   </footer>
 
 </body>

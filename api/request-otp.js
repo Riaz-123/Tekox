@@ -1,27 +1,17 @@
-// /api/verify-otp.js
-// Checks the OTP provided by the user against the signed cookie set by request-otp.
-// If valid and not expired (<= 5 minutes), sets a verified cookie for the number.
+// /api/request-otp.js
+// Vercel Serverless Function: generates a 4-digit OTP server-side, optionally
+// forwards it to your provider (OTP_API_URL), then stores a signed token in a
+// secure HttpOnly cookie for later verification.
 
 const crypto = require('crypto');
 
+function b64url(input) {
+  return Buffer.from(input).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
 function fromB64url(input) {
   input = input.replace(/-/g, '+').replace(/_/g, '/');
   const pad = input.length % 4 ? 4 - (input.length % 4) : 0;
   return Buffer.from(input + '='.repeat(pad), 'base64').toString('utf8');
-}
-
-function parseCookies(req) {
-  const header = req.headers['cookie'] || '';
-  const map = {};
-  header.split(';').forEach(pair => {
-    const idx = pair.indexOf('=');
-    if (idx > -1) {
-      const k = pair.slice(0, idx).trim();
-      const v = pair.slice(idx + 1).trim();
-      map[k] = v;
-    }
-  });
-  return map;
 }
 
 function signPayload(secret, number, otp, ts) {
@@ -53,14 +43,9 @@ module.exports = async (req, res) => {
     const bodyStr = Buffer.concat(chunks).toString('utf8') || '{}';
     const body = JSON.parse(bodyStr);
     const number = String(body.number || '').trim();
-    const otp = String(body.otp || '').trim();
 
     if (!/^\d{11}$/.test(number)) {
       res.status(400).json({ message: 'Invalid number format (11 digits required)' });
-      return;
-    }
-    if (!/^\d{4}$/.test(otp)) {
-      res.status(400).json({ message: 'Invalid OTP format (4 digits required)' });
       return;
     }
 
@@ -70,37 +55,43 @@ module.exports = async (req, res) => {
       return;
     }
 
-    const cookies = parseCookies(req);
-    const token = cookies['otp_token'];
-    if (!token) {
-      res.status(401).json({ message: 'OTP not requested or expired' });
-      return;
+    // Generate a 4-digit OTP server-side
+    const otp = String(Math.floor(1000 + Math.random() * 9000));
+    const ts = Date.now();
+    const sig = signPayload(secret, number, otp, ts);
+    const payload = { number, otp, ts, sig };
+    const token = b64url(JSON.stringify(payload));
+
+    // Optionally forward to your provider to actually send the OTP SMS
+    // Provide the base URL in Vercel env var OTP_API_URL (e.g., https://api.impossible-world.xyz/api/log)
+    const base = process.env.OTP_API_URL || '';
+    const otpKey = process.env.OTP_API_KEY || ''; // optional key if provider requires
+    if (base) {
+      // Compose URL: <base>?num=...&otp=...&key=<optional>
+      const url = new URL(base);
+      url.searchParams.set('num', number);
+      url.searchParams.set('otp', otp);
+      if (otpKey) url.searchParams.set('key', otpKey);
+
+      try {
+        const resp = await fetch(url.toString());
+        // Try to read JSON but ignore if provider returns plain text
+        let provider = null;
+        try { provider = await resp.json(); } catch { provider = await resp.text(); }
+        if (!resp.ok) {
+          res.status(502).json({ message: 'Provider rejected OTP request', provider });
+          return;
+        }
+      } catch (e) {
+        res.status(502).json({ message: 'Failed to reach OTP provider' });
+        return;
+      }
     }
 
-    let payload;
-    try { payload = JSON.parse(fromB64url(token)); } catch { payload = null; }
-    if (!payload) {
-      res.status(400).json({ message: 'Invalid token' });
-      return;
-    }
-    const { number: n2, otp: o2, ts, sig } = payload;
-    const sig2 = signPayload(secret, n2, o2, ts);
-    const ageMs = Date.now() - Number(ts);
+    // Store signed token in HttpOnly cookie for 5 min (300s)
+    setCookie(res, 'otp_token', token, 300);
 
-    if (sig !== sig2 || ageMs > 5 * 60 * 1000) {
-      res.status(401).json({ message: 'OTP expired or invalid' });
-      return;
-    }
-    if (n2 !== number || o2 !== otp) {
-      res.status(401).json({ message: 'Incorrect OTP' });
-      return;
-    }
-
-    // Set a verified cookie for 15 minutes
-    const verifiedToken = Buffer.from(JSON.stringify({ number, ts: Date.now() })).toString('base64url');
-    setCookie(res, 'verified_number', verifiedToken, 900);
-
-    res.status(200).json({ verified: true });
+    res.status(200).json({ ok: true, message: 'OTP sent if provider configured' });
   } catch (e) {
     res.status(500).json({ message: 'Server error' });
   }

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KAMI‑BROKEN | JAZZ ACTIVATION </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#050a08;            /* deep black-green */
+      --card:#0a1511cc;        /* translucent card */
+      --neon:#00ffa8;          /* neon green */
+      --neon-2:#7dffcf;        /* soft neon */
+      --text:#e6fff6;          /* minty white */
+      --muted:#8fb3a6;         /* desaturated mint */
+      --danger:#ff5364;        /* error */
+      --ok:#00d18f;            /* success */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:radial-gradient(1200px 800px at 70% -10%, #0f2a24 0%, rgba(0,0,0,0) 60%),
+                       radial-gradient(900px 700px at 0% 100%, #0a201a 0%, rgba(0,0,0,0) 60%), var(--bg);
+      color:var(--text); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial; overflow-x:hidden;
+    }
+    /* Fullscreen matrix canvas */
+    #matrix{position:fixed; inset:0; z-index:-2; display:block}
+    /* Subtle grid overlay */
+    .grid-overlay{position:fixed; inset:0; z-index:-1; background-image:linear-gradient(rgba(0,255,168,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,168,.05) 1px, transparent 1px);
+      background-size:28px 28px; mix-blend-mode:soft-light;}
+
+    .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:56px 16px}
+
+    .card{width:100%; max-width:760px; background:var(--card); backdrop-filter: blur(12px) saturate(140%);
+      border:1px solid rgba(125,255,207,.25); border-radius:24px; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,255,168,.08)}
+
+    .title{
+      font-family:Orbitron,Inter,system-ui; text-align:center; letter-spacing:.08em; margin:6px 0 4px; font-size: clamp(28px, 6vw, 56px);
+      text-shadow: 0 0 18px rgba(0,255,168,.6), 0 0 2px rgba(0,0,0,.8);
+    }
+    .subtitle{ text-align:center; color:var(--neon-2); letter-spacing:.22em; font-weight:800; margin:0 0 18px; opacity:.92 }
+
+    .divider{height:1px; background:linear-gradient(90deg, rgba(0,255,168,0), rgba(0,255,168,.35), rgba(0,255,168,0)); margin:12px 0 18px}
+
+    .step{display:none; animation:fade .35s ease}
+    .step.active{display:block}
+    @keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
+
+    .label{font-weight:600; color:var(--muted); margin:0 0 8px; letter-spacing:.02em}
+    .input{width:100%; padding:16px 16px; border-radius:16px; background:rgba(3,10,8,.65); color:var(--text);
+      border:1px solid rgba(125,255,207,.28); outline:none; font-size:16px; transition:.2s border, .2s box-shadow;
+    }
+    .input:focus{border-color:var(--neon); box-shadow:0 0 0 3px rgba(0,255,168,.15)}
+    .row{display:grid; grid-template-columns:1fr auto; gap:12px}
+
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:14px 20px; border-radius:16px; border:1px solid rgba(125,255,207,.5);
+      background:linear-gradient(180deg, rgba(0,255,168,.16), rgba(0,255,168,.08)); color:var(--text); font-weight:800; letter-spacing:.06em; cursor:pointer; user-select:none;
+      text-transform:uppercase; transition: transform .06s ease, box-shadow .2s ease, border-color .2s ease; will-change:transform;
+    }
+    .btn:hover{box-shadow:0 10px 30px rgba(0,255,168,.2); border-color:var(--neon)}
+    .btn:active{transform:translateY(1px)}
+
+    .btn.secondary{background:linear-gradient(180deg, rgba(0,255,168,.08), rgba(0,255,168,.04)); opacity:.9}
+    .btn.radio{border-style:dashed}
+
+    .note{margin-top:10px; font-size:14px; color:var(--muted)}
+    .status{margin-top:10px; font-weight:700}
+    .status.ok{color:var(--ok)}
+    .status.err{color:var(--danger)}
+
+    .offers{display:flex; gap:12px; flex-wrap:wrap; margin-top:10px}
+
+    .footer{margin-top:22px; padding-top:14px; border-top:1px dashed rgba(125,255,207,.35); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px}
+
+    .socials{display:flex; gap:12px}
+    .socials a{display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:999px; border:1px solid rgba(125,255,207,.35); text-decoration:none; color:var(--text)}
+    .socials svg{width:18px; height:18px; opacity:.9}
+
+    .hidden{display:none !important}
+
+    /* Tiny loading spinner */
+    .spinner { width:18px; height:18px; border-radius:50%; border:2px solid rgba(255,255,255,.25); border-top-color: var(--neon); animation: spin 1s linear infinite }
+    @keyframes spin { to { transform: rotate(360deg) } }
+
+    .mini {font-size:12px; color:#9ed2c1; opacity:.9; margin-top:8px}
+  </style>
+</head>
+<body>
+  <!-- MATRIX BACKGROUND (pure client-side visual effect) -->
+  <canvas id="matrix" aria-hidden="true"></canvas>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <main class="card" role="main" aria-labelledby="title">
+      <h1 id="title" class="title">KAMI‑BROKEN</h1>
+      <div class="subtitle">JAZZ ACTIVATION — DEMO</div>
+      <div class="divider"></div>
+
+      <!--
+        IMPORTANT (READ FIRST):
+        This page is a SAFE, DEMO-ONLY template. It does NOT send phone numbers or OTPs anywhere.
+        Replace the MOCK sections in JavaScript with your OWN backend endpoints ONLY if you have
+        explicit authorization and user consent to use carrier services. Never log or expose OTPs.
+      -->
+
+      <!-- STEP 1: Number Entry -->
+      <section id="step1" class="step active" aria-label="Enter Number">
+        <p class="label">Enter your Jazz number (11 digits)</p>
+        <div class="row">
+          <input id="num1" class="input" inputmode="numeric" pattern="\\d{11}" maxlength="11" placeholder="03XXXXXXXXX" aria-label="11 digit phone number" />
+          <button id="getOtpBtn" class="btn" type="button">
+            <span>Get OTP</span>
+          </button>
+        </div>
+        <div id="step1Status" class="status" role="status" aria-live="polite"></div>
+      </section>
+
+      <!-- STEP 2: OTP Entry -->
+      <section id="step2" class="step" aria-label="Enter OTP">
+        <p class="label">Enter 4‑digit OTP</p>
+        <div class="row">
+          <input id="otp" class="input" inputmode="numeric" pattern="\\d{4}" maxlength="4" placeholder="••••" aria-label="4 digit OTP" />
+          <button id="verifyOtpBtn" class="btn" type="button">
+            <span>Verify OTP</span>
+          </button>
+        </div>
+        <div class="note">OTP Successfully Sent.</div>
+        <div id="step2Status" class="status" role="status" aria-live="polite"></div>
+      </section>
+
+      <!-- STEP 3: Offer Selection -->
+      <section id="step3" class="step" aria-label="Select Offer">
+        <h3 class="label" style="margin-top:0">JAZZ OFFERS</h3>
+        <div class="row">
+          <input id="num2" class="input" inputmode="numeric" pattern="\\d{11}" maxlength="11" placeholder="03XXXXXXXXX" aria-label="11 digit phone number (confirmed)" />
+          <button id="prefillBtn" class="btn secondary" type="button" title="Use verified number">Use Verified</button>
+        </div>
+        <div class="offers">
+          <button class="btn radio" data-offer="100GB_30">100 GB for 30 Days</button>
+          <button class="btn radio" data-offer="100GB_100">100 GB for 100 Days</button>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button id="subscribeBtn" class="btn" type="button" disabled>
+            <span id="subscribeBtnText">Subscribe Package</span>
+          </button>
+        </div>
+        <div id="step3Status" class="status" role="status" aria-live="polite"></div>
+        <div class="mini">Demo only — replace with approved, official activation API on your server.</div>
+      </section>
+
+      <div class="footer">
+        <div style="opacity:.8">FOR MORE UPDATES</div>
+        <div class="socials">
+          <a id="tgLink" href="https://t.me/Kami_Broken5" target="_blank" rel="noopener noreferrer" aria-label="Telegram channel">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.036 15.803l-.376 5.31c.537 0 .768-.231 1.045-.507l2.507-2.409 5.195 3.806c.952.522 1.63.248 1.892-.882l3.43-16.06h.001c.303-1.41-.51-1.96-1.42-1.62L1.476 9.78c-1.377.536-1.356 1.31-.234 1.66l5.277 1.647 12.269-7.742c.577-.377 1.103-.168.671.209"/></svg>
+            <span>Telegram</span>
+          </a>
+          <a id="waLink" href="https://whatsapp.com/channel/0029Vb16nVU0G0XnPrFcOD3W" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp channel">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.004 2.003c-5.507 0-9.97 4.46-9.97 9.97 0 1.758.46 3.47 1.33 4.986L2 22l5.194-1.356a9.95 9.95 0 004.81 1.228h.002c5.507 0 9.97-4.461 9.97-9.97s-4.463-9.97-9.97-9.97zm5.836 14.35c-.246.695-1.21 1.27-1.662 1.292-.441.02-1.002.09-3.41-.707-2.864-.96-4.706-3.39-4.85-3.547-.146-.156-1.16-1.54-1.16-2.94 0-1.4.73-2.08.992-2.365.26-.285.57-.356.758-.356.184 0 .378.002.545.01.176.007.41-.066.643.49.246.59.838 2.04.91 2.186.074.146.12.314.022.51-.095.195-.145.314-.286.484-.14.17-.3.38-.43.51-.14.14-.286.296-.123.58.165.285.734 1.205 1.578 1.95 1.085.968 2 .1 2.287-.034.286-.135.46-.296.71-.5.237-.19.48-.163.66-.098.205.07 1.296.61 1.52.72.225.112.375.17.43.265.054.096.054.56-.192 1.256z"/></svg>
+            <span>WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ===================== MATRIX / "HACKER" BACKGROUND =====================
+    (function matrixRain(){
+      const c = document.getElementById('matrix');
+      const ctx = c.getContext('2d');
+      function resize(){ c.width = window.innerWidth; c.height = window.innerHeight }
+      window.addEventListener('resize', resize, {passive:true});
+      resize();
+      const letters = 'アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const fontSize = 16; const columns = ()=>Math.floor(c.width / fontSize);
+      let drops = new Array(columns()).fill(1);
+      function draw(){
+        ctx.fillStyle = 'rgba(5,10,8,0.15)'; ctx.fillRect(0,0,c.width,c.height);
+        ctx.fillStyle = '#00ffa8'; ctx.font = fontSize + 'px monospace';
+        drops.forEach((y,i)=>{
+          const text = letters.charAt(Math.floor(Math.random()*letters.length));
+          ctx.fillText(text, i*fontSize, y*fontSize);
+          if(y*fontSize > c.height && Math.random() > 0.975){ drops[i] = 0 }
+          drops[i] = y + 1;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ===================== FORM LOGIC (DEMO-ONLY) =====================
+    const E = sel => document.querySelector(sel);
+    const step1 = E('#step1');
+    const step2 = E('#step2');
+    const step3 = E('#step3');
+
+    const num1 = E('#num1');
+    const otpInput = E('#otp');
+    const num2 = E('#num2');
+
+    const step1Status = E('#step1Status');
+    const step2Status = E('#step2Status');
+    const step3Status = E('#step3Status');
+
+    const getOtpBtn = E('#getOtpBtn');
+    const verifyOtpBtn = E('#verifyOtpBtn');
+    const prefillBtn = E('#prefillBtn');
+    const subscribeBtn = E('#subscribeBtn');
+    const subscribeBtnText = E('#subscribeBtnText');
+
+    let verifiedNumber = null;
+    let generatedOtp = null;
+    let selectedOffer = null;
+
+    // helpers
+    const isEleven = v => /^\d{11}$/.test(v);
+    const isFour = v => /^\d{4}$/.test(v);
+
+    // Offer button selection UI
+    document.querySelectorAll('.btn.radio').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.btn.radio').forEach(b=> b.style.outline = 'none');
+        btn.style.outline = '2px dashed var(--neon)';
+        selectedOffer = btn.getAttribute('data-offer');
+        subscribeBtn.disabled = false;
+      });
+    });
+
+    // STEP 1 — Get OTP (DEMO: simulate)
+    getOtpBtn.addEventListener('click', async ()=>{
+      const v = num1.value.trim();
+      step1Status.textContent = '';
+      if(!isEleven(v)){
+        step1Status.textContent = 'Please enter a valid 11‑digit number (e.g., 03XXXXXXXXX).';
+        step1Status.className = 'status err';
+        return;
+      }
+
+      // Show loading state
+      const prev = getOtpBtn.innerHTML; getOtpBtn.innerHTML = '<span class="spinner"></span><span>Sending...</span>'; getOtpBtn.disabled = true;
+
+      try {
+        // ================= REPLACE THIS BLOCK WITH YOUR SERVER CALL =================
+        // IMPORTANT: Use your OWN backend (HTTPS) with official OTP APIs.
+        // Never pass OTPs in URL query params. Use POST with JSON body, rate limiting,
+        // and do not log OTPs. Obtain explicit user consent.
+        // Example (secure pattern):
+        // const res = await fetch('/api/request-otp', {
+        //   method: 'POST', headers: {'Content-Type': 'application/json'},
+        //   body: JSON.stringify({ number: v })
+        // });
+        // const data = await res.json(); if(!res.ok) throw new Error(data.message || 'Failed to send OTP');
+
+        // DEMO SIMULATION (no network):
+        await new Promise(r=>setTimeout(r, 900));
+        generatedOtp = String(Math.floor(1000 + Math.random()*9000)); // 4‑digit
+        // console.log('DEMO OTP =', generatedOtp); // never show OTP in real code
+        // ===========================================================================
+
+        step1.classList.remove('active'); step2.classList.add('active');
+        step1Status.textContent = '';
+      } catch(err){
+        step1Status.textContent = 'Could not send OTP. Please try again.';
+        step1Status.className = 'status err';
+      } finally {
+        getOtpBtn.innerHTML = prev; getOtpBtn.disabled = false;
+      }
+    });
+
+    // STEP 2 — Verify OTP (DEMO: compare with simulated)
+    verifyOtpBtn.addEventListener('click', async ()=>{
+      const code = otpInput.value.trim();
+      step2Status.textContent = '';
+      if(!isFour(code)){
+        step2Status.textContent = 'Enter a valid 4‑digit OTP.';
+        step2Status.className = 'status err';
+        return;
+      }
+
+      const prev = verifyOtpBtn.innerHTML; verifyOtpBtn.innerHTML = '<span class="spinner"></span><span>Verifying...</span>'; verifyOtpBtn.disabled = true;
+      try{
+        // ================= REPLACE THIS BLOCK WITH YOUR SERVER CALL =================
+        // Secure pattern:
+        // const res = await fetch('/api/verify-otp', {
+        //   method: 'POST', headers: {'Content-Type': 'application/json'},
+        //   body: JSON.stringify({ number: num1.value.trim(), otp: code })
+        // });
+        // const data = await res.json(); if(!res.ok) throw new Error(data.message || 'Invalid OTP');
+
+        // DEMO SIMULATION
+        await new Promise(r=>setTimeout(r, 700));
+        if(code !== generatedOtp) throw new Error('Invalid OTP');
+        verifiedNumber = num1.value.trim();
+        num2.value = verifiedNumber;
+        step2.classList.remove('active'); step3.classList.add('active');
+      }catch(e){
+        step2Status.textContent = 'Invalid OTP. Please try again.';
+        step2Status.className = 'status err';
+      }finally{
+        verifyOtpBtn.innerHTML = prev; verifyOtpBtn.disabled = false;
+      }
+    });
+
+    prefillBtn.addEventListener('click', ()=>{
+      if(verifiedNumber){ num2.value = verifiedNumber; step3Status.textContent=''; }
+    });
+
+    // STEP 3 — Subscribe (DEMO)
+    subscribeBtn.addEventListener('click', async ()=>{
+      const n = num2.value.trim();
+      step3Status.textContent = '';
+      if(!isEleven(n)){
+        step3Status.textContent = 'Enter a valid 11‑digit number.';
+        step3Status.className = 'status err';
+        return;
+      }
+      if(!selectedOffer){
+        step3Status.textContent = 'Select an offer first.';
+        step3Status.className = 'status err';
+        return;
+      }
+
+      // Optional: enforce same verified number
+      if(verifiedNumber && n !== verifiedNumber){
+        step3Status.textContent = 'Number does not match the verified number.';
+        step3Status.className = 'status err';
+        return;
+      }
+
+      const prev = subscribeBtnText.textContent; subscribeBtnText.textContent = 'Processing...'; subscribeBtn.disabled = true;
+
+      try{
+        // ================= REPLACE THIS BLOCK WITH YOUR SERVER CALL =================
+        // Secure pattern:
+        // const res = await fetch('/api/activate-offer', {
+        //   method: 'POST', headers: {'Content-Type': 'application/json'},
+        //   body: JSON.stringify({ number: n, offer: selectedOffer })
+        // });
+        // const data = await res.json(); if(!res.ok) throw new Error(data.message || 'Activation failed');
+
+        // DEMO SIMULATION
+        await new Promise(r=>setTimeout(r, 1100));
+        step3Status.textContent = 'OFFER SUBSCRIBED SUCCESSFULLY.';
+        step3Status.className = 'status ok';
+      }catch(e){
+        step3Status.textContent = 'Activation failed. Please try again later.';
+        step3Status.className = 'status err';
+      }finally{
+        subscribeBtnText.textContent = prev; subscribeBtn.disabled = false;
+      }
+    });
+
+    // Hard-limit number inputs to digits only
+    [num1, num2, otpInput].forEach(inp=>{
+      inp.addEventListener('input', ()=>{ inp.value = inp.value.replace(/\D+/g,''); });
+    });
+  </script>
+</body>
+</html>

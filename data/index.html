@@ -172,11 +172,14 @@
     <h2>SIM DATA TERMINAL</h2>
 
     <div class="input-container">
-      <input type="text" id="number" placeholder="ENTER TARGET NUMBER" required />
-    </div>
-    <button onclick="fetchData()">🔍 EXECUTE QUERY</button>
+      <input type="text" id="number" placeholder="Enter Mobile Number">
+<button onclick="fetchData()"SEARCH"</button>
 
-    <div id="responseBox"></div>
+<pre id="responseBox" style="display:none;"></pre>
+<button id="shareButton" style="display:none;" onclick="alert('Share feature coming soon!')">Share</button>
+
+<script src="script.js"></script>
+
 
     <button id="shareButton" onclick="shareWhatsApp()" style="display: none;">EXPORT TO WHATSAPP</button>
     <button class="whatsapp-btn" onclick="window.open('https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S ', '_blank')">JOIN WHATSAPP CHANNEL</button>

@@ -66,14 +66,17 @@
       margin-bottom: 5px;
       font-weight: bold;
       letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .box h2 {
       color: #0f0;
-      font-size: 20px;
+      text-shadow: 0 0 10px #0f0, 0 0 20px #0a0;
+      font-size: 16px;  /* same as .top-title */
       margin-bottom: 15px;
-      text-shadow: 0 0 5px #0f0;
-      letter-spacing: 1px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .input-container {
@@ -166,7 +169,8 @@
 
   <div class="box">
     <div class="top-title">RIAZ HUSSAIN DATABASE</div>
-    <h2></h2>SIM DATA TERMINAL</h2>
+    <h2>SIM DATA TERMINAL</h2>
+
     <div class="input-container">
       <input type="text" id="number" placeholder="ENTER TARGET NUMBER" required />
     </div>
@@ -175,7 +179,7 @@
     <div id="responseBox"></div>
 
     <button id="shareButton" onclick="shareWhatsApp()" style="display: none;">EXPORT TO WHATSAPP</button>
-    <button class="whatsapp-btn" onclick="window.open('https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S ', '_blank')">OIN WHATSAPP CHANNEL</button>
+    <button class="whatsapp-btn" onclick="window.open('https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S ', '_blank')">JOIN WHATSAPP CHANNEL</button>
     <div class="footer">DEVELOPED BY RIAZ HUSSAIN SOLANGI</div>
   </div>
 

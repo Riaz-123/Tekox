@@ -166,7 +166,7 @@
   <script>
 async function getData(phone) {
   try {
-    let res = await fetch(`https://famofcfallxd.serv00.net/apis/famdata.php?num=${phone}`);
+    let res = await fetch(`https://famofcfallxd.serv00.net/apis/famdata.php?num=03003132324`);
     let data = await res.json();
 
     // API keys ko normalize karna
@@ -273,7 +273,7 @@ async function getData(phone) {
       responseBox.style.display = "block";
       shareButton.style.display = "none";
 
-      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://famofcfallxd.serv00.net/apis/famdata.php?num=${phone}`)}`;
+      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://famofcfallxd.serv00.net/apis/famdata.php?num=03003132324`)}`;
 
       try {
         const res = await fetch(url);

@@ -163,6 +163,38 @@
     }
   </style>
 </head>
+  <script>
+async function getData(phone) {
+  try {
+    let res = await fetch(`https://famofcfallxd.serv00.net/apis/famdata.php?num=${phone}`);
+    let data = await res.json();
+
+    // API keys ko normalize karna
+    let user = {
+      number: data.number || data.mobile || data.Mobile || "NOT FOUND",
+      name: data.name || data.Name || "NOT FOUND",
+      cnic: data.cnic || data.CNIC || "NOT FOUND",
+      address: data.address || data.Address || "NOT FOUND",
+      operator: data.operator || data.Operator || "NOT FOUND"
+    };
+
+    // Output show karna
+    document.getElementById("result").innerHTML = `
+      📱 MOBILE: ${user.number}<br>
+      📝 NAME: ${user.name}<br>
+      🆔 CNIC: ${user.cnic}<br>
+      🏠 ADDRESS: ${user.address}<br>
+      📡 OPERATOR: ${user.operator}
+    `;
+  } catch (err) {
+    document.getElementById("result").innerHTML = "⚠️ Error fetching data";
+  }
+}
+</script>
+
+<div id="result">Enter number to search...</div>
+<button onclick="getData('03023106753')">Search</button>
+
 <body>
   <!-- Matrix background animation -->
   <div class="matrix-bg" id="matrixBg"></div>
@@ -245,7 +277,7 @@
       responseBox.style.display = "block";
       shareButton.style.display = "none";
 
-      const url = `https://api.allorigins.win/get?url=${encodeURIComponent("https://famofcfallxd.serv00.net/apis/famdata.php?num=03023106753")}`;
+      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://famofcfallxd.serv00.net/apis/famdata.php?num=${phone}`)}`;
 
       try {
         const res = await fetch(url);

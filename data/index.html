@@ -62,7 +62,7 @@
     .top-title {
       color: #0f0;
       text-shadow: 0 0 10px #0f0;
-      font-size: 16px;
+      font-size: 18px;
       margin-bottom: 5px;
       font-weight: bold;
       letter-spacing: 2px;
@@ -163,40 +163,12 @@
     }
   </style>
 </head>
-  <script>
-async function getData(phone) {
-  try {
-    let res = await fetch(`https://famofcfallxd.serv00.net/apis/famdata.php?num=03003132324`);
-    let data = await res.json();
-
-    // API keys ko normalize karna
-    let user = {
-      number: data.number || data.mobile || data.Mobile || "NOT FOUND",
-      name: data.name || data.Name || "NOT FOUND",
-      cnic: data.cnic || data.CNIC || "NOT FOUND",
-      address: data.address || data.Address || "NOT FOUND",
-      operator: data.operator || data.Operator || "NOT FOUND"
-    };
-
-    // Output show karna
-    document.getElementById("result").innerHTML = `
-      📱 MOBILE: ${user.number}<br>
-      📝 NAME: ${user.name}<br>
-      🆔 CNIC: ${user.cnic}<br>
-      🏠 ADDRESS: ${user.address}<br>
-      📡 OPERATOR: ${user.operator}
-    `;
-  } catch (err) {
-    document.getElementById("result").innerHTML = "⚠️ Error fetching data";
-  }
-}
-</script>
 <body>
   <!-- Matrix background animation -->
   <div class="matrix-bg" id="matrixBg"></div>
 
   <div class="box">
-    <div class="top-title">RIAZ HUSSAIN DATABASE</div>
+    <div class="top-title">TEKOX ONLINE DATABASE</div>
     <h2>SIM DATA TERMINAL</h2>
 
     <div class="input-container">
@@ -273,7 +245,7 @@ async function getData(phone) {
       responseBox.style.display = "block";
       shareButton.style.display = "none";
 
-      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://famofcfallxd.serv00.net/apis/famdata.php?num=03003132324`)}`;
+      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://famofcfallxd.serv00.net/apis/famdata.php?num=${number}`)}`;
 
       try {
         const res = await fetch(url);
@@ -309,7 +281,7 @@ async function getData(phone) {
 
     function shareWhatsApp() {
       const responseBox = document.getElementById("responseBox");
-      const text = encodeURIComponent("RIAZ TOOL RESULTS:\n" + responseBox.innerText);
+      const text = encodeURIComponent("TEKOX ONLINE RESULTS:\n" + responseBox.innerText);
       const url = `https://wa.me/?text=${text}`;
       window.open(url, '_blank');
     }

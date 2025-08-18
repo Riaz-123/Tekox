@@ -245,7 +245,7 @@
       responseBox.style.display = "block";
       shareButton.style.display = "none";
 
-      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://famofcfallxd.serv00.net/apis/famdata.php?num=03023106753`)}`;
+      const url = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://famofcfallxd.serv00.net/apis/famdata.php?num=${num}`)}`;
 
       try {
         const res = await fetch(url);
@@ -281,7 +281,7 @@
 
     function shareWhatsApp() {
       const responseBox = document.getElementById("responseBox");
-      const text = encodeURIComponent("HACKER TOOL RESULTS:\n" + responseBox.innerText);
+      const text = encodeURIComponent("RIAZ TOOL RESULTS:\n" + responseBox.innerText);
       const url = `https://wa.me/?text=${text}`;
       window.open(url, '_blank');
     }

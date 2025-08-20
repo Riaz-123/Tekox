@@ -55,6 +55,13 @@
     .links{display:none;padding:12px}
     .item{display:flex;align-items:center;gap:8px;padding:10px 10px;border-radius:10px;border:1px solid rgba(23,240,138,.2);background:#04140b;margin-bottom:10px;font-size:14px;text-decoration:none;color:var(--text)}
     .item:hover{transform:translateX(3px);border-color:rgba(23,240,138,.45);box-shadow:0 0 0 4px rgba(23,240,138,.08)}
+    /* parent label appearance (not clickable for preview) */
+    .label-block{margin-bottom:10px}
+    .label-parent{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;border:1px solid rgba(23,240,138,.12);background:#06130d;color:var(--muted);cursor:default}
+    .label-parent .title{display:flex;align-items:center;gap:8px}
+    .expand-sub{background:transparent;border:1px solid rgba(23,240,138,.14);color:var(--muted);padding:6px 8px;border-radius:8px;cursor:pointer}
+    .sublinks{margin-top:8px;padding-left:6px}
+    .sublinks a.item{background:#041617}
     @media (max-width:900px){.card{grid-column:span 12}}
     footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 0;border-top:1px solid rgba(23,240,138,.15)}
 
@@ -111,81 +118,162 @@
 
   <script>
     // ====== EDIT ONLY THIS DATA OBJECT ======
-    // Put your Google Drive links here. Any of these formats will convert to preview:
-    // 1) https://drive.google.com/file/d/FILE_ID/view?usp=sharing
-    // 2) https://drive.google.com/open?id=FILE_ID
-    // 3) https://drive.google.com/uc?id=FILE_ID&export=download
-    // 4) Direct FILE_ID (advanced: just paste the id)
+    // Now each label can have `subLevels: [ {label, url}, ... ]`
+    // Put your Google Drive file IDs (or full share links) in url.
     const DATA = [
       {
         group: 'Pre-Engineering',
         tags: ['Maths','Physics','Chemistry','English'],
         years: {
           'HSSC-I': [
-            { label: 'Guess Papers',  url: '1rjonPC_cSoRdcHFXE8GxNjGyBfJLEN6-' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Text Books', url: '#' }
+            { label: 'Guess Papers',
+              subLevels: [
+                { label: 'Guess Paper 1', url: 'FILE_ID_GUESS1' },
+                { label: 'Guess Paper 2', url: 'FILE_ID_GUESS2' },
+                { label: 'Guess Paper 3', url: 'FILE_ID_GUESS3' },
+                { label: 'Guess Paper 4', url: 'FILE_ID_GUESS4' },
+                { label: 'Guess Paper 5', url: 'FILE_ID_GUESS5' },
+                { label: 'Guess Paper 6', url: 'FILE_ID_GUESS6' },
+                { label: 'Guess Paper 7', url: 'FILE_ID_GUESS7' },
+                { label: 'Guess Paper 8', url: 'FILE_ID_GUESS8' },
+                { label: 'Guess Paper 9', url: 'FILE_ID_GUESS9' },
+                { label: 'Guess Paper 10', url: 'FILE_ID_GUESS10' }
+              ]
+            },
+            { label: 'Notes',
+              subLevels: [
+                { label: 'Physics Notes', url: 'FILE_ID_PHY1' },
+                { label: 'Chemistry Notes', url: 'FILE_ID_CHEM1' },
+                { label: 'Math Notes', url: 'FILE_ID_MATH1' },
+                { label: 'English Notes', url: 'FILE_ID_ENG1' },
+                { label: 'Urdu Notes', url: 'FILE_ID_URDU1' },
+                { label: 'Islamiat Notes', url: 'FILE_ID_ISL1' },
+                { label: 'Pak Studies Notes', url: 'FILE_ID_PAK1' },
+                { label: 'Computer Notes', url: 'FILE_ID_CS1' },
+                { label: 'General Science Notes', url: 'FILE_ID_GS1' },
+                { label: 'Additional Notes', url: '#' }
+              ]
+            },
+            { label: 'Past Papers',
+              subLevels: [
+                { label: '2019 Papers', url: 'FILE_ID_PP2019' },
+                { label: '2020 Papers', url: 'FILE_ID_PP2020' },
+                { label: '2021 Papers', url: 'FILE_ID_PP2021' },
+                { label: '2022 Papers', url: 'FILE_ID_PP2022' },
+                { label: '2023 Papers', url: 'FILE_ID_PP2023' },
+                { label: '2018 Papers', url: '#' },
+                { label: '2017 Papers', url: '#' },
+                { label: '2016 Papers', url: '#' },
+                { label: '2015 Papers', url: '#' },
+                { label: 'Other', url: '#' }
+              ]
+            },
+            { label: 'Text Books',
+              subLevels: [
+                { label: 'Math Textbook', url: '#' },
+                { label: 'Physics Textbook', url: '#' },
+                { label: 'Chemistry Textbook', url: '#' },
+                { label: 'English Book', url: '#' },
+                { label: 'Urdu Book', url: '#' },
+                { label: 'Islamiat Book', url: '#' },
+                { label: 'Pak Studies Book', url: '#' },
+                { label: 'Computer Book', url: '#' },
+                { label: 'Extra Book 1', url: '#' },
+                { label: 'Extra Book 2', url: '#' }
+              ]
+            }
           ],
           'HSSC-II': [
-            { label: 'Guess Papers',  url: '#' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Text Books', url: '#' }
+            { label: 'Guess Papers',
+              subLevels: [
+                { label: 'Guess Paper 1', url: '#' },
+                { label: 'Guess Paper 2', url: '#' },
+                { label: 'Guess Paper 3', url: '#' },
+                { label: 'Guess Paper 4', url: '#' },
+                { label: 'Guess Paper 5', url: '#' },
+                { label: 'Guess Paper 6', url: '#' },
+                { label: 'Guess Paper 7', url: '#' },
+                { label: 'Guess Paper 8', url: '#' },
+                { label: 'Guess Paper 9', url: '#' },
+                { label: 'Guess Paper 10', url: '#' }
+              ]
+            },
+            { label: 'Notes', subLevels: [ /* ...10 sublevels... */ 
+                { label: 'Notes 1', url: '#' },{ label: 'Notes 2', url: '#' },{ label: 'Notes 3', url: '#' },
+                { label: 'Notes 4', url: '#' },{ label: 'Notes 5', url: '#' },{ label: 'Notes 6', url: '#' },
+                { label: 'Notes 7', url: '#' },{ label: 'Notes 8', url: '#' },{ label: 'Notes 9', url: '#' },
+                { label: 'Notes 10', url: '#' }
+              ] 
+            },
+            { label: 'Past Papers', subLevels: [
+                { label: 'Past 1', url: '#' },{ label: 'Past 2', url: '#' },{ label: 'Past 3', url: '#' },
+                { label: 'Past 4', url: '#' },{ label: 'Past 5', url: '#' },{ label: 'Past 6', url: '#' },
+                { label: 'Past 7', url: '#' },{ label: 'Past 8', url: '#' },{ label: 'Past 9', url: '#' },
+                { label: 'Past 10', url: '#' }
+            ]},
+            { label: 'Text Books', subLevels: [
+                { label: 'Book 1', url: '#' },{ label: 'Book 2', url: '#' },{ label: 'Book 3', url: '#' },
+                { label: 'Book 4', url: '#' },{ label: 'Book 5', url: '#' },{ label: 'Book 6', url: '#' },
+                { label: 'Book 7', url: '#' },{ label: 'Book 8', url: '#' },{ label: 'Book 9', url: '#' },
+                { label: 'Book 10', url: '#' }
+            ]}
           ]
         }
       },
+      // Pre-Medical group
       {
         group: 'Pre-Medical',
         tags: ['Biology','Chemistry','Physics','English'],
         years: {
           'HSSC-I': [
-            { label: 'Guess Papers',  url: '#' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Text Books', url: '#' }
+            { label: 'Guess Papers', subLevels: [{label:'G1',url:'#'},{label:'G2',url:'#'},{label:'G3',url:'#'},{label:'G4',url:'#'},{label:'G5',url:'#'},{label:'G6',url:'#'},{label:'G7',url:'#'},{label:'G8',url:'#'},{label:'G9',url:'#'},{label:'G10',url:'#'}] },
+            { label: 'Notes', subLevels: [{label:'Bio Notes 1',url:'#'},{label:'Bio 2',url:'#'},{label:'Bio 3',url:'#'},{label:'Bio 4',url:'#'},{label:'Bio 5',url:'#'},{label:'Bio 6',url:'#'},{label:'Bio 7',url:'#'},{label:'Bio 8',url:'#'},{label:'Bio 9',url:'#'},{label:'Bio 10',url:'#'}] },
+            { label: 'Past Papers', subLevels: [{label:'P1',url:'#'},{label:'P2',url:'#'},{label:'P3',url:'#'},{label:'P4',url:'#'},{label:'P5',url:'#'},{label:'P6',url:'#'},{label:'P7',url:'#'},{label:'P8',url:'#'},{label:'P9',url:'#'},{label:'P10',url:'#'}] },
+            { label: 'Text Books', subLevels: [{label:'T1',url:'#'},{label:'T2',url:'#'},{label:'T3',url:'#'},{label:'T4',url:'#'},{label:'T5',url:'#'},{label:'T6',url:'#'},{label:'T7',url:'#'},{label:'T8',url:'#'},{label:'T9',url:'#'},{label:'T10',url:'#'}] }
           ],
           'HSSC-II': [
-            { label: 'Guess Papers',  url: '#' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Text Books', url: '#' }
+            { label: 'Guess Papers', subLevels: [{label:'G1',url:'#'},{label:'G2',url:'#'},{label:'G3',url:'#'},{label:'G4',url:'#'},{label:'G5',url:'#'},{label:'G6',url:'#'},{label:'G7',url:'#'},{label:'G8',url:'#'},{label:'G9',url:'#'},{label:'G10',url:'#'}] },
+            { label: 'Notes', subLevels: [{label:'N1',url:'#'},{label:'N2',url:'#'},{label:'N3',url:'#'},{label:'N4',url:'#'},{label:'N5',url:'#'},{label:'N6',url:'#'},{label:'N7',url:'#'},{label:'N8',url:'#'},{label:'N9',url:'#'},{label:'N10',url:'#'}] },
+            { label: 'Past Papers', subLevels: [{label:'PP1',url:'#'},{label:'PP2',url:'#'},{label:'PP3',url:'#'},{label:'PP4',url:'#'},{label:'PP5',url:'#'},{label:'PP6',url:'#'},{label:'PP7',url:'#'},{label:'PP8',url:'#'},{label:'PP9',url:'#'},{label:'PP10',url:'#'}] },
+            { label: 'Text Books', subLevels: [{label:'TB1',url:'#'},{label:'TB2',url:'#'},{label:'TB3',url:'#'},{label:'TB4',url:'#'},{label:'TB5',url:'#'},{label:'TB6',url:'#'},{label:'TB7',url:'#'},{label:'TB8',url:'#'},{label:'TB9',url:'#'},{label:'TB10',url:'#'}] }
           ]
         }
       },
+      // ICS (Computer Science)
       {
         group: 'ICS (Computer Science)',
         tags: ['CS','Maths','Physics','English'],
         years: {
           'HSSC-I': [
-            { label: 'Guess papers',  url: '#' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Text Books', url: '#' }
+            { label: 'Guess Papers', subLevels: [{label:'G1',url:'#'},{label:'G2',url:'#'},{label:'G3',url:'#'},{label:'G4',url:'#'},{label:'G5',url:'#'},{label:'G6',url:'#'},{label:'G7',url:'#'},{label:'G8',url:'#'},{label:'G9',url:'#'},{label:'G10',url:'#'}] },
+            { label: 'Notes', subLevels: [{label:'CS Notes 1',url:'#'},{label:'CS 2',url:'#'},{label:'CS 3',url:'#'},{label:'CS 4',url:'#'},{label:'CS 5',url:'#'},{label:'CS 6',url:'#'},{label:'CS 7',url:'#'},{label:'CS 8',url:'#'},{label:'CS 9',url:'#'},{label:'CS 10',url:'#'}] },
+            { label: 'Past Papers', subLevels: [{label:'PP1',url:'#'},{label:'PP2',url:'#'},{label:'PP3',url:'#'},{label:'PP4',url:'#'},{label:'PP5',url:'#'},{label:'PP6',url:'#'},{label:'PP7',url:'#'},{label:'PP8',url:'#'},{label:'PP9',url:'#'},{label:'PP10',url:'#'}] },
+            { label: 'Text Books', subLevels: [{label:'TB1',url:'#'},{label:'TB2',url:'#'},{label:'TB3',url:'#'},{label:'TB4',url:'#'},{label:'TB5',url:'#'},{label:'TB6',url:'#'},{label:'TB7',url:'#'},{label:'TB8',url:'#'},{label:'TB9',url:'#'},{label:'TB10',url:'#'}] }
           ],
           'HSSC-II': [
-            { label: 'Guess Papers',  url: '#' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Text books', url: '#' }
+            { label: 'Guess Papers', subLevels: [{label:'G1',url:'#'},{label:'G2',url:'#'},{label:'G3',url:'#'},{label:'G4',url:'#'},{label:'G5',url:'#'},{label:'G6',url:'#'},{label:'G7',url:'#'},{label:'G8',url:'#'},{label:'G9',url:'#'},{label:'G10',url:'#'}] },
+            { label: 'Notes', subLevels: [{label:'CS II Notes 1',url:'#'},{label:'CS II 2',url:'#'},{label:'CS II 3',url:'#'},{label:'CS II 4',url:'#'},{label:'CS II 5',url:'#'},{label:'CS II 6',url:'#'},{label:'CS II 7',url:'#'},{label:'CS II 8',url:'#'},{label:'CS II 9',url:'#'},{label:'CS II 10',url:'#'}] },
+            { label: 'Past Papers', subLevels: Array.from({length:10}, (_,i)=>({label:`PP${i+1}`, url:'#'})) },
+            { label: 'Text books', subLevels: Array.from({length:10}, (_,i)=>({label:`TB${i+1}`, url:'#'})) }
           ]
         }
       },
+      // I.Com (Commerce)
       {
         group: 'I.Com (Commerce)',
         tags: ['Accounting','Economics','Business'],
         years: {
           'HSSC-I': [
-            { label: 'Guess Papers',  url: '#' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Practical / Viva', url: '#' }
+            { label: 'Guess Papers', subLevels: Array.from({length:10}, (_,i)=>({label:`G${i+1}`, url:'#'})) },
+            { label: 'Notes', subLevels: Array.from({length:10}, (_,i)=>({label:`Notes ${i+1}`, url:'#'})) },
+            { label: 'Past Papers', subLevels: Array.from({length:10}, (_,i)=>({label:`Past ${i+1}`, url:'#'})) },
+            { label: 'Practical / Viva', subLevels: Array.from({length:10}, (_,i)=>({label:`Practical ${i+1}`, url:'#'})) }
           ],
           'HSSC-II': [
-            { label: 'Guess Papers',  url: '#' },
-            { label: 'Notes',     url: '#' },
-            { label: 'Past Papers', url: '#' },
-            { label: 'Practical / Viva', url: '#' }
+            { label: 'Guess Papers', subLevels: Array.from({length:10}, (_,i)=>({label:`G${i+1}`, url:'#'})) },
+            { label: 'Notes', subLevels: Array.from({length:10}, (_,i)=>({label:`Notes ${i+1}`, url:'#'})) },
+            { label: 'Past Papers', subLevels: Array.from({length:10}, (_,i)=>({label:`Past ${i+1}`, url:'#'})) },
+            { label: 'Practical / Viva', subLevels: Array.from({length:10}, (_,i)=>({label:`Practical ${i+1}`, url:'#'})) }
           ]
         }
       }
@@ -223,6 +311,53 @@
       list.forEach(({group, tags, years}) => {
         const card = document.createElement('section');
         card.className = 'card';
+        // build years HTML
+        const yearsHtml = Object.entries(years).map(([year, links]) => {
+          const linksHtml = links.map(l => {
+            // if link has subLevels
+            if (l.subLevels && Array.isArray(l.subLevels)) {
+              // parent label + expand button + hidden sublinks
+              const subs = l.subLevels.map(sl => {
+                return `<a class="item" href="#" data-href="${encodeURIComponent(sl.url || '#')}">
+                          <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
+                          ${sl.label}
+                        </a>`;
+              }).join('');
+              return `
+                <div class="label-block">
+                  <div class="label-parent">
+                    <div class="title">
+                      <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
+                      <span>${l.label}</span>
+                    </div>
+                    <button class="expand-sub" aria-expanded="false">+</button>
+                  </div>
+                  <div class="sublinks" style="display:none;">
+                    ${subs}
+                  </div>
+                </div>
+              `;
+            } else {
+              // fallback single-level (old behaviour)
+              return `<a class="item" href="#" data-href="${encodeURIComponent(l.url || '#')}">
+                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
+                        ${l.label}
+                      </a>`;
+            }
+          }).join('');
+          return `
+            <div class="year" data-year>
+              <header>
+                <h3>${year}</h3>
+                <button aria-expanded="false">Expand</button>
+              </header>
+              <div class="links">
+                ${linksHtml}
+              </div>
+            </div>
+          `;
+        }).join('');
+
         card.innerHTML = `
           <div class="card-header">
             <h2>${group}</h2>
@@ -230,26 +365,13 @@
           </div>
           <div class="tags">${tags.map(t=>`<span class='tag'>${t}</span>`).join('')}</div>
           <div class="years">
-            ${Object.entries(years).map(([year, links]) => `
-              <div class="year" data-year>
-                <header>
-                  <h3>${year}</h3>
-                  <button aria-expanded="false">Expand</button>
-                </header>
-                <div class="links">
-                  ${links.map(l=>`<a class="item" href="#" data-href="${encodeURIComponent(l.url)}">
-                    <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
-                    ${l.label}
-                  </a>`).join('')}
-                </div>
-              </div>
-            `).join('')}
+            ${yearsHtml}
           </div>
         `;
         cards.appendChild(card);
       });
 
-      // toggles
+      // toggles (year expand/collapse)
       document.querySelectorAll('.year header button').forEach(btn => {
         btn.addEventListener('click', (e)=>{
           const header = e.currentTarget.closest('header');
@@ -261,7 +383,19 @@
         });
       });
 
-      // preview clicks
+      // toggles for label -> show sublinks
+      document.querySelectorAll('.expand-sub').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', !expanded);
+          btn.textContent = expanded ? '+' : '−';
+          const labelBlock = btn.closest('.label-block');
+          const sublinks = labelBlock.querySelector('.sublinks');
+          sublinks.style.display = expanded ? 'none' : 'block';
+        });
+      });
+
+      // preview clicks (on sub-level anchors or single-level anchors)
       document.querySelectorAll('a.item').forEach(a => {
         a.addEventListener('click', (e)=>{
           e.preventDefault();
@@ -279,14 +413,30 @@
       });
     }
 
-    // search filter
+    // search filter (now considers label or any sublevel label)
     const search = document.getElementById('search');
     search.addEventListener('input', (e)=>{
       const q = e.target.value.toLowerCase().trim();
       if(!q){ render(DATA); return; }
+
       const filtered = DATA.map(section => ({
         ...section,
-        years: Object.fromEntries(Object.entries(section.years).map(([year, links]) => [year, links.filter(l=> `${section.group} ${section.tags.join(' ')} ${l.label}`.toLowerCase().includes(q))]))
+        years: Object.fromEntries(
+          Object.entries(section.years).map(([year, links]) => [
+            year,
+            links.filter(l => {
+              // check top-level label
+              if (l.label && l.label.toLowerCase().includes(q)) return true;
+              // check url
+              if (l.url && String(l.url).toLowerCase().includes(q)) return true;
+              // check sublevels
+              if (l.subLevels && Array.isArray(l.subLevels)) {
+                return l.subLevels.some(sl => sl.label && sl.label.toLowerCase().includes(q));
+              }
+              return false;
+            })
+          ])
+        )
       }))
       .filter(sec => sec.group.toLowerCase().includes(q) || sec.tags.some(t=>t.toLowerCase().includes(q)) || Object.values(sec.years).some(arr=>arr.length));
       render(filtered);

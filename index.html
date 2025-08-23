@@ -16,7 +16,7 @@
     body{margin:0;font-family:'Inter',system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
       background:radial-gradient(1200px 800px at 20% -10%, rgba(23,240,138,.15), transparent 60%),
                  radial-gradient(800px 600px at 110% 10%, rgba(23,240,138,.12), transparent 50%),
-                 linear-gradient(180deg, #031008, #05150c 40%, #031008 100%);} 
+                 linear-gradient(180deg, #031008, #05150c 40%, #031008 100%);}
     body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
       linear-gradient(var(--grid) 1px, transparent 1px) 0 0/32px 32px,
       linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/32px 32px;
@@ -45,11 +45,9 @@
     .card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 10px}
     .badge{padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(23,240,138,.35);color:var(--muted)}
     .tags{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 10px}
-    .tag{font-size:11px;padding:6px 10px;border-radius:999px;background:rgba(23,240,138,.1);border:1px solid rgba(23,240,138,.25);color:var(--muted);cursor:default}
+    .tag{font-size:11px;padding:6px 10px;border-radius:999px;background:rgba(23,240,138,.1);border:1px solid rgba(23,240,138,.25);color:var(--muted)}
     .years{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}
-    .tag-block{background:#071a10;border:1px solid rgba(23,240,138,.12);border-radius:14px;padding:12px}
-    .tag-block h4{margin:0 0 8px 0;font-size:14px}
-    .year{background:#071a10;border:1px solid rgba(23,240,138,.25);border-radius:14px;overflow:hidden;margin-bottom:8px}
+    .year{background:#071a10;border:1px solid rgba(23,240,138,.25);border-radius:14px;overflow:hidden}
     .year header{background:linear-gradient(180deg, rgba(23,240,138,.18), rgba(23,240,138,.05));
       border-bottom:1px solid rgba(23,240,138,.2);padding:10px 12px;display:flex;align-items:center;justify-content:space-between}
     .year header h3{margin:0;font-size:14px}
@@ -86,7 +84,7 @@
         <div class="logo">E</div>
         <div>
           <div class="title">TEKOX EDUCATION HUB</div>
-          <div class="subtitle">         Karachi-Sindh Board Preparation</div>
+          <div class="subtitle">Karachi-Sindh Board Preparation</div>
         </div>
       </div>
       <div class="search">
@@ -102,7 +100,6 @@
 
   <footer>© <span id="year"></span> Riaz Hussain — Tekox Education</footer>
 
-  <!-- Modal for preview -->
   <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modtitle">
     <div class="dialog">
       <header>
@@ -119,116 +116,261 @@
   </div>
 
   <script>
-    // ====== EDIT ONLY THIS DATA OBJECT ======
-    // New structure: groups -> tags (each tag has its own years -> labels -> subLevels)
-    // This keeps the same behavior but allows per-tag materials.
+    // ====== DATA OBJECT WITH ALL SUBJECTS ======
     const DATA = [
       {
         group: 'Pre-Engineering',
-        // tags now are objects with a name and their own years map
-        tags: [
-          {
-            name: 'Maths',
-            years: {
-              'HSSC-I': [
-                { label: 'Notes', subLevels: [
-                    { label: 'Algebra Notes', url: 'FILE_ID_MATH_CALC' },
-                    { label: 'Calculus Notes', url: 'FILE_ID_MATH_CALC' }
-                  ] },
-                { label: 'Past Papers', subLevels: [
-                    { label: '2019 Math', url: 'FILE_ID_MATH_PP2019' },
-                    { label: '2020 Math', url: 'FILE_ID_MATH_PP2020' }
-                  ] }
-              ],
-              'HSSC-II': [
-                { label: 'Notes', subLevels: [ { label: 'Integration', url: 'FILE_ID_MATH_INT' },{ label: 'Vectors', url: 'FILE_ID_MATH_VEC' } ] },
-                { label: 'Guess Papers', subLevels: [ { label: 'G1', url: '#' }, { label: 'G2', url: '#' } ] }
-              ]
-            }
-          },
-          {
-            name: 'Physics',
-            years: {
-              'HSSC-I': [
-                { label: 'Notes', subLevels: [ { label: 'Mechanics', url: 'FILE_ID_PHY_MECH' },{ label: 'Thermo', url: 'FILE_ID_PHY_TH' } ] },
-                { label: 'Past Papers', subLevels: [ { label: '2019 Physics', url: '#' } ] }
-              ],
-              'HSSC-II': [
-                { label: 'Notes', subLevels: [ { label: 'Electromagnetism', url: '#' } ] }
-              ]
-            }
-          },
-          {
-            name: 'Chemistry',
-            years: {
-              'HSSC-I': [ { label: 'Notes', subLevels: [ { label: 'Organic Basics', url: '#' } ] } ],
-              'HSSC-II': [ { label: 'Past Papers', subLevels: [ { label: '2021 Chem', url: '#' } ] } ]
-            }
-          }
-        ]
+        tags: ['Maths', 'Physics', 'Chemistry', 'English', 'Urdu', 'Islamiat'],
+        years: {
+          'HSSC-I': [
+            { label: 'Notes', subLevels: [
+                { label: 'Physics Notes', url: '#' },
+                { label: 'Chemistry Notes', url: '#' },
+                { label: 'Mathematics Notes', url: '#' },
+                { label: 'English Notes', url: '#' },
+                { label: 'Urdu Notes', url: '#' },
+                { label: 'Islamiat Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Physics Guess Paper', url: '#' },
+                { label: 'Chemistry Guess Paper', url: '#' },
+                { label: 'Mathematics Guess Paper', url: '#' },
+                { label: 'English Guess Paper', url: '#' },
+                { label: 'Urdu Guess Paper', url: '#' },
+                { label: 'Islamiat Guess Paper', url: '#' }
+            ]},
+            { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' },
+                { label: '2021 Past Papers', url: '#' },
+                { label: '2019 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Physics Textbook', url: '#' },
+                { label: 'Chemistry Textbook', url: '#' },
+                { label: 'Mathematics Textbook', url: '#' },
+                { label: 'English Textbook', url: '#' },
+                { label: 'Urdu Textbook', url: '#' },
+                { label: 'Islamiat Textbook', url: '#' }
+            ]}
+          ],
+          'HSSC-II': [
+            { label: 'Notes', subLevels: [
+                { label: 'Physics Notes', url: '#' },
+                { label: 'Chemistry Notes', url: '#' },
+                { label: 'Mathematics Notes', url: '#' },
+                { label: 'English Notes', url: '#' },
+                { label: 'Urdu Notes', url: '#' },
+                { label: 'Pakistan Studies Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Physics Guess Paper', url: '#' },
+                { label: 'Chemistry Guess Paper', url: '#' },
+                { label: 'Mathematics Guess Paper', url: '#' },
+                { label: 'English Guess Paper', url: '#' },
+                { label: 'Urdu Guess Paper', url: '#' },
+                { label: 'Pakistan Studies Guess Paper', url: '#' }
+            ]},
+            { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' },
+                { label: '2021 Past Papers', url: '#' },
+                { label: '2019 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Physics Textbook', url: '#' },
+                { label: 'Chemistry Textbook', url: '#' },
+                { label: 'Mathematics Textbook', url: '#' },
+                { label: 'English Textbook', url: '#' },
+                { label: 'Urdu Textbook', url: '#' },
+                { label: 'Pakistan Studies Textbook', url: '#' }
+            ]}
+          ]
+        }
       },
-      
-      // Pre-Medical group (tags separated)
       {
         group: 'Pre-Medical',
-        tags: [
-          {
-            name: 'Biology',
-            years: {
-              'HSSC-I': [ { label: 'Notes', subLevels: [ { label: 'Cell Biology', url: '#' }, { label: 'Genetics', url: '#' } ] } ],
-              'HSSC-II': [ { label: 'Past Papers', subLevels: [ { label: '2019 Bio', url: '#' } ] } ]
-            }
-          },
-          {
-            name: 'Chemistry',
-            years: {
-              'HSSC-I': [ { label: 'Notes', subLevels: [ { label: 'Inorganic', url: '#' } ] } ],
-              'HSSC-II': [ { label: 'Notes', subLevels: [ { label: 'Physical', url: '#' } ] } ]
-            }
-          }
-        ]
+        tags: ['Biology', 'Zoology', 'Botany', 'Physics', 'Chemistry', 'English'],
+        years: {
+          'HSSC-I': [
+             { label: 'Notes', subLevels: [
+                { label: 'Physics Notes', url: '#' },
+                { label: 'Chemistry Notes', url: '#' },
+                { label: 'Botany Notes', url: '#' },
+                { label: 'Zoology Notes', url: '#' },
+                { label: 'English Notes', url: '#' },
+                { label: 'Urdu Notes', url: '#' },
+                { label: 'Islamiat Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Physics Guess Paper', url: '#' },
+                { label: 'Chemistry Guess Paper', url: '#' },
+                { label: 'Botany Guess Paper', url: '#' },
+                { label: 'Zoology Guess Paper', url: '#' },
+                { label: 'English Guess Paper', url: '#' },
+                { label: 'Urdu Guess Paper', url: '#' }
+            ]},
+            { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Physics Textbook', url: '#' },
+                { label: 'Chemistry Textbook', url: '#' },
+                { label: 'Biology Textbook', url: '#' },
+                { label: 'English Textbook', url: '#' }
+            ]}
+          ],
+          'HSSC-II': [
+            { label: 'Notes', subLevels: [
+                { label: 'Physics Notes', url: '#' },
+                { label: 'Chemistry Notes', url: '#' },
+                { label: 'Botany Notes', url: '#' },
+                { label: 'Zoology Notes', url: '#' },
+                { label: 'English Notes', url: '#' },
+                { label: 'Urdu Notes', url: '#' },
+                { label: 'Pakistan Studies Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Physics Guess Paper', url: '#' },
+                { label: 'Chemistry Guess Paper', url: '#' },
+                { label: 'Botany Guess Paper', url: '#' },
+                { label: 'Zoology Guess Paper', url: '#' },
+                { label: 'Urdu Guess Paper', url: '#' },
+                { label: 'Pakistan Studies Guess Paper', url: '#' }
+            ]},
+             { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Physics Textbook', url: '#' },
+                { label: 'Chemistry Textbook', url: '#' },
+                { label: 'Biology Textbook', url: '#' },
+                { label: 'Pakistan Studies Textbook', url: '#' }
+            ]}
+          ]
+        }
       },
-     
-      // ICS group
       {
         group: 'ICS (Computer Science)',
-        tags: [
-          {
-            name: 'Computer Science',
-            years: {
-              'HSSC-I': [ { label: 'Notes', subLevels: [ { label: 'Programming Basics', url: '#' }, { label: 'Algorithms', url: '#' } ] }, { label: 'Past Papers', subLevels: [ { label: 'CS 2020', url: '#' } ] } ],
-              'HSSC-II': [ { label: 'Notes', subLevels: [ { label: 'Databases', url: '#' } ] } ]
-            }
-          },
-          {
-            name: 'Maths',
-            years: {
-              'HSSC-I': [ { label: 'Notes', subLevels: [ { label: 'Discrete Maths', url: '#' } ] } ],
-              'HSSC-II': [ { label: 'Past Papers', subLevels: [ { label: 'Maths PP', url: '#' } ] } ]
-            }
-          }
-        ]
+        tags: ['CS', 'Maths', 'Physics', 'Statistics'],
+        years: {
+          'HSSC-I': [
+            { label: 'Notes', subLevels: [
+                { label: 'Physics Notes', url: '#' },
+                { label: 'Mathematics Notes', url: '#' },
+                { label: 'Computer Science Notes', url: '#' },
+                { label: 'English Notes', url: '#' },
+                { label: 'Urdu Notes', url: '#' },
+                { label: 'Islamiat Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Physics Guess Paper', url: '#' },
+                { label: 'Mathematics Guess Paper', url: '#' },
+                { label: 'Computer Science Guess Paper', url: '#' }
+            ]},
+            { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Physics Textbook', url: '#' },
+                { label: 'Mathematics Textbook', url: '#' },
+                { label: 'Computer Science Textbook', url: '#' }
+            ]}
+          ],
+          'HSSC-II': [
+            { label: 'Notes', subLevels: [
+                { label: 'Physics Notes', url: '#' },
+                { label: 'Mathematics Notes', url: '#' },
+                { label: 'Computer Science Notes', url: '#' },
+                { label: 'English Notes', url: '#' },
+                { label: 'Urdu Notes', url: '#' },
+                { label: 'Pakistan Studies Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Physics Guess Paper', url: '#' },
+                { label: 'Mathematics Guess Paper', url: '#' },
+                { label: 'Computer Science Guess Paper', url: '#' }
+            ]},
+            { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Physics Textbook', url: '#' },
+                { label: 'Mathematics Textbook', url: '#' },
+                { label: 'Computer Science Textbook', url: '#' }
+            ]}
+          ]
+        }
       },
-      
-      // I.Com group
       {
         group: 'I.Com (Commerce)',
-        tags: [
-          {
-            name: 'Accounting',
-            years: {
-              'HSSC-I': [ { label: 'Notes', subLevels: [ { label: 'Accounts 1', url: '#' } ] } ],
-              'HSSC-II': [ { label: 'Past Papers', subLevels: [ { label: 'Accounts 2022', url: '#' } ] } ]
-            }
-          },
-          {
-            name: 'Economics',
-            years: {
-              'HSSC-I': [ { label: 'Notes', subLevels: [ { label: 'Microeconomics', url: '#' } ] } ],
-              'HSSC-II': [ { label: 'Notes', subLevels: [ { label: 'Macroeconomics', url: '#' } ] } ]
-            }
-          }
-        ]
+        tags: ['Accounting', 'Economics', 'Business', 'Banking', 'Statistics'],
+        years: {
+          'HSSC-I': [
+            { label: 'Notes', subLevels: [
+                { label: 'Principles of Accounting Notes', url: '#' },
+                { label: 'Principles of Commerce Notes', url: '#' },
+                { label: 'Principles of Economics Notes', url: '#' },
+                { label: 'Business Mathematics Notes', url: '#' },
+                { label: 'English & Urdu Notes', url: '#' },
+                { label: 'Islamiat Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Accounting Guess Paper', url: '#' },
+                { label: 'Commerce Guess Paper', url: '#' },
+                { label: 'Economics Guess Paper', url: '#' },
+                { label: 'Business Math Guess Paper', url: '#' }
+            ]},
+            { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Principles of Accounting Book', url: '#' },
+                { label: 'Principles of Commerce Book', url: '#' },
+                { label: 'Principles of Economics Book', url: '#' },
+                { label: 'Business Mathematics Book', url: '#' }
+            ]}
+          ],
+          'HSSC-II': [
+            { label: 'Notes', subLevels: [
+                { label: 'Advanced Accounting Notes', url: '#' },
+                { label: 'Banking Notes', url: '#' },
+                { label: 'Commercial Geography Notes', url: '#' },
+                { label: 'Business Statistics Notes', url: '#' },
+                { label: 'English & Urdu Notes', url: '#' },
+                { label: 'Pakistan Studies Notes', url: '#' }
+            ]},
+            { label: 'Guess Papers', subLevels: [
+                { label: 'Advanced Accounting Guess Paper', url: '#' },
+                { label: 'Banking Guess Paper', url: '#' },
+                { label: 'Commercial Geography Guess Paper', url: '#' },
+                { label: 'Business Statistics Guess Paper', url: '#' }
+            ]},
+            { label: 'Past Papers', subLevels: [
+                { label: '2024 Past Papers', url: '#' },
+                { label: '2023 Past Papers', url: '#' },
+                { label: '2022 Past Papers', url: '#' }
+            ]},
+            { label: 'Text Books (PDF)', subLevels: [
+                { label: 'Advanced Accounting Book', url: '#' },
+                { label: 'Banking Book', url: '#' },
+                { label: 'Commercial Geography Book', url: '#' },
+                { label: 'Business Statistics Book', url: '#' }
+            ]}
+          ]
+        }
       }
     ];
     // ====== END DATA EDIT AREA ======
@@ -255,63 +397,48 @@
 
     function render(list){
       cards.innerHTML = '';
-      list.forEach(({group, tags}) => {
+      list.forEach(({group, tags, years}) => {
         const card = document.createElement('section');
         card.className = 'card';
-
-        // build tags badges (display tag names)
-        const tagsHtml = tags.map(t=>`<span class='tag'>${t.name}</span>`).join('');
-
-        // for each tag, build its years block
-        const tagBlocks = tags.map(tag => {
-          const yearsHtml = Object.entries(tag.years || {}).map(([year, links]) => {
-            const linksHtml = links.map(l => {
-              if (l.subLevels && Array.isArray(l.subLevels)) {
-                const subs = l.subLevels.map(sl => {
-                  return `<a class="item" href="#" data-href="${encodeURIComponent(sl.url || '#')}">
-                            <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
-                            ${sl.label}
-                          </a>`;
-                }).join('');
-                return `
-                  <div class="label-block">
-                    <div class="label-parent">
-                      <div class="title">
-                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
-                        <span>${l.label}</span>
-                      </div>
-                      <button class="expand-sub" aria-expanded="false">+</button>
-                    </div>
-                    <div class="sublinks" style="display:none;">
-                      ${subs}
-                    </div>
-                  </div>
-                `;
-              } else {
-                return `<a class="item" href="#" data-href="${encodeURIComponent(l.url || '#')}">
+        const yearsHtml = Object.entries(years).map(([year, links]) => {
+          const linksHtml = links.map(l => {
+            if (l.subLevels && Array.isArray(l.subLevels)) {
+              const subs = l.subLevels.map(sl => {
+                return `<a class="item" href="#" data-href="${encodeURIComponent(sl.url || '#')}">
                           <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
-                          ${l.label}
+                          ${sl.label}
                         </a>`;
-              }
-            }).join('');
-
-            return `
-              <div class="year" data-year>
-                <header>
-                  <h3>${year}</h3>
-                  <button aria-expanded="false">Expand</button>
-                </header>
-                <div class="links">
-                  ${linksHtml}
+              }).join('');
+              return `
+                <div class="label-block">
+                  <div class="label-parent">
+                    <div class="title">
+                      <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
+                      <span>${l.label}</span>
+                    </div>
+                    <button class="expand-sub" aria-expanded="false">+</button>
+                  </div>
+                  <div class="sublinks" style="display:none;">
+                    ${subs}
+                  </div>
                 </div>
-              </div>
-            `;
+              `;
+            } else {
+              return `<a class="item" href="#" data-href="${encodeURIComponent(l.url || '#')}">
+                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
+                        ${l.label}
+                      </a>`;
+            }
           }).join('');
-
           return `
-            <div class="tag-block">
-              <h4>${tag.name}</h4>
-              ${yearsHtml}
+            <div class="year" data-year>
+              <header>
+                <h3>${year}</h3>
+                <button aria-expanded="false">Expand</button>
+              </header>
+              <div class="links">
+                ${linksHtml}
+              </div>
             </div>
           `;
         }).join('');
@@ -321,15 +448,14 @@
             <h2>${group}</h2>
             <span class="badge">HSSC-I & HSSC-II</span>
           </div>
-          <div class="tags">${tagsHtml}</div>
+          <div class="tags">${tags.map(t=>`<span class='tag'>${t}</span>`).join('')}</div>
           <div class="years">
-            ${tagBlocks}
+            ${yearsHtml}
           </div>
         `;
         cards.appendChild(card);
       });
 
-      // toggles (year expand/collapse)
       document.querySelectorAll('.year header button').forEach(btn => {
         btn.addEventListener('click', (e)=>{
           const header = e.currentTarget.closest('header');
@@ -341,7 +467,6 @@
         });
       });
 
-      // toggles for label -> show sublinks
       document.querySelectorAll('.expand-sub').forEach(btn => {
         btn.addEventListener('click', (e) => {
           const expanded = btn.getAttribute('aria-expanded') === 'true';
@@ -353,7 +478,6 @@
         });
       });
 
-      // preview clicks (on sub-level anchors or single-level anchors)
       document.querySelectorAll('a.item').forEach(a => {
         a.addEventListener('click', (e)=>{
           e.preventDefault();
@@ -371,7 +495,6 @@
       });
     }
 
-    // search filter (now considers group, tag name, label or any sublevel label)
     const search = document.getElementById('search');
     search.addEventListener('input', (e)=>{
       const q = e.target.value.toLowerCase().trim();
@@ -379,43 +502,27 @@
 
       const filtered = DATA.map(section => ({
         ...section,
-        tags: (section.tags || []).map(tag => {
-          // filter years within this tag
-          const years = Object.fromEntries(
-            Object.entries(tag.years || {}).map(([year, links]) => [
-              year,
-              links.filter(l => {
-                if (l.label && l.label.toLowerCase().includes(q)) return true;
-                if (l.url && String(l.url).toLowerCase().includes(q)) return true;
-                if (l.subLevels && Array.isArray(l.subLevels)) {
-                  return l.subLevels.some(sl => sl.label && sl.label.toLowerCase().includes(q));
-                }
-                return false;
-              })
-            ])
-          );
-          return { ...tag, years };
-        }).map(t => ({
-          // remove empty years (keep only years with some links)
-          ...t,
-          years: Object.fromEntries(Object.entries(t.years).filter(([y, arr]) => arr && arr.length))
-        }))
+        years: Object.fromEntries(
+          Object.entries(section.years).map(([year, links]) => [
+            year,
+            links.filter(l => {
+              if (l.label && l.label.toLowerCase().includes(q)) return true;
+              if (l.url && String(l.url).toLowerCase().includes(q)) return true;
+              if (l.subLevels && Array.isArray(l.subLevels)) {
+                return l.subLevels.some(sl => sl.label && sl.label.toLowerCase().includes(q));
+              }
+              return false;
+            })
+          ])
+        )
       }))
-      // keep only sections where group match OR any tag name matches OR any tag has content
-      .map(sec => ({
-        ...sec,
-        tags: sec.tags.filter(t => t.name.toLowerCase().includes(q) || Object.values(t.years).some(arr=>arr.length))
-      }))
-      .filter(sec => sec.group.toLowerCase().includes(q) || sec.tags.length || sec.tags.some);
-
+      .filter(sec => sec.group.toLowerCase().includes(q) || sec.tags.some(t=>t.toLowerCase().includes(q)) || Object.values(sec.years).some(arr=>arr.length));
       render(filtered);
     });
 
-    // close modal
     closeBtn.addEventListener('click', ()=> modal.classList.remove('open'));
     modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.classList.remove('open') });
 
-    // initial
     render(DATA);
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>

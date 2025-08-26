@@ -45,8 +45,13 @@ button {
 const { jsPDF } = window.jspdf;
 
 async function getMarksheet() {
-  const roll = document.getElementById('roll').value;
-  const response = await fetch(`https://script.google.com/macros/s/AKfycbyl0kGeuBqG8Os7IypplKRIBkX07Ge4SDIlhYp-NyfJfbAfgbf3REk8krm9iwwm36-R/exec?roll=${roll}`);
+  const roll = document.getElementById('roll').value.trim();
+  if (!roll) {
+    alert('Please enter roll number!');
+    return;
+  }
+
+  const response = await fetch(`https://script.google.com/macros/s/YOUR_WEB_APP_URL/exec?roll=${roll}`);
   const data = await response.json();
   
   if (data.error) {
@@ -61,24 +66,57 @@ async function getMarksheet() {
 }
 
 function generatePDF(data) {
-  const doc = new jsPDF();
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'pt',
+    format: 'a4'
+  });
 
-  doc.setFontSize(16);
-  doc.text("School Name", 80, 15);
+  // Add custom marksheet layout
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(20);
+  doc.text("Mazhar Model Elementary School", 210, 50, { align: 'center' });
+
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'normal');
+  doc.text("Annual Examination - 2025", 210, 70, { align: 'center' });
+
+  doc.line(40, 90, 550, 90); // header underline
+
+  // Student Info
   doc.setFontSize(12);
-  doc.text("Student Marksheet", 85, 25);
-  
-  doc.text(`Roll No: ${data.roll}`, 20, 40);
-  doc.text(`Name: ${data.name}`, 20, 50);
-  
-  doc.text("Subjects:", 20, 70);
-  doc.text(`English: ${data.english}`, 20, 80);
-  doc.text(`Math: ${data.math}`, 20, 90);
-  doc.text(`Science: ${data.science}`, 20, 100);
-  
-  doc.text(`Total: ${data.total}`, 20, 120);
-  doc.text(`Grade: ${data.grade}`, 20, 130);
-  
+  doc.text(`Roll No: ${data.roll}`, 60, 120);
+  doc.text(`Name: ${data.name}`, 60, 140);
+
+  // Table Header
+  doc.setFont('helvetica', 'bold');
+  doc.text("Subject", 60, 180);
+  doc.text("Marks", 300, 180);
+  doc.line(40, 190, 550, 190);
+
+  // Subjects & Marks
+  doc.setFont('helvetica', 'normal');
+  let y = 210;
+  doc.text("English", 60, y); doc.text(`${data.english}`, 300, y); y += 20;
+  doc.text("Math", 60, y); doc.text(`${data.math}`, 300, y); y += 20;
+  doc.text("Science", 60, y); doc.text(`${data.science}`, 300, y); y += 20;
+
+  doc.line(40, y + 10, 550, y + 10);
+
+  // Total & Grade
+  y += 30;
+  doc.text(`Total: ${data.total}`, 60, y);
+  doc.text(`Grade: ${data.grade}`, 300, y);
+
+  y += 40;
+  const percentage = ((data.total / 300) * 100).toFixed(2);
+  doc.text(`Percentage: ${percentage}%`, 60, y);
+
+  // Footer
+  y += 50;
+  doc.setFontSize(10);
+  doc.text("This is a system-generated marksheet.", 210, y, { align: 'center' });
+
   doc.save(`Marksheet_${data.roll}.pdf`);
 }
 </script>

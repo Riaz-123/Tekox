@@ -1,112 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Number Lookup</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>Number Lookup</title>
+  <style>
+    /* --- Hacker Theme CSS --- */
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #0d0208; /* Dark background */
+      color: #00ff41; /* Green text */
+      text-shadow: 0 0 5px #00ff41;
+      padding: 20px;
+    }
+
+    h2 {
+      border-right: .15em solid #00ff41;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: blink 1s step-end infinite;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    input, button, a.btn {
+      background: transparent;
+      border: 1px solid #00ff41;
+      color: #00ff41;
+      padding: 12px;
+      margin: 5px;
+      font-family: inherit;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+      transition: background-color 0.3s, color 0.3s;
+      text-decoration: none; /* For the <a> tag */
+      display: inline-block; /* For the <a> tag */
+    }
+
+    input {
+      box-shadow: none; /* Input field looks better without a glow */
+    }
+
+    input::placeholder {
+      color: rgba(0, 255, 65, 0.5);
+    }
+
+    button:hover, a.btn:hover {
+      background-color: #00ff41;
+      color: #0d0208;
+    }
+
+    .card {
+      background: transparent;
+      border: 1px dashed #00ff41;
+      border-radius: 0;
+      padding: 15px;
+      margin: 15px 0;
+      box-shadow: none;
+    }
+
+    .head {
+      font-weight: bold;
+      color: #ffffff; /* Make keys white for contrast */
+      text-shadow: 0 0 5px #ffffff;
+    }
+
+    #results p {
+      margin: 5px 0;
+    }
+
+    .error-msg {
+      color: #ff0000; /* Red for errors */
+      text-shadow: 0 0 5px #ff0000;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body class="bg-black min-h-screen flex items-center justify-center font-mono text-green-400">
-    <div class="bg-gray-900 p-6 rounded-lg shadow-lg shadow-green-500/20 w-full max-w-md border border-green-800">
-        <h1 class="text-2xl font-bold mb-4 text-center text-green-500">Phone Number Lookup</h1>
-        <form id="phoneForm" class="space-y-4">
-            <div>
-                <label for="phoneNumber" class="block text-sm font-medium text-green-300">Enter Phone Number:</label>
-                <input
-                    type="text"
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    placeholder="030xxxxxxxx"
-                    class="mt-1 block w-full p-2 bg-gray-800 border border-green-600 rounded-md text-green-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 placeholder-green-700"
-                >
-            </div>
-            <button
-                type="submit"
-                class="w-full bg-green-600 text-black font-bold p-2 rounded-md hover:bg-green-500 transition-colors"
-            >
-                Search
-            </button>
-        </form>
+<body>
+  <h2><span style="font-size: 1.5em;">📱</span> Live SIM DATA</h2>
+  <br>
+  <input type="text" id="num" placeholder="Enter target number...">
+  <button onclick="searchNumber()">SEARCH</button>
+  
+  <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="btn">Join for Updates</a>
 
-        <a
-            href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="block w-full text-center mt-4 bg-gray-800 text-green-400 p-2 rounded-md border border-green-700 hover:bg-green-700 hover:text-black transition-colors"
-        >
-            FOR MORE UPDATES
-        </a>
+  <div id="results"></div>
 
-        <div id="result" class="mt-4 p-4 border rounded-md hidden"></div>
-    </div>
+  <script>
+    let loadingInterval;
 
-    <script>
-        const form = document.getElementById('phoneForm');
-        const resultDiv = document.getElementById('result');
+    function startLoadingAnimation(element) {
+      let text = "ACCESSING DATABASE..  PLEASE WAIT...";
+      let i = 0;
+      element.innerHTML = "";
+      loadingInterval = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          element.innerHTML = ""; // Reset and loop
+          i = 0;
+        }
+      }, 100);
+    }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    function stopLoadingAnimation() {
+      clearInterval(loadingInterval);
+    }
 
-            // Basic client-side validation
-            if (!phoneNumber.match(/^\+?\d{10,12}$/)) {
-                showResult('Error: Invalid phone number. Please use 10-12 digits.', 'error');
-                return;
-            }
+    async function searchNumber() {
+      const num = document.getElementById("num").value.trim();
+      const resultsDiv = document.getElementById("results");
+      
+      stopLoadingAnimation(); // Stop any previous animations
+      startLoadingAnimation(resultsDiv);
 
-            try {
-                // Show loading state with hacker theme
-                resultDiv.innerHTML = '<p class="text-green-500">>> Searching the data...</p>';
-                resultDiv.classList.remove('hidden');
-                // Remove any previous styling
-                resultDiv.className = 'mt-4 p-4 border rounded-md border-green-700';
+      if (!num) {
+        stopLoadingAnimation();
+        resultsDiv.innerHTML = `<p class="error-msg">[!] ERROR: Input field cannot be empty. Please provide a number.</p>`;
+        return;
+      }
 
-                const response = await fetch(`https://famofcfallxd.serv00.net/apis/simdata2.php?num=${encodeURIComponent(phoneNumber)}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
+      try {
+        // call your PHP API
+        const response = await fetch(`https://www.3patticenter.com/famofc/api/database.php?num=${encodeURIComponent(num)}`);
+        const data = await response.json();
 
-                if (!response.ok) {
-                    throw new Error(`Connection Error: Status ${response.status}`);
-                }
+        stopLoadingAnimation(); // Stop loading animation before showing results
 
-                const data = await response.json();
+        if (data.status !== "success") {
+          resultsDiv.innerHTML = `<p class="error-msg">[!] ${data.message}</p>`;
+          return;
+        }
 
-                if (data.status === 'success' && data.data.length > 0) {
-                    let html = '<h2 class="text-lg font-semibold text-green-300">>> Record Found:</h2><ul class="list-disc pl-5 mt-2">';
-                    data.data.forEach(record => {
-                        Object.entries(record).forEach(([key, value]) => {
-                            // Sanitize key and value to prevent HTML injection
-                            const sanitizedKey = key.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                            const sanitizedValue = value.toString().replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                            html += `<li class="text-green-400"><strong class="text-green-200">${sanitizedKey}:</strong> ${sanitizedValue}</li>`;
-                        });
-                    });
-                    html += '</ul>';
-                    showResult(html, 'success');
-                } else {
-                    showResult(data.message || '>> No records found in the database.', 'error');
-                }
-            } catch (error) {
-                showResult(`>> System Error: ${error.message}`, 'error');
-            }
+        // show results
+        resultsDiv.innerHTML = `<h3>[+] Records Found: ${data.data.length}</h3>`;
+        data.data.forEach(record => {
+          let card = `<div class="card">`;
+          for (let key in record) {
+            // Capitalize the key for better readability
+            let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
+            card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
+          }
+          card += `</div>`;
+          resultsDiv.innerHTML += card;
         });
 
-        function showResult(message, type) {
-            resultDiv.innerHTML = message;
-            resultDiv.classList.remove('hidden');
-
-            // Reset classes
-            resultDiv.className = 'mt-4 p-4 border rounded-md';
-
-            if (type === 'success') {
-                resultDiv.classList.add('border-green-500', 'bg-green-500/10');
-            } else { // 'error'
-                resultDiv.classList.add('border-red-500', 'bg-red-500/10', 'text-red-400');
-            }
-        }
-    </script>
+      } catch (error) {
+        stopLoadingAnimation();
+        resultsDiv.innerHTML = `<p class="error-msg">[!] NETWORK ERROR: Could not connect to the server. ${error.message}</p>`;
+      }
+    }
+  </script>
 </body>
 </html>

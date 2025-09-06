@@ -1,160 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Number Lookup</title>
-  <style>
-    /* --- Hacker Theme CSS --- */
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Access Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        /* --- Root Variables for Easy Customization --- */
+        :root {
+            --primary-color: #00ff41; /* Bright Green */
+            --secondary-color: #00ffff; /* Cyan */
+            --background-color: #0a0a0a; /* Near Black */
+            --dark-color: #0d0208;
+            --danger-color: #ff005d; /* Bright Red/Pink */
+            --glow-color: rgba(0, 255, 65, 0.75);
+            --secondary-glow: rgba(0, 255, 255, 0.75);
+            --danger-glow: rgba(255, 0, 93, 0.75);
+        }
 
-    body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: #0d0208; /* Dark background */
-      color: #00ff41; /* Green text */
-      text-shadow: 0 0 5px #00ff41;
-      padding: 20px;
-    }
+        /* --- Keyframe Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    h2 {
-      border-right: .15em solid #00ff41;
-      white-space: nowrap;
-      overflow: hidden;
-      animation: blink 1s step-end infinite;
-      display: inline-block;
-      margin-bottom: 20px;
-    }
+        @keyframes textBlink {
+            0%, 100% { border-color: transparent; }
+            50% { border-color: var(--primary-color); }
+        }
 
-    input, button, a.btn {
-      background: transparent;
-      border: 1px solid #00ff41;
-      color: #00ff41;
-      padding: 12px;
-      margin: 5px;
-      font-family: inherit;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
-      transition: background-color 0.3s, color 0.3s;
-      text-decoration: none; /* For the <a> tag */
-      display: inline-block; /* For the <a> tag */
-    }
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
 
-    input {
-      box-shadow: none; /* Input field looks better without a glow */
-    }
+        /* --- General Body and Background Styling --- */
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--background-color) radial-gradient(circle at center, var(--dark-color) 0%, var(--background-color) 100%);
+            color: var(--primary-color);
+            padding: 20px;
+            overflow-x: hidden;
+            text-shadow: 0 0 5px var(--glow-color);
+        }
 
-    input::placeholder {
-      color: rgba(0, 255, 65, 0.5);
-    }
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200%; /* Cover the screen for animation */
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0) 0,
+                rgba(0, 0, 0, 0) 1px,
+                rgba(255, 255, 255, 0.05) 2px,
+                rgba(255, 255, 255, 0.05) 3px
+            );
+            animation: scanline 10s linear infinite;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        
+        /* --- Main Container --- */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            border: 1px solid var(--primary-color);
+            padding: 25px;
+            box-shadow: 0 0 25px var(--glow-color), inset 0 0 15px var(--glow-color);
+            position: relative;
+            background: rgba(13, 2, 8, 0.8); /* Semi-transparent background */
+            animation: fadeIn 1.5s ease-out;
+            backdrop-filter: blur(2px);
+        }
 
-    button:hover, a.btn:hover {
-      background-color: #00ff41;
-      color: #0d0208;
-    }
+        /* --- UI Elements Styling --- */
+        h2 {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            animation: textBlink 1s step-end infinite;
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px var(--secondary-glow);
+        }
 
-    .card {
-      background: transparent;
-      border: 1px dashed #00ff41;
-      border-radius: 0;
-      padding: 15px;
-      margin: 15px 0;
-      box-shadow: none;
-    }
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-    .head {
-      font-weight: bold;
-      color: #ffffff; /* Make keys white for contrast */
-      text-shadow: 0 0 5px #ffffff;
-    }
+        input, button, a.btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 18px;
+            font-family: inherit;
+            font-size: 1.2em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
 
-    #results p {
-      margin: 5px 0;
-    }
+        input {
+            flex-grow: 1;
+        }
+        
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--secondary-glow);
+            border-color: var(--secondary-color);
+        }
 
-    .error-msg {
-      color: #ff0000; /* Red for errors */
-      text-shadow: 0 0 5px #ff0000;
-      font-weight: bold;
-    }
-  </style>
+        input::placeholder {
+            color: var(--primary-color);
+            opacity: 0.6;
+        }
+
+        button:hover, a.btn:hover {
+            background-color: var(--primary-color);
+            color: var(--dark-color);
+            text-shadow: none;
+            box-shadow: 0 0 20px var(--glow-color);
+            transform: translateY(-2px);
+        }
+
+        /* --- Results and Card Styling --- */
+        .card {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: inset 0 0 8px rgba(0, 255, 65, 0.4);
+            animation: cardSlideIn 0.5s ease-out forwards;
+            opacity: 0; /* Initially hidden for animation */
+        }
+        
+        .card-header {
+            font-size: 1.2em;
+            color: var(--secondary-color);
+            text-shadow: 0 0 5px var(--secondary-glow);
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--secondary-color);
+            padding-bottom: 5px;
+        }
+
+        .head {
+            color: #fff;
+            text-shadow: 0 0 3px #fff;
+            font-weight: bold;
+        }
+
+        #results p {
+            margin: 8px 0;
+            word-wrap: break-word; /* Prevents overflow */
+        }
+
+        .error-msg {
+            color: var(--danger-color);
+            text-shadow: 0 0 8px var(--danger-glow);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        /* --- Loader Styling --- */
+        .loader {
+            width: 100%;
+            height: 20px;
+            border: 1px solid var(--primary-color);
+            padding: 4px;
+        }
+        .loader-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 10px var(--glow-color);
+            animation: load 2s linear forwards;
+        }
+        @keyframes load {
+            to { width: 100%; }
+        }
+
+    </style>
 </head>
 <body>
-  <h2><span style="font-size: 1.5em;">📱</span> Live SIM DATA  </h2>
-  <br>
-  <input type="text" id="num" placeholder="Enter target number...">
-  <button onclick="searchNumber()">SEARCH</button>
-  
-  <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="btn">Join for Updates</a>
+    <div class="container">
+        <h2><span style="font-size: 1em;">></span> Live SIM DATA</h2>
+        <div class="input-group">
+            <input type="text" id="num" placeholder="Enter number">
+            <button onclick="searchNumber()">SEARCH</button>
+            <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="btn">[FOR MORE UPDATES]</a>
+        </div>
+        <div id="results"></div>
+    </div>
 
-  <div id="results"></div>
+    <script>
+        let loadingInterval;
 
-  <script>
-    let loadingInterval;
-
-    function startLoadingAnimation(element) {
-      let text = "ACCESSING DATABASE..  PLEASE WAIT...";
-      let i = 0;
-      element.innerHTML = "";
-      loadingInterval = setInterval(() => {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-        } else {
-          element.innerHTML = ""; // Reset and loop
-          i = 0;
-        }
-      }, 100);
-    }
-
-    function stopLoadingAnimation() {
-      clearInterval(loadingInterval);
-    }
-
-    async function searchNumber() {
-      const num = document.getElementById("num").value.trim();
-      const resultsDiv = document.getElementById("results");
-      
-      stopLoadingAnimation(); // Stop any previous animations
-      startLoadingAnimation(resultsDiv);
-
-      if (!num) {
-        stopLoadingAnimation();
-        resultsDiv.innerHTML = `<p class="error-msg">[!] ERROR: Input field cannot be empty. Please provide a number.</p>`;
-        return;
-      }
-
-      try {
-        // call your PHP API
-        const response = await fetch(`https://www.3patticenter.com/famofc/api/database.php?num=${encodeURIComponent(num)}`);
-        const data = await response.json();
-
-        stopLoadingAnimation(); // Stop loading animation before showing results
-
-        if (data.status !== "success") {
-          resultsDiv.innerHTML = `<p class="error-msg">[!] ${data.message}</p>`;
-          return;
+        function showLoader(element) {
+            element.innerHTML = `
+                <p>Establishing connection...</p>
+                <div class="loader"><div class="loader-bar"></div></div>
+                <p>Accessing data streams... Please stand by.</p>
+            `;
         }
 
-        // show results
-        resultsDiv.innerHTML = `<h3>[+] Records Found: ${data.data.length}</h3>`;
-        data.data.forEach(record => {
-          let card = `<div class="card">`;
-          for (let key in record) {
-            // Capitalize the key for better readability
-            let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
-            card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
-          }
-          card += `</div>`;
-          resultsDiv.innerHTML += card;
-        });
+        async function searchNumber() {
+            const num = document.getElementById("num").value.trim();
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Clear previous results immediately
 
-      } catch (error) {
-        stopLoadingAnimation();
-        resultsDiv.innerHTML = `<p class="error-msg">[!] NETWORK ERROR: Could not connect to the server. ${error.message}</p>`;
-      }
-    }
-  </script>
+            if (!num) {
+                resultsDiv.innerHTML = `<p class="error-msg">[!] COMMAND REJECTED: No target specified. Input required.</p>`;
+                return;
+            }
+
+            showLoader(resultsDiv);
+
+            try {
+                // Simulate network delay for effect
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                const response = await fetch(`https://www.3patticenter.com/famofc/api/database.php?num=${encodeURIComponent(num)}`);
+                const data = await response.json();
+
+                resultsDiv.innerHTML = ""; // Clear loader
+
+                if (data.status !== "success") {
+                    resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${data.message}</p>`;
+                    return;
+                }
+
+                resultsDiv.innerHTML = `<h3>[+] ${data.data.length} Data Packet(s) Intercepted:</h3>`;
+                
+                // Display cards one by one
+                data.data.forEach((record, index) => {
+                    setTimeout(() => {
+                        let card = `<div class="card" style="animation-delay: ${index * 0.2}s">`;
+                        card += `<div class="card-header">Record #${record.id || (index + 1)}</div>`;
+                        for (let key in record) {
+                            let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
+                            card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
+                        }
+                        card += `</div>`;
+                        resultsDiv.innerHTML += card;
+                    }, index * 200); // Staggered appearance
+                });
+
+            } catch (error) {
+                resultsDiv.innerHTML = `<p class="error-msg">[!] CRITICAL_ERROR: Uplink severed. ${error.message}</p>`;
+            }
+        }
+    </script>
 </body>
 </html>

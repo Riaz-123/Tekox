@@ -1,234 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Background Remover</title>
-  <style>
-    /* Matrix Hacking Background */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Orbitron', sans-serif;
-      overflow: hidden;
-      color: #00ff99;
-      text-shadow: 0 0 10px #00ff99;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    }
-
-    .container {
-      max-width: 500px;
-      padding: 25px;
-      border-radius: 15px;
-      background: rgba(0, 0, 0, 0.8);
-      box-shadow: 0 0 25px #00ff99;
-      margin: 40px auto;
-      text-align: center;
-      animation: glow 2s infinite alternate;
-    }
-
-    @keyframes glow {
-      from { box-shadow: 0 0 15px #00ff99; }
-      to { box-shadow: 0 0 30px #00ff99; }
-    }
-
-    h2 {
-      font-size: 26px;
-      margin-bottom: 15px;
-    }
-
-    input, button {
-      margin: 10px;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-      font-size: 15px;
-    }
-
-    /* Custom File Upload Button */
-    input[type="file"] {
-      display: none; /* hide default */
-    }
-    .custom-file-upload {
-      display: inline-block;
-      padding: 12px 20px;
-      background: #00ff99;
-      color: black;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 15px #00ff99;
-    }
-    .custom-file-upload:hover {
-      background: black;
-      color: #00ff99;
-      border: 1px solid #00ff99;
-      box-shadow: 0 0 25px #00ff99;
-    }
-
-    button {
-      background: #00ff99;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: black;
-      color: #00ff99;
-      border: 1px solid #00ff99;
-    }
-
-    img {
-      max-width: 100%;
-      margin-top: 15px;
-      display: none;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #00ff99;
-    }
-
-    #downloadButton {
-      display: none;
-      margin-top: 15px;
-      background: #00ff99;
-      color: black;
-      font-weight: bold;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      transition: 0.3s;
-    }
-
-    #downloadButton:hover {
-      background: black;
-      color: #00ff99;
-      border: 1px solid #00ff99;
-    }
-
-    /* WhatsApp Button */
-    .whatsapp-btn {
-      display: inline-block;
-      margin-top: 20px;
-      background: #25d366;
-      color: white;
-      padding: 12px 25px;
-      border-radius: 25px;
-      font-weight: bold;
-      text-decoration: none;
-      box-shadow: 0 0 20px #25d366;
-      transition: 0.3s;
-    }
-    .whatsapp-btn:hover {
-      background: #128c7e;
-      box-shadow: 0 0 25px #25d366;
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <!-- Matrix Background -->
-  <canvas id="matrix"></canvas>
-
-  <div class="container">
-    <h2>💻 Remove Image Background</h2>
-    
-    <!-- Custom Upload Button -->
-    <label for="imageInput" class="custom-file-upload">📂 Choose Image</label>
-    <input type="file" id="imageInput" accept="image/*">
-
-    <button onclick="removeBackground()">Remove Background</button>
-    <h3 id="status"></h3>
-    <img id="outputImage" alt="Processed Image">
-    <a id="downloadButton" download="background_removed.png">⬇ Download Image</a>
-    <br>
-    <a href="https://whatsapp.com/channel/your-link" target="_blank" class="whatsapp-btn">📢 Join Our WhatsApp Channel</a>
-  </div>
-
-  <script>
-    // Matrix Effect
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
-
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = "01";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-
-    const drops = [];
-    for (let x = 0; x < columns; x++) drops[x] = 1;
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#00ff99";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
-    setInterval(draw, 35);
-
-    // Remove.bg API Integration
-    async function removeBackground() {
-      const fileInput = document.getElementById("imageInput").files[0];
-      if (!fileInput) {
-        alert("Please select an image first.");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("image_file", fileInput);
-      formData.append("size", "auto");
-
-      const apiKey = "4dLrLLTSwjuKThWX8FXNurav"; // Replace with your actual Remove.bg API Key
-      const url = "https://api.remove.bg/v1.0/removebg";
-
-      try {
-        document.getElementById("status").innerText = "Processing...";
-
-        const response = await fetch(url, {
-          method: "POST",
-          headers: { "X-Api-Key": apiKey },
-          body: formData
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to process image.");
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BG REMOVER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #000;
+            color: #00ff99;
+            text-shadow: 0 0 10px #00ff99;
+            overflow: hidden; /* Hide scrollbars from canvas */
         }
 
-        const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob);
+        canvas#matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
 
-        const outputImage = document.getElementById("outputImage");
-        outputImage.src = imageUrl;
-        outputImage.style.display = "block";
+        .container {
+            max-width: 550px;
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(0, 20, 0, 0.85);
+            border: 1px solid #00ff99;
+            box-shadow: 0 0 25px rgba(0, 255, 153, 0.6);
+            margin: 5vh auto;
+            text-align: center;
+            animation: flicker 3s infinite alternate;
+            backdrop-filter: blur(5px);
+        }
 
-        const downloadButton = document.getElementById("downloadButton");
-        downloadButton.href = imageUrl;
-        downloadButton.style.display = "inline-block";
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                box-shadow:
+                0 0 5px #0f0,
+                0 0 10px #0f0,
+                0 0 20px #0f0,
+                0 0 40px #0f0,
+                0 0 80px #0f0;
+            }
+            20%, 24%, 55% {       
+                box-shadow: none;
+            }
+        }
 
-        document.getElementById("status").innerText = "✅ Background removed successfully!";
-      } catch (error) {
-        document.getElementById("status").innerText = "❌ Error: " + error.message;
-      }
-    }
-  </script>
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        h3#status {
+            min-height: 25px;
+            font-size: 1.1em;
+        }
+        
+        /* Custom File Upload Styling */
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 10px;
+            background: transparent;
+            color: #00ff99;
+            border: 1px solid #00ff99;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .file-upload-label:hover {
+            background: #00ff99;
+            color: #000;
+            box-shadow: 0 0 20px #00ff99;
+            text-shadow: none;
+        }
+
+        button, #downloadButton {
+            padding: 12px 25px;
+            margin: 10px;
+            background: #00ff99;
+            color: #000;
+            border: 1px solid #00ff99;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: none;
+            text-decoration: none;
+        }
+
+        button:hover, #downloadButton:hover {
+            background: transparent;
+            color: #00ff99;
+            box-shadow: 0 0 20px #00ff99;
+            text-shadow: 0 0 10px #00ff99;
+        }
+
+        img#outputImage {
+            max-width: 90%;
+            margin-top: 20px;
+            display: none;
+            border-radius: 10px;
+            border: 2px solid #00ff99;
+            box-shadow: 0 0 15px #00ff99;
+        }
+
+        #downloadButton {
+            display: none;
+            background-color: #00ff99;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.7);
+            transition: all 0.3s ease;
+            text-shadow: none;
+        }
+
+        .whatsapp-btn:hover {
+            background: #128C7E;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(37, 211, 102, 1);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="container">
+        <h2>BACKGROUND REMOVER</h2>
+        
+        <label for="imageInput" class="file-upload-label">📂 Select File</label>
+        <input type="file" id="imageInput" accept="image/*">
+        
+        <button onclick="removeBackground()">Remove</button>
+        
+        <h3 id="status">Awaiting image file...</h3>
+        
+        <img id="outputImage" alt="Processed Image">
+        
+        <a id="downloadButton" download="background_removed.png">⬇️ Download Output</a>
+        
+        <br>
+        
+        <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="whatsapp-btn">📢 Join Our WhatsApp Channel</a>
+    </div>
+
+    <script>
+        // --- Matrix Background Effect ---
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const rainDrops = [];
+
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        const drawMatrix = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        setInterval(drawMatrix, 30);
+        
+        // --- Image Background Removal Function ---
+        async function removeBackground() {
+            const fileInput = document.getElementById("imageInput").files[0];
+            const statusEl = document.getElementById("status");
+            const outputImage = document.getElementById("outputImage");
+            const downloadButton = document.getElementById("downloadButton");
+
+            // Reset UI
+            outputImage.style.display = 'none';
+            downloadButton.style.display = 'none';
+
+            if (!fileInput) {
+                statusEl.innerText = "⚠️ No file selected. Please choose an image.";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("image_file", fileInput);
+            formData.append("size", "auto");
+
+            const apiKey = "4dLrLLTSwjuKThWX8FXNurav"; // Replace with your actual Remove.bg API Key
+            const url = "https://api.remove.bg/v1.0/removebg";
+
+            try {
+                statusEl.innerText = "Processing... Removing Background...";
+                
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "X-Api-Key": apiKey },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API Error: ${response.statusText} - ${errorText}`);
+                }
+                
+                const blob = await response.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                
+                // Display processed image
+                outputImage.src = imageUrl;
+                outputImage.style.display = "block";
+                
+                // Enable download button
+                downloadButton.href = imageUrl;
+                downloadButton.style.display = "inline-block";
+
+                statusEl.innerText = "✅ Background Removed Successfully!";
+            } catch (error) {
+                statusEl.innerText = "❌ Error: " + error.message;
+                console.error("Error details:", error);
+            }
+        }
+    </script>
 </body>
 </html>

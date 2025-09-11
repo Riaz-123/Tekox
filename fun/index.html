@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Quiz ❤️</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff6699, #ffccff);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+    }
+    .quiz-box {
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 0px 15px rgba(255,255,255,0.3);
+      max-width: 400px;
+      margin: auto;
+    }
+    input {
+      width: 80%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 2px solid #ff99cc;
+      outline: none;
+      font-size: 16px;
+      color: #333;
+      background: #ffe6f2;
+      text-align: center;
+      transition: 0.3s;
+    }
+    input:focus {
+      border-color: #ff3399;
+      background: #fff0f6;
+      box-shadow: 0px 0px 8px #ff66b2;
+    }
+    button {
+      background: #ff3399;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #cc0066;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>💕 Fun Love Quiz 💕</h1>
+  <div class="quiz-box" id="quiz">
+    <div id="question-container">
+      <p id="question">Click Start to Begin!</p>
+    </div>
+    <input type="text" id="answer" class="hidden" placeholder="Type your answer here...">
+    <button onclick="nextQuestion()">Start Quiz</button>
+  </div>
+
+  <script>
+    const questions = [
+      "Aapka naam kya hai?",
+      "Aapke love ka naam kya hai?",
+      "Aap dono ki first meeting kahan hui thi?",
+      "Aap unke liye sabse pyara gift kya dena chahte ho?",
+      "1 se 10 tak scale par aap unse kitna pyar karte ho?"
+    ];
+
+    let current = 0;
+    let answers = [];
+
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwTqfdW-HsQdX18yVZWU0WuC27o3L7gUanoyGGJeNFj_U2wfFZ1VrFkNzBkvpK6ctpF/exec";
+
+    function nextQuestion() {
+      let ans = document.getElementById("answer").value;
+      if (current > 0) {
+        answers.push(ans);
+      }
+      if (current < questions.length) {
+        document.getElementById("question").innerText = questions[current];
+        document.getElementById("answer").value = "";
+        document.getElementById("answer").classList.remove("hidden");
+        document.getElementById("answer").focus();
+        current++;
+      } else {
+        sendToSheet();
+      }
+    }
+
+    function sendToSheet() {
+      const data = {
+        name: answers[0],
+        loveName: answers[1],
+        firstMeeting: answers[2],
+        gift: answers[3],
+        loveLevel: answers[4]
+      };
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(txt => {
+        document.getElementById("quiz").innerHTML = `
+          <h2>🎉 Quiz Completed 🎉</h2>
+          <p>Wow ${answers[0]}! Aap ${answers[1]} ko bahut pyar karte ho ❤️</p>
+          <p>Aap dono ki yaadein: ${answers[2]}</p>
+          <p>Gift idea: ${answers[3]}</p>
+          <p>Pyar ka level: ${answers[4]}/10 💘</p>  
+        `;
+      })
+      .catch(err => alert("Error: " + err));
+    }
+  </script>
+</body>
+</html>

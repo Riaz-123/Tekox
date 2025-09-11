@@ -91,7 +91,7 @@
       box-shadow: 0 0 25px #00ff99;
     }
 
-    /* Custom File Upload Button */
+    /* Custom Upload Button */
     .custom-file-upload {
       display: inline-block;
       margin: 10px;
@@ -104,12 +104,15 @@
       transition: 0.3s;
       box-shadow: 0 0 15px #00ff99;
     }
-
     .custom-file-upload:hover {
       background: black;
       color: #00ff99;
       border: 1px solid #00ff99;
       box-shadow: 0 0 20px #00ff99;
+    }
+
+    input[type="file"] {
+      display: none; /* hide ugly default */
     }
 
     /* WhatsApp Button */
@@ -139,9 +142,9 @@
   <div class="container">
     <h2>💻 Remove Image Background</h2>
 
-    <!-- Custom File Upload -->
+    <!-- Custom Upload Button -->
     <label for="imageInput" class="custom-file-upload">📂 Choose Image</label>
-    <input type="file" id="imageInput" accept="image/*" hidden>
+    <input type="file" id="imageInput" accept="image/*">
 
     <button onclick="removeBackground()">Remove Background</button>
     <h3 id="status"></h3>

@@ -43,13 +43,38 @@
       margin-bottom: 15px;
     }
 
-    button {
+    input, button {
       margin: 10px;
       padding: 12px;
       border: none;
       border-radius: 8px;
       outline: none;
       font-size: 15px;
+    }
+
+    /* Custom File Upload Button */
+    input[type="file"] {
+      display: none; /* hide default */
+    }
+    .custom-file-upload {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #00ff99;
+      color: black;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #00ff99;
+    }
+    .custom-file-upload:hover {
+      background: black;
+      color: #00ff99;
+      border: 1px solid #00ff99;
+      box-shadow: 0 0 25px #00ff99;
+    }
+
+    button {
       background: #00ff99;
       color: black;
       font-weight: bold;
@@ -81,38 +106,12 @@
       padding: 10px 20px;
       border-radius: 8px;
       transition: 0.3s;
-      box-shadow: 0 0 15px #00ff99;
     }
 
     #downloadButton:hover {
       background: black;
       color: #00ff99;
       border: 1px solid #00ff99;
-      box-shadow: 0 0 25px #00ff99;
-    }
-
-    /* Custom Upload Button */
-    .custom-file-upload {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 20px;
-      background: #00ff99;
-      color: black;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 0 15px #00ff99;
-    }
-    .custom-file-upload:hover {
-      background: black;
-      color: #00ff99;
-      border: 1px solid #00ff99;
-      box-shadow: 0 0 20px #00ff99;
-    }
-
-    input[type="file"] {
-      display: none; /* hide ugly default */
     }
 
     /* WhatsApp Button */
@@ -141,7 +140,7 @@
 
   <div class="container">
     <h2>💻 Remove Image Background</h2>
-
+    
     <!-- Custom Upload Button -->
     <label for="imageInput" class="custom-file-upload">📂 Choose Image</label>
     <input type="file" id="imageInput" accept="image/*">

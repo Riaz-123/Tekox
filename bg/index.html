@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Background Remover</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+        #downloadButton {
+            display: none;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        #downloadButton:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Remove Image Background</h2>
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="removeBackground()">Remove Background</button>
+        <h3 id="status"></h3>
+        <img id="outputImage" alt="Processed Image">
+        <a id="downloadButton" download="background_removed.png">Download Image</a>
+    </div>
+
+    <script>
+        async function removeBackground() {
+            const fileInput = document.getElementById("imageInput").files[0];
+            if (!fileInput) {
+                alert("Please select an image first.");
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append("image_file", fileInput);
+            formData.append("size", "auto");
+
+            const apiKey = "4dLrLLTSwjuKThWX8FXNurav"; // Replace with your actual Remove.bg API Key
+            const url = "https://api.remove.bg/v1.0/removebg";
+            
+            try {
+                document.getElementById("status").innerText = "Processing...";
+                
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "X-Api-Key": apiKey },
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error("Failed to process image.");
+                }
+                
+                const blob = await response.blob();
+                const imageUrl = URL.createObjectURL(blob);
+                
+                // Display processed image
+                const outputImage = document.getElementById("outputImage");
+                outputImage.src = imageUrl;
+                outputImage.style.display = "block";
+                
+                // Enable download button
+                const downloadButton = document.getElementById("downloadButton");
+                downloadButton.href = imageUrl;
+                downloadButton.style.display = "inline-block";
+
+                document.getElementById("status").innerText = "Background removed successfully!";
+            } catch (error) {
+                document.getElementById("status").innerText = "Error: " + error.message;
+                 }
+        }
+    </script>
+</body>
+</html>

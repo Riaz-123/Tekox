@@ -3,124 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Love Quiz ❤️</title>
+  <title>Love Fun Quiz</title>
   <style>
     body {
-      background: linear-gradient(135deg, #ff6699, #ffccff);
-      font-family: 'Poppins', sans-serif;
+      font-family: Arial, sans-serif;
       text-align: center;
-      color: #fff;
-      padding: 20px;
+      background: #ffe6f0;
     }
     .quiz-box {
-      background: rgba(0,0,0,0.3);
+      margin: 30px auto;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0px 0px 15px rgba(255,255,255,0.3);
       max-width: 400px;
-      margin: auto;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px pink;
     }
-    input {
+    input, button {
+      padding: 10px;
+      margin: 10px;
       width: 80%;
-      padding: 12px;
-      margin-top: 15px;
-      border-radius: 10px;
-      border: 2px solid #ff99cc;
-      outline: none;
-      font-size: 16px;
-      color: #333;
-      background: #ffe6f2;
-      text-align: center;
-      transition: 0.3s;
-    }
-    input:focus {
-      border-color: #ff3399;
-      background: #fff0f6;
-      box-shadow: 0px 0px 8px #ff66b2;
-    }
-    button {
-      background: #ff3399;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      margin-top: 15px;
-      font-size: 16px;
       border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
+      border: 1px solid #ccc;
     }
-    button:hover {
-      background: #cc0066;
-    }
-    .hidden {
+    #loading {
       display: none;
+      font-size: 18px;
+      color: hotpink;
+    }
+    #result {
+      display: none;
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 20px;
+      animation: pop 1s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <h1>💕 Fun Love Quiz 💕</h1>
-  <div class="quiz-box" id="quiz">
-    <div id="question-container">
-      <p id="question">Click Start to Begin!</p>
-    </div>
-    <input type="text" id="answer" class="hidden" placeholder="Type your answer here...">
-    <button onclick="nextQuestion()">Start Quiz</button>
+  <h1>💖 Love Fun Quiz 💖</h1>
+  <div class="quiz-box">
+    <input type="text" id="name" placeholder="Your Name" required><br>
+    <input type="text" id="answer1" placeholder="Who is your crush?" required><br>
+    <input type="text" id="answer2" placeholder="Favorite love song?" required><br>
+    <button onclick="submitForm()">Submit</button>
+    <div id="loading">⏳ Loading your love result...</div>
+    <div id="result"></div>
   </div>
+  <canvas id="canvas"></canvas>
 
   <script>
-    const questions = [
-      "Aapka naam kya hai?",
-      "Aapke love ka naam kya hai?",
-      "Aap dono ki first meeting kahan hui thi?",
-      "Aap unke liye sabse pyara gift kya dena chahte ho?",
-      "1 se 10 tak scale par aap unse kitna pyar karte ho?"
-    ];
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyjDhZvoF6q9Q3q84hXYyj5QVrdJaQwFsnu6luwGQKW8S--g-_LjPhtMI70u9lf8Li3/exec"; // Google Apps Script URL
 
-    let current = 0;
-    let answers = [];
+    function submitForm() {
+      let name = document.getElementById("name").value;
+      let answer1 = document.getElementById("answer1").value;
+      let answer2 = document.getElementById("answer2").value;
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwTqfdW-HsQdX18yVZWU0WuC27o3L7gUanoyGGJeNFj_U2wfFZ1VrFkNzBkvpK6ctpF/exec";
-
-    function nextQuestion() {
-      let ans = document.getElementById("answer").value;
-      if (current > 0) {
-        answers.push(ans);
+      if (!name || !answer1 || !answer2) {
+        alert("Please fill all fields!");
+        return;
       }
-      if (current < questions.length) {
-        document.getElementById("question").innerText = questions[current];
-        document.getElementById("answer").value = "";
-        document.getElementById("answer").classList.remove("hidden");
-        document.getElementById("answer").focus();
-        current++;
-      } else {
-        sendToSheet();
-      }
-    }
 
-    function sendToSheet() {
-      const data = {
-        name: answers[0],
-        loveName: answers[1],
-        firstMeeting: answers[2],
-        gift: answers[3],
-        loveLevel: answers[4]
-      };
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("result").style.display = "none";
 
       fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify(data)
+        body: JSON.stringify({ name, answer1, answer2 }),
+        headers: { "Content-Type": "application/json" },
       })
-      .then(res => res.text())
-      .then(txt => {
-        document.getElementById("quiz").innerHTML = `
-          <h2>🎉 Quiz Completed 🎉</h2>
-          <p>Wow ${answers[0]}! Aap ${answers[1]} ko bahut pyar karte ho ❤️</p>
-          <p>Aap dono ki yaadein: ${answers[2]}</p>
-          <p>Gift idea: ${answers[3]}</p>
-          <p>Pyar ka level: ${answers[4]}/10 💘</p>  
-        `;
+      .then(res => res.json())
+      .then(() => {
+        document.getElementById("loading").style.display = "none";
+        showResult();
       })
-      .catch(err => alert("Error: " + err));
+      .catch(err => {
+        document.getElementById("loading").innerText = "Error saving data!";
+      });
+    }
+
+    // 🎉 Result + Flying Colors
+    function showResult() {
+      let resultBox = document.getElementById("result");
+      resultBox.style.display = "block";
+      resultBox.innerHTML = "💘 Your Love Score: " + Math.floor(Math.random()*100) + "% 💘";
+
+      startConfetti();
+    }
+
+    // 🎨 Flying hearts & colors
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let particles = [];
+
+    function startConfetti() {
+      particles = [];
+      for (let i=0; i<100; i++) {
+        particles.push({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height,
+          r: Math.random()*5+2,
+          dx: (Math.random()-0.5)*2,
+          dy: Math.random()*2+1,
+          color: `hsl(${Math.random()*360},100%,50%)`
+        });
+      }
+      animate();
+    }
+
+    function animate() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.y > canvas.height) p.y = 0;
+      });
+      requestAnimationFrame(animate);
     }
   </script>
 </body>

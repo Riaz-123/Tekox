@@ -1,348 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tekox Education</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#071a10; --card:#0e2b1b; --glow:#17f08a; --muted:#9fe7c6; --text:#e9fff5; --grid: rgba(23, 240, 138, 0.08);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:'Inter',system-ui,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);
-      background:radial-gradient(1200px 800px at 20% -10%, rgba(23,240,138,.15), transparent 60%),
-                 radial-gradient(800px 600px at 110% 10%, rgba(23,240,138,.12), transparent 50%),
-                 linear-gradient(180deg, #031008, #05150c 40%, #031008 100%);}
-    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
-      linear-gradient(var(--grid) 1px, transparent 1px) 0 0/32px 32px,
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/32px 32px;
-      mask: radial-gradient(circle at 50% 30%, black 60%, transparent 100%);
-    }
-    header{position:sticky;top:0;z-index:10;background:linear-gradient(to bottom, rgba(3,16,8,.9), rgba(3,16,8,.6));
-      border-bottom:1px solid rgba(23,240,138,.2);backdrop-filter:blur(8px)}
-    .container{max-width:1200px;margin:0 auto;padding:16px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:42px;height:42px;border-radius:12px;background:conic-gradient(from 210deg, var(--glow), #0a6a42, #0d3e2a, var(--glow));
-      box-shadow:0 0 24px rgba(23,240,138,.35) inset, 0 0 24px rgba(23,240,138,.25);display:grid;place-items:center;font-weight:800;color:#031008}
-    .title{font-size:clamp(20px,4vw,28px);font-weight:800}
-    .subtitle{color:var(--muted);font-weight:400;font-size:14px}
-    .top{display:flex;justify-content:space-between;gap:12px;align-items:center}
-    .whatsapp-link{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--muted);font-weight:600;font-size:14px;padding:8px 12px;border:1px solid rgba(23,240,138,.2);border-radius:12px;transition: .2s;}
-    .whatsapp-link:hover{background:rgba(23,240,138,.1);color:var(--text);border-color:rgba(23,240,138,.4);}
-    .whatsapp-link svg{width:20px;height:20px}
-
-    main{padding:18px 0 60px}
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
-    .card{grid-column:span 12;background:linear-gradient(180deg, rgba(23,240,138,.06), rgba(23,240,138,.02));
-      border:1px solid rgba(23,240,138,.2);border-radius:20px;overflow:hidden;transition:.2s}
-    .card:hover{transform:translateY(-2px);border-color:rgba(23,240,138,.35)}
-    .card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 10px}
-    .badge{padding:6px 10px;border-radius:999px;font-size:12px;border:1px solid rgba(23,240,138,.35);color:var(--muted)}
-    .tags{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 16px}
-    .tag{font-size:11px;padding:6px 10px;border-radius:999px;background:rgba(23,240,138,.1);border:1px solid rgba(23,240,138,.25);color:var(--muted)}
-    
-    .subject-parent{background:#071a10;border:1px solid rgba(23,240,138,.25);border-radius:14px;overflow:hidden;margin:0 16px 16px}
-    .subject-parent header{background:linear-gradient(180deg, rgba(23,240,138,.18), rgba(23,240,138,.05));
-      border-bottom:1px solid rgba(23,240,138,.2);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-    .subject-parent header h3{margin:0;font-size:16px}
-    .subject-parent header .toggle-btn{appearance:none;border:none;background:rgba(23,240,138,.1);color:var(--muted);font-weight:600;border-radius:8px;padding:4px 10px;font-size:18px;}
-    .subject-content{display:none;padding:12px}
-    .subject-years{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-    .year-col h4{margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(23,240,138,.2);}
-    
-    .item{display:flex;align-items:center;gap:8px;padding:10px 10px;border-radius:10px;border:1px solid rgba(23,240,138,.2);background:#04140b;margin-bottom:10px;font-size:14px;text-decoration:none;color:var(--text)}
-    .item:hover{transform:translateX(3px);border-color:rgba(23,240,138,.45);box-shadow:0 0 0 4px rgba(23,240,138,.08)}
-    
-    .label-block{margin-bottom:10px}
-    .label-parent{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;border:1px solid rgba(23,240,138,.12);background:#06130d;color:var(--muted);cursor:default}
-    .label-parent .title{display:flex;align-items:center;gap:8px;font-size:14px;}
-    .expand-sub{background:transparent;border:1px solid rgba(23,240,138,.14);color:var(--muted);padding:6px 8px;border-radius:8px;cursor:pointer}
-    .sublinks{margin-top:8px;padding-left:6px;display:none}
-    .sublinks a.item{background:#041617}
-
-    @media (max-width:900px){.grid{grid-template-columns:1fr;}.card{grid-column:span 1}}
-    @media (max-width:600px){.subject-years{grid-template-columns:1fr;}}
-
-    footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 0;border-top:1px solid rgba(23,240,138,.15)}
-
-    /* Modal */
-    .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.6);z-index:50;padding:24px}
-    .modal.open{display:grid}
-    .dialog{width:min(1100px,95vw);height:min(80vh,900px);background:#04140b;border:1px solid rgba(23,240,138,.35);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
-    .dialog header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(23,240,138,.25)}
-    .dialog header .title{font-weight:700}
-    .dialog header .actions{display:flex;gap:8px}
-    .dialog header button{background:#0b2518;border:1px solid rgba(23,240,138,.35);color:var(--text);border-radius:10px;padding:8px 10px;cursor:pointer}
-    iframe{width:100%;height:100%;border:0}
-    .dialog .frame{flex:1;min-height:0}
-  </style>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LW7TYK6KYF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-LW7TYK6KYF');
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tekox - A Creative Tech World</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark Gray */
+            color: #F9FAFB; /* Almost White */
+        }
+        .main-gradient-bg {
+             background: radial-gradient(circle at top, rgba(31, 41, 55, 0.5), transparent 70%), #111827;
+        }
+        .tool-card {
+            background-color: #1F2937; /* Gray-800 */
+            border: 1px solid #374151; /* Gray-700 */
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .tool-card:hover {
+            transform: translateY(-8px);
+            border-color: #38BDF8; /* Sky-400 */
+            box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.2);
+        }
+        .cta-button {
+            background: linear-gradient(to right, #38BDF8, #0EA5E9); /* Sky-400 to Sky-500 */
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+    </style>
 </head>
-<body>
-  <header>
-    <div class="container top">
-      <div class="brand">
-        <div class="logo">E</div>
-        <div>
-          <div class="title">TEKOX EDUCATION HUB</div>
-          <div class="subtitle">Karachi-Sindh Board Exams Preparation</div>
-        </div>
-      </div>
-      <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="whatsapp-link">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 14.2c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.7-.8.9-.1.1-.3.1-.5.0-.2-.1-.9-.3-1.8-1.1-.7-.6-1.1-1.4-1.3-1.6-.1-.2 0-.4.1-.5.1-.1.2-.2.4-.4.1-.1.2-.2.2-.3.0-.1.0-.7-.1-.9-.1-.2-.6-.6-.8-.8-.2-.2-.4-.2-.5-.2h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9 0 1.1.8 2.2 1.0 2.4.1.2 1.5 2.3 3.7 3.2.5.2.9.4 1.2.5.5.2 1.0.1 1.3.1.4-.1 1.5-.6 1.7-1.2.2-.5.2-1.0.1-1.2-.1-.3-.3-.4-.5-.5zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"/></svg>
-        <span>FOR MORE UPDATES</span>
-      </a>
-    </div>
-  </header>
+<body class="main-gradient-bg">
 
-  <main class="container">
-    <div id="cards" class="grid"></div>
-  </main>
-
-  <footer>© <span id="year"></span> Riaz Hussain — Tekox Education</footer>
-
-  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modtitle">
-    <div class="dialog">
-      <header>
-        <div id="modtitle" class="title">Preview</div>
-        <div class="actions">
-          <button id="openNew">Open in new tab</button>
-          <button id="close">Close</button>
-        </div>
-      </header>
-      <div class="frame">
-        <iframe id="frame" allow="fullscreen"></iframe>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // ====== NEW DATA STRUCTURE: Group -> Subject -> Year -> Category ======
-    const DATA = [
-      {
-        group: 'Pre-Engineering',
-        tags: ['Physics', 'Chemistry', 'Mathematics', 'English'],
-        subjects: [
-          { name: 'Physics', years: {
-              'HSSC-I': [
-                { label: 'Notes', url: '1_6X0jElz5GgIVHFgOzSv5A9me3s_EZWW' },
-                { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' },
-                { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' },
-                { label: 'Text Book (PDF)', url: '1NQlOAi7WHBBinZivY5az2C6gzf4iK79s' }
-              ],
-              'HSSC-II': [
-                { label: 'Notes', url: '#' },
-                { label: 'Guess Papers', url: '#' },
-                { label: 'Past Papers (2023-24)', url: '#' },
-                { label: 'Text Book (PDF)', url: '#' }
-              ]
-          }},
-          { name: 'Chemistry', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1LaasV23ZmJsP4suQMG0avlDaUNpzCBZt' }, { label: 'Text Book', url: '1DAUbcEbJH8pGrcz15TO4w4Wp-4sA__CU' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' },  { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'Mathematics', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' },{ label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'English', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }}
-        ]
-      },
-      {
-        group: 'Pre-Medical',
-        tags: ['Physics', 'Chemistry', 'Biology', 'English'],
-        subjects: [
-          { name: 'Physics', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '1NQlOAi7WHBBinZivY5az2C6gzf4iK79s' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'Chemistry', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1LaasV23ZmJsP4suQMG0avlDaUNpzCBZt' }, { label: 'Text Book', url: '1DAUbcEbJH8pGrcz15TO4w4Wp-4sA__CU' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'Biology', years: {
-              'HSSC-I': [ { label: 'Botany Notes', url: '#' }, { label: 'Zoology Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '1oYX1ifDHoW26OAeQPvUQAzGnUbGw7sTj' } ],
-              'HSSC-II': [ { label: 'Botany Notes', url: '#' }, { label: 'Zoology Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '1oYX1ifDHoW26OAeQPvUQAzGnUbGw7sTj' } ]
-          }},
-          { name: 'English', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }}
-        ]
-      },
-      {
-        group: 'ICS (Computer Science)',
-        tags: ['Physics', 'Mathematics', 'Computer Science', 'English'],
-        subjects: [
-          { name: 'Physics', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '1NQlOAi7WHBBinZivY5az2C6gzf4iK79s' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'Mathematics', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'Computer Science', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1hq3kgnZt90D9g_b88XIuWvICt1Tqc0_y' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'English', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '1T7nt78eZWeCpOfUC4VqsP6xJ-QA0xa1g' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }}
-        ]
-      },
-      {
-        group: 'I.Com (Commerce)',
-        tags: ['Accounting', 'Commerce', 'Economics', 'Business Math', 'English'],
-         subjects: [
-          { name: 'Principles of Accounting', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1mjkT0WrgmB5WOO_aJFkj8rKY-6TheNoa' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'Principles of Commerce', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1mjkT0WrgmB5WOO_aJFkj8rKY-6TheNoa' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-          { name: 'Principles of Economics', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1mjkT0WrgmB5WOO_aJFkj8rKY-6TheNoa' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-           { name: 'Business Mathematics', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '1mjkT0WrgmB5WOO_aJFkj8rKY-6TheNoa' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Papers', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }},
-           { name: 'English', years: {
-              'HSSC-I': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '1mjkT0WrgmB5WOO_aJFkj8rKY-6TheNoa' }, { label: 'Past Papers (2023-24)', url: '1lo5NDlWWrfrdLYGdjBZ_GxrzJ8J0ZpPC' }, { label: 'Text Book', url: '#' } ],
-              'HSSC-II': [ { label: 'Notes', url: '#' }, { label: 'Guess Paper', url: '#' }, { label: 'Past Papers (2023-24)', url: '#' }, { label: 'Text Book', url: '#' } ]
-          }}
-        ]
-      }
-    ];
-    // ====== END DATA EDIT AREA ======
-
-    const cards = document.getElementById('cards');
-    const modal = document.getElementById('modal');
-    const frame = document.getElementById('frame');
-    const modtitle = document.getElementById('modtitle');
-    const openNew = document.getElementById('openNew');
-    const closeBtn = document.getElementById('close');
-
-    function normalizeDriveLink(input){
-      if(!input || input === '#') return null;
-      if(/^[a-zA-Z0-9_-]{20,}$/.test(input)) return `https://drive.google.com/file/d/${input}/preview`;
-      let m = input.match(/\/file\/d\/([a-zA-Z0-9_-]+)\//);
-      if(m) return `https://drive.google.com/file/d/${m[1]}/preview`;
-      m = input.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-      if(m) return `https://drive.google.com/file/d/${m[1]}/preview`;
-      m = input.match(/uc\?id=([a-zA-Z0-9_-]+)/);
-      if(m) return `https://drive.google.com/file/d/${m[1]}/preview`;
-      if(input.includes('/preview')) return input;
-      return input;
-    }
-
-    // REWRITTEN RENDER FUNCTION FOR THE NEW DATA STRUCTURE
-    function render(list){
-      cards.innerHTML = '';
-      list.forEach(({group, tags, subjects}) => {
-        const card = document.createElement('section');
-        card.className = 'card';
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         
-        const subjectsHtml = subjects.map(subject => {
-          const yearsHtml = Object.entries(subject.years).map(([year, categories]) => {
-            const categoriesHtml = categories.map(cat => 
-              `<a class="item" href="#" data-href="${encodeURIComponent(cat.url || '#')}">
-                  <svg width='16' height='16' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 12h13' stroke='currentColor' stroke-width='2' stroke-linecap='round'/><path d='M12 5l7 7-7 7' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>
-                  ${cat.label}
-              </a>`
-            ).join('');
-
-            return `<div class="year-col"><h4>${year}</h4>${categoriesHtml}</div>`;
-          }).join('');
-
-          return `
-            <div class="subject-parent">
-              <header>
-                <h3>${subject.name}</h3>
-                <button class="toggle-btn" aria-expanded="false">+</button>
-              </header>
-              <div class="subject-content">
-                <div class="subject-years">${yearsHtml}</div>
-              </div>
+        <!-- Header Section -->
+        <header class="flex justify-between items-center py-6">
+            <div class="flex items-center gap-3">
+                <!-- Professional Tekox Logo -->
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" class="stroke-sky-400" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M2 7L12 12M22 7L12 12M12 22V12" class="stroke-sky-500" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M17 4.5L7 9.5" class="stroke-white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-2xl font-bold text-white">Tekox</span>
             </div>
-          `;
-        }).join('');
+            <a href="#contact" class="hidden sm:inline-block px-4 py-2 text-sm font-medium border border-gray-600 rounded-md hover:bg-gray-800 transition-colors">Contact</a>
+        </header>
+        
+        <main class="py-16 sm:py-24">
+            
+            <!-- Hero Section -->
+            <section class="text-center max-w-3xl mx-auto">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 tracking-tight">
+                    A Creative Tech World
+                </h1>
+                <p class="mt-6 text-lg sm:text-xl text-gray-300">
+                    Your central hub for powerful online tools. Quick, reliable, and easy-to-use tools for your everyday tech needs.
+                </p>
+            </section>
+            
+            <!-- Tools Section -->
+            <section class="mt-16 sm:mt-24">
+                <div class="text-center mb-12">
+                     <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Our Tools</h2>
+                     <p class="mt-3 max-w-2xl mx-auto text-lg text-gray-400">Select a tool to get started.</p>
+                </div>
 
-        card.innerHTML = `
-          <div class="card-header">
-            <h2>${group}</h2>
-            <span class="badge">Subject-wise Material</span>
-          </div>
-          <div class="tags">${tags.map(t=>`<span class='tag'>${t}</span>`).join('')}</div>
-          ${subjectsHtml}
-        `;
-        cards.appendChild(card);
-      });
-      
-      // Add event listeners after rendering
-      setupEventListeners();
-    }
+                <!-- Grid layout for the tool cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    
+                    <!-- SIM DATABASE Card -->
+                    <a href="https://tekox.online/data" target="_blank" class="tool-card block p-6 rounded-lg text-center">
+                        <div class="flex justify-center mb-4">
+                            <div class="bg-gray-700 p-3 rounded-full">
+                                <!-- SIM Card Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 2H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/><path d="M5 5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H5Zm1 4h12M6 13h5"/></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg text-white">SIM DATABASE</h3>
+                        <p class="mt-1 text-sm text-gray-400">Access comprehensive SIM card ownership data.</p>
+                    </a>
+                    
+                    <!-- CNIC TO SIMS Card -->
+                    <a href="https://tekox.online/result" target="_blank" class="tool-card block p-6 rounded-lg text-center">
+                        <div class="flex justify-center mb-4">
+                           <div class="bg-gray-700 p-3 rounded-full">
+                                <!-- ID Card Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M12 14h8"/><path d="M12 10h8"/></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg text-white">CNIC TO SIMS</h3>
+                        <p class="mt-1 text-sm text-gray-400">Check SIMs registered against a CNIC.</p>
+                    </a>
+                    
+                    <!-- WEATHER INFO Card -->
+                    <a href="https://tekox.online/info" target="_blank" class="tool-card block p-6 rounded-lg text-center">
+                        <div class="flex justify-center mb-4">
+                           <div class="bg-gray-700 p-3 rounded-full">
+                                <!-- Weather Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg text-white">WEATHER INFO</h3>
+                        <p class="mt-1 text-sm text-gray-400">Get real-time weather updates for any location.</p>
+                    </a>
+                    
+                    <!-- LIVE TV CHANNELS Card -->
+                    <a href="https://tekox.online/tv" target="_blank" class="tool-card block p-6 rounded-lg text-center">
+                        <div class="flex justify-center mb-4">
+                            <div class="bg-gray-700 p-3 rounded-full">
+                                <!-- TV Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                            </div>
+                        </div>
+                        <h3 class="font-semibold text-lg text-white">LIVE TV</h3>
+                        <p class="mt-1 text-sm text-gray-400">Stream your favorite TV channels live.</p>
+                    </a>
+                </div>
+            </section>
+            
+            <!-- Contact Section -->
+            <section id="contact" class="text-center mt-16 sm:mt-24 py-16 bg-gray-800/50 rounded-lg">
+                <h2 class="text-3xl font-bold tracking-tight text-white">Get in Touch</h2>
+                <p class="mt-3 max-w-md mx-auto text-lg text-gray-400">
+                    Have questions or want to connect? Join our WhatsApp channel.
+                </p>
+                <div class="mt-8">
+                     <a href="https://wa.me/+923181393964" target="_blank" class="cta-button inline-flex items-center gap-3 px-8 py-3 text-white font-semibold rounded-lg shadow-lg">
+                        <!-- WhatsApp Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 12c0 1.74.44 3.37 1.25 4.81L2 22l5.33-1.38c1.38.75 2.94 1.18 4.59 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zM9.53 8.3c.24-.24.58-.38.93-.38.41 0 .75.14 1.08.48l.01.01c.29.29.43.64.43.99s-.14.69-.43.98l-2.09 2.09c-.29.29-.64.44-.98.44-.35 0-.7-.14-.98-.43l-2.09-2.09c-.29-.29-.44-.64-.44-.98s.14-.7.43-.99l.01-.01c.29-.29.64-.43.98-.43.36 0 .7.14.98.43L9.53 8.3zm5.02 5.02l2.09-2.09c.29-.29.43-.64.43-.98s-.14-.69-.43-.98l-.01-.01c-.29-.29-.64-.43-.99-.43s-.69.14-.98.43l-2.09 2.09c-.29.29-.44.64-.44.98s.14.7.43.99l2.09 2.09c.29.29.64.44.98.44s.7-.14.98-.43l.01-.01c.29-.29.44-.64.44-.98s-.14-.7-.43-.99z"/></svg>
+                        Join WhatsApp Channel
+                    </a>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer Section -->
+        <footer class="text-center py-8 mt-12 border-t border-gray-800">
+            <p class="text-gray-400">&copy; 2025 Tekox. All rights reserved.</p>
+            <p class="text-gray-500 mt-1">Developed by Riaz Hussain Solangi</p>
+        </footer>
+
+    </div>
     
-    // Central function for all event listeners
-    function setupEventListeners() {
-      // For expanding/collapsing subjects
-      document.querySelectorAll('.subject-parent header').forEach(header => {
-        header.addEventListener('click', (e)=>{
-          const content = header.nextElementSibling;
-          const btn = header.querySelector('.toggle-btn');
-          const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-
-          btn.setAttribute('aria-expanded', !isExpanded);
-          btn.textContent = isExpanded ? '+' : '−';
-          content.style.display = isExpanded ? 'none' : 'block';
-        });
-      });
-
-      // For opening the preview modal
-      document.querySelectorAll('a.item').forEach(a => {
-        a.addEventListener('click', (e)=>{
-          e.preventDefault();
-          const urlRaw = decodeURIComponent(e.currentTarget.getAttribute('data-href'));
-          const previewUrl = normalizeDriveLink(urlRaw);
-          if(!previewUrl){
-            alert('Please add a valid Google Drive link or file ID.');
-            return;
-          }
-          frame.src = previewUrl;
-          modtitle.textContent = e.currentTarget.textContent.trim();
-          openNew.onclick = () => window.open(previewUrl, '_blank');
-          modal.classList.add('open');
-        });
-      });
-    }
-
-    // Modal closing logic
-    closeBtn.addEventListener('click', ()=> modal.classList.remove('open'));
-    modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.classList.remove('open') });
-
-    // Initial Render
-    render(DATA);
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
+

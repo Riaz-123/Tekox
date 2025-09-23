@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAKISTAN VS SRILANKA</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      margin: 15px 0;
+      font-size: 24px;
+      color: #00ffcc;
+    }
+    .player {
+      position: relative;
+      width: 90%;
+      max-width: 900px;
+      margin: auto;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 3px solid #00ffcc;
+      box-shadow: 0 0 20px rgba(0,255,204,0.7);
+      background: black;
+    }
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 60px;
+      color: #00ffcc;
+      cursor: pointer;
+      display: none;
+    }
+    .player.paused .play-btn {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>PAKISTAN VS SRILANKA</h1>
+  <div class="player paused">
+    <video id="video" playsinline></video>
+    <div id="playBtn" class="play-btn">▶️</div>
+  </div>
+
+  <script>
+    var video = document.getElementById('video');
+    var playBtn = document.getElementById('playBtn');
+    var player = document.querySelector('.player');
+
+    var videoSrc = "https://tencentcdn5.tamashaweb.com/v1/0196159eeff41eb4611d121c76c781/0196159f51bb1ea5064913eb2a83ea/TMSHU1WEB_360p.m3u8";
+    
+    if (Hls.isSupported()) {
+      var hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+    }
+
+    // Manual play (fix autoplay issue on Chrome OS)
+    playBtn.addEventListener('click', function () {
+      video.play();
+    });
+
+    video.addEventListener('play', function () {
+      player.classList.remove('paused');
+    });
+
+    video.addEventListener('pause', function () {
+      player.classList.add('paused');
+    });
+  </script>
+</body>
+</html>

@@ -1,95 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Guardian Update</title>
+  <title>Guardian 2 Update</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f7f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
+      background: #f4f7fa;
+      padding: 30px;
     }
-    .form-container {
+    .container {
+      max-width: 500px;
+      margin: auto;
       background: #fff;
-      padding: 25px 30px;
-      border-radius: 12px;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 420px;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
     h2 {
       text-align: center;
-      margin-bottom: 20px;
       color: #333;
     }
     label {
-      display: block;
-      margin-bottom: 8px;
       font-weight: bold;
-      color: #444;
+      display: block;
+      margin: 15px 0 5px;
     }
     input {
       width: 100%;
       padding: 10px;
-      margin-bottom: 18px;
       border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: 6px;
     }
     button {
+      margin-top: 20px;
       width: 100%;
       padding: 12px;
       background: #007bff;
-      color: white;
+      color: #fff;
+      font-size: 16px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
     }
     button:hover {
       background: #0056b3;
     }
-    .message {
-      text-align: center;
+    #message {
       margin-top: 15px;
-      font-size: 14px;
+      text-align: center;
       font-weight: bold;
     }
-    .loading { color: #ff9800; }
-    .success { color: #28a745; }
-    .error { color: #dc3545; }
   </style>
 </head>
 <body>
-  <div class="form-container">
+  <div class="container">
     <h2>Guardian Update</h2>
-    <form id="guardianForm">
-      <label for="studentName">Name of Student</label>
-      <input type="text" id="studentName" name="studentName" required>
+    <form id="updateForm">
+      <label for="studentName">Name Of Student</label>
+      <input list="studentList" id="studentName" name="studentName" required>
+      <datalist id="studentList">
+        <option value="Aakash Tarachand">
+        <option value="Abdul Basit Abdul Rehman Palijo">
+        <option value="Abdul Fatah Muhammad Moosa Chachar">
+        <option value="Abdul Jaleel Aachar">
+        <option value="Abdul Khalique Sultan Ali">
+        <option value="Abdul Razak Ghulam Rasool">
+        <option value="Abdullah Qamruddin">
+        <option value="Akshay Kumar Mevo">
+        <option value="Akshay Kumar Resham">
+        <option value="Ali Abdullah Abdul Qadir Mari">
+        <option value="Amarsham Prem">
+        <option value="Ameet Tiloo Mal">
+        <option value="Amrat lal Nihalchand">
+        <option value="Anas Nawaz Ali Nawaz">
+        <option value="Aneeb Rehman Muneer Ahmed">
+        <option value="Asan Das Malchand">
+        <option value="Baadal Amolakh">
+        <option value="Badal Kumar Devo Mal">
+        <option value="Bahadur Ali Mansoor Ali">
+        <option value="Chaman Kaloo">
+        <option value="Chaman Ali Muhammad Juman">
+        <option value="Data Amrat">
+        <option value="Dhanesh Kumar Lakho Mal">
+        <option value="Ghulam Mustafa Anwer Ali">
+        <option value="Ghulam Mustafa Ghulam Hussain Memon">
+        <option value="Ghulam Raza">
+        <option value="Gul Zaman">
+        <option value="Haris">
+        <option value="Hoondlal">
+        <option value="Ihsan Ali">
+        <option value="Israr Ahmed Late Muhammad Hanif">
+        <option value="Israr Ahmed Abdul Hafeez">
+        <option value="Jameel Ahmed">
+        <option value="Jethanand">
+        <option value="Kashif Ali">
+        <option value="Khalil Ahmed">
+        <option value="Luxhman">
+        <option value="Meesum">
+        <option value="Mehtab Ali">
+        <option value="Mohammad Azaan">
+        <option value="Mohammad Hanif">
+        <option value="Mohsin Raza">
+        <option value="Mudasir Ali Ghulam Hussain">
+        <option value="Mudassir Hussain Lal Bux">
+        <option value="Muhammad Arslan">
+        <option value="Muhammad Ayan">
+        <option value="Muhammad Irfan">
+        <option value="Muhammad Kashan">
+        <option value="Muhammad Murtaza Muhammad Yousif">
+        <option value="Muhammad Taki">
+        <option value="Muhammad Yaqoob">
+        <option value="Muneeb Ul Rehman">
+        <option value="Mursaleen Hyder">
+        <option value="Murtaza Mehdi">
+        <option value="Musawir Hussain">
+        <option value="Nadeem Shahzad">
+        <option value="Naimatullah">
+        <option value="Nandlal">
+        <option value="Nawal Kumar Nirmal Kumar">
+        <option value="Nawal Rai Mendharo">
+        <option value="Nilesh Kumar">
+        <option value="Noor Muhmmad">
+        <option value="Parvez Ali">
+        <option value="Raja">
+        <option value="Rana Rahul Singh">
+        <option value="Rehan">
+        <option value="Riaz Hussain">
+        <option value="Sadoro Khan">
+        <option value="Sajid Ali Muhammad Suleman Kalhoro">
+        <option value="Sajid Ali Ghulam Nabi Soomro">
+        <option value="Santosh">
+        <option value="Shahzaib Ali">
+        <option value="Shayan">
+        <option value="Syed Ali Naqi">
+        <option value="Syed Qalab Abbas Shah">
+        <option value="Tarshad">
+        <option value="Toufiq">
+        <option value="Umair Ali">
+        <option value="Uzair Ali Shah">
+        <option value="Videsh Kumar">
+        <option value="Waseem">
+        <option value="Yasir Abbas">
+        <option value="Zain Abbas">
+        <option value="Zulfiqar Ali">
+      </datalist>
 
-      <div id="fatherField" style="display:none;">
-        <label for="fatherName">Father Name (Required for duplicate)</label>
-        <input type="text" id="fatherName" name="fatherName">
-      </div>
-
-      <label for="guardianName">Guardian Name</label>
+      <label for="guardianName">Guardian 2 Name</label>
       <input type="text" id="guardianName" name="guardianName" required>
 
-      <label for="guardianContact">Guardian Contact (923---)</label>
-      <input type="tel" id="guardianContact" name="guardianContact" 
-             pattern="923[0-9]{9}" placeholder="923XXXXXXXXX" required>
+      <label for="guardianContact">Guardian 2 Contact (923---)</label>
+      <input type="text" id="guardianContact" name="guardianContact" pattern="923[0-9]{9}" placeholder="923XXXXXXXXX" required>
 
-      <button type="submit">Submit</button>
+      <button type="submit">Update</button>
     </form>
-    <div class="message" id="formMessage"></div>
+    <div id="message"></div>
   </div>
 
-  <!-- Link to external JS -->
-  <script src="app.js"></script>
+  <script>
+    document.getElementById("updateForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      document.getElementById("message").innerText = "⏳ Loading... Please wait.";
+
+      fetch("https://script.google.com/macros/s/AKfycbygwS9SEaxk6fbNaQco36U60EsAz-FBOJtriouqeOdHJ9mmxmdNHaJc6Ac3wr6siDY6zg/exec", {
+        method: "POST",
+        body: new URLSearchParams({
+          "studentName": document.getElementById("studentName").value,
+          "guardianName": document.getElementById("guardianName").value,
+          "guardianContact": document.getElementById("guardianContact").value
+        })
+      })
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("message").innerText = data;
+      })
+      .catch(err => {
+        document.getElementById("message").innerText = "❌ Error: " + err;
+      });
+    });
+  </script>
 </body>
 </html>

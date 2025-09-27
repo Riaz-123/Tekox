@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Guardian 2 Info</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    h3 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      text-align: left;
+      font-weight: bold;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.3);
+    }
+
+    button {
+      margin-top: 20px;
+      background: #007bff;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>Update Guardian 2 Information</h3>
+    <form id="updateForm">
+      <label>Student Name:</label>
+      <input type="text" name="studentName" required>
+
+      <label>Guardian 2 Name:</label>
+      <input type="text" name="guardian2Name" required>
+
+      <label>Guardian 2 Contact (923--------):</label>
+      <input type="text" name="guardian2Contact" pattern="923[0-9]{8}" required>
+
+      <button type="submit">Submit</button>
+    </form>
+    <p id="result"></p>
+  </div>
+
+  <script>
+    document.getElementById("updateForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      fetch("https://script.google.com/macros/s/AKfycbxBjOQv_l_C02t-PD6Qy60i1lyqJVZvEUgZYbp8UCbEvJZ5ZsnGCYzPrWu41GGJTDXVUw/exec", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.text())
+      .then(msg => {
+        document.getElementById("result").innerText = msg;
+        this.reset();
+      })
+      .catch(err => {
+        document.getElementById("result").innerText = "Error: " + err;
+      });
+    });
+  </script>
+</body>
+</html>

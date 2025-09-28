@@ -1,1 +1,507 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dani Medico</title>
+    <link rel="icon" href="faheem.png" type="image/png"> 
+  
+  <!-- Meta Description -->
+  <meta name="description" content="Download Famofc tools, credit by faheem ,the best hacking and cracking tools for ethical hackers. Learn to use the top tools for penetration testing, cybersecurity, network security, and ethical hacking.">
+
+  <!-- Meta Keywords -->
+  <meta name="keywords" content="famofc toolkit, hacking tools, cracking tools, ethical hacking, penetration testing tools, network security tools, cybersecurity tools, best hacking tools 2024">
+
+  <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            color: #333333;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #1a73e8 0%, #00c6ff 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 5px 20px rgba(26, 115, 232, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100" opacity="0.1"><circle cx="50" cy="50" r="2" fill="white"/></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100px, -100px); }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            background: white;
+            color: #1a73e8;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-text {
+            text-align: left;
+        }
+
+        .logo-text h1 {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin: 0;
+            background: linear-gradient(45deg, #ffffff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text .tagline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+        }
+
+        .vip-badge {
+            background: linear-gradient(45deg, #ff6b00, #ff8e00);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 10px rgba(255, 107, 0, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a73e8 0%, #00c6ff 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            margin: -50px auto 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .toolkit-btn {
+            background: linear-gradient(45deg, #ff6b00, #ff8e00);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toolkit-btn:hover {
+            background: linear-gradient(45deg, #ff8e00, #ff6b00);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 0, 0.4);
+        }
+
+        
+
+        .info-message {
+            background: linear-gradient(45deg, #1a73e8, #00c6ff);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            border-left: 5px solid #ff6b00;
+        }
+
+        .features-list {
+            text-align: left;
+            background: rgba(248, 249, 250, 0.8);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .features-list h3 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .features-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #555555;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list i {
+            color: #1a73e8;
+        }
+
+        .channels {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .channels h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .channel-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .channel-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 15px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333333;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+        }
+
+        .channel-link:hover {
+            background: #1a73e8;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+
+        .whatsapp { color: #25D366; }
+        .youtube { color: #FF0000; }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #666666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .toolkit-btn {
+                padding: 15px 30px;
+                font-size: 1.2rem;
+            }
+            
+            .channel-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Dani Medico</h1>
+                    <div class="tagline">Premium Security Solutions</div>
+                </div>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Lectures</a>
+                <a href="#tools" class="nav-link">MCQs</a>
+                <a href="#features" class="nav-link">Notes</a>
+                <a href="#contact" class="nav-link">Past Papers</a>
+                <div class="vip-badge">
+                    <i class="fas fa-crown"></i> Students: 60000
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h2>Advanced Preparation Material to Crack MDCAT</h2>
+            <p>Premium Tests and Notes Preparation </p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">2TB+</span></span>
+                    <span class="stat-label">Material Available</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">6863</span>
+                    <span class="stat-label">Students</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Support</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <button class="toolkit-btn" onclick="window.open('htt', '_blank')">
+            <i class="fas fa-external-link-alt"></i>
+            Access Dani MDCAT
+        </button>
+
+        
+
+            <div class="info-message">
+                <i class="fas fa-info-circle"></i>
+                <strong>Important Information:</strong>Dani Medico offers practice tests, study notes,
+                and analytics to help MDCAT aspirants prepare use the 
+                platform responsibly and only for honest exam preparation. {Dani Medico is an independent educational 
+                service and is not affiliated with any official MDCAT authority. Our materials are created to aid learning
+                but should be cross-checked with official syllabi and notices. Do not use or share exam content obtained 
+                improperly; cheating or distributing copyrighted/official exam material is strictly prohibited. For accuracy 
+                issues, content requests, or support, contact us at support@danimedico.com
+            </div>
+
+            <div class="features-list">
+                <h3><i class="fas fa-star"></i> Material Features</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i> Features to be added </li>
+                    <li><i class="fas fa-check"></i> Features to be added </li>
+                    <li><i class="fas fa-check"></i> Features to be added </li>
+                    <li><i class="fas fa-check"></i> Features to be added </li>
+                    <li><i class="fas fa-check"></i> Features to be added </li>
+                    <li><i class="fas fa-check"></i> Features to be added </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="channels">
+            <h2>Follow My Channels</h2>
+            <div class="channel-links">
+                <a href="https://whatsapp.com/cVb2pMIt1NCrUCy9Q0f3C" target="_blank" class="channel-link">
+                    <i class="fab fa-whatsapp whatsapp"></i>
+                    WhatsApp Channel
+                </a>
+                <a href="https:" target="_blank" class="channel-link">
+                    <i class="fab fa-youtube youtube"></i>
+                    YouTube Channel
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 Dani Medico . All rights reserved. | For educational purposes only.</p>
+        </div>
+    </div>
+
+    <script>
+        // Button animation
+        const button = document.querySelector('.toolkit-btn');
+        
+        button.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add loading animation to screenshot
+        const screenshotImg = document.querySelector('.screenshot-img');
+        screenshotImg.addEventListener('load', function() {
+            this.style.opacity = '0';
+            this.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                this.style.opacity = '1';
+            }, 100);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(26, 115, 232, 0.95)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, #1a73e8 0%, #00c6ff 100%)';
+            }
+        });
+    </script>
+</body>
+</html>
+

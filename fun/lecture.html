@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectures - Dani Medico</title>
+    <link rel="icon" href="https://i.imgur.com/7bC9k0L.png" type="image/png">
+    <meta name="description" content="Access high-quality MDCAT video lectures covering all subjects. Organized by topic for effective learning and revision.">
+    <meta name="keywords" content="MDCAT lectures, medical entrance exam, MDCAT preparation, video lessons, Dani Medico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f2f5 0%, #e0e6ec 100%);
+            color: #333333;
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        main {
+            flex-grow: 1; /* Ensures the main content takes up available space */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(90deg, #007bff 0%, #00d4ff 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: linear-gradient(90deg, #0056b3 0%, #0097a7 100%);
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(45deg, #ffffff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.25);
+            font-weight: 600;
+        }
+
+        .vip-badge {
+            background: linear-gradient(45deg, #ff6b00, #ff8e00);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 18px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Lectures Section Styles */
+        .lectures-section {
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 50px;
+            width: 100%;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
+
+        /* New Heading Style */
+        .lectures-section h2 {
+            color: #007bff;
+            margin-bottom: 35px;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .lectures-section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            border-radius: 2px;
+        }
+
+        .lecture-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 5 columns horizontally */
+            gap: 25px;
+        }
+
+        .lecture-box {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            height: 120px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #333333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem; /* Adjusted font size for text */
+            font-weight: 600;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .lecture-box:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #777777;
+            font-size: 0.95rem;
+            border-top: 1px solid #e0e0e0;
+            background-color: #f0f2f5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 15px;
+            }
+            .lecture-grid {
+                grid-template-columns: repeat(3, 1fr); /* 3 columns for tablets */
+            }
+            .lectures-section h2 { font-size: 2.2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container { flex-wrap: nowrap; }
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: linear-gradient(90deg, #007bff 0%, #00d4ff 100%);
+                flex-direction: column;
+                padding: 20px 0;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                transform: translateX(100%);
+                opacity: 0;
+                pointer-events: none;
+                z-index: 999;
+                transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            }
+            .nav-links.open {
+                transform: translateX(0%);
+                opacity: 1;
+                pointer-events: all;
+            }
+            .nav-link {
+                width: 90%;
+                text-align: center;
+                margin: 5px auto;
+                padding: 12px 0;
+                background: rgba(255, 255, 255, 0.1);
+            }
+            .lectures-section {
+                 padding: 40px 25px;
+            }
+            .lecture-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller tablets/phones */
+            }
+            .lectures-section h2 { font-size: 2rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-img { width: 40px; height: 40px; }
+            .logo-text h1 { font-size: 1.5rem; }
+            .lecture-box {
+                font-size: 1.2rem;
+                height: 100px;
+            }
+            .lectures-section h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="https://i.imgur.com/7bC9k0L.png" alt="Dani Medico Logo" class="logo-img">
+                <div class="logo-text">
+                    <h1>Dani Medico</h1>
+                </div>
+            </a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="nav-links" id="main-nav">
+                <a href="lectures.html" class="nav-link active">Lectures</a>
+                <a href="mcqs.html" class="nav-link">MCQs</a>
+                <a href="notes.html" class="nav-link">Notes</a>
+                <a href="past_papers.html" class="nav-link">Past Papers</a>
+                <div class="vip-badge">
+                    <i class="fas fa-users"></i> 60,000+ Students
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="lectures-section">
+            <h2>Lectures</h2>
+            <div class="lecture-grid">
+                <a href="page-1.html" class="lecture-box">WAK Academy</a>
+                <a href="page-2.html" class="lecture-box">WAK Academy</a>
+                <a href="page-3.html" class="lecture-box">WAK Academy</a>
+                <a href="page-4.html" class="lecture-box">WAK Academy</a>
+                <a href="page-5.html" class="lecture-box">WAK Academy</a>
+                <a href="page-6.html" class="lecture-box">WAK Academy</a>
+                <a href="page-7.html" class="lecture-box">WAK Academy</a>
+                <a href="page-8.html" class="lecture-box">WAK Academy</a>
+                <a href="page-9.html" class="lecture-box">WAK Academy</a>
+                <a href="page-10.html" class="lecture-box">WAK Academy</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Dani Medico. All rights reserved. | For educational purposes only.</p>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mainNav = document.getElementById('main-nav');
+
+        mobileMenu.addEventListener('click', () => {
+            mainNav.classList.toggle('open');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked (for mobile)
+        document.querySelectorAll('#main-nav .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (mainNav.classList.contains('open')) {
+                    mainNav.classList.remove('open');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

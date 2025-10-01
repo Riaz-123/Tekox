@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PK-Shop — Affordable Fashion & Football Kits (PKR 1,000–5,000)</title>
+
+  <!-- Tailwind Play CDN (good for prototypes). For production, compile Tailwind. -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Extra visual polish */
+    .glass { background: rgba(255,255,255,0.6); backdrop-filter: blur(6px); }
+    .brand-gradient { background: linear-gradient(90deg,#4f46e5 0%,#ec4899 100%); }
+    .card-tilt { transform: perspective(800px) rotateX(0deg) rotateY(0deg); transition: transform .25s ease; }
+    .card-tilt:hover { transform: perspective(800px) rotateX(3deg) rotateY(-6deg) translateY(-6px); }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-gray-50 to-white text-gray-900 antialiased">
+
+  <!-- Top bar -->
+  <header class="sticky top-0 z-40 border-b bg-white/60 glass">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+      <div class="flex items-center gap-4">
+        <div class="text-2xl font-extrabold text-indigo-600 cursor-pointer" id="nav-home">PK-Shop</div>
+        <nav class="hidden md:flex gap-3 text-sm text-gray-700">
+          <button class="hover:underline" id="nav-home-2">Home</button>
+          <button class="hover:underline" id="nav-about">About</button>
+          <button class="hover:underline" id="nav-contact">Contact</button>
+          <button class="hover:underline" id="nav-orders">My Orders</button>
+        </nav>
+      </div>
+
+      <div class="flex-1">
+        <input id="search" placeholder="Search T-shirts, kits, watches..." class="w-full border rounded-lg px-4 py-2 shadow-sm" />
+      </div>
+
+      <div class="flex items-center gap-3">
+        <label class="flex items-center gap-2 text-xs">Seller mode
+          <input id="sellerToggle" type="checkbox" class="ml-1" />
+        </label>
+        <button id="cartBtn" aria-label="cart" class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4" />
+          </svg>
+          <span id="cartCount" class="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full px-2 hidden">0</span>
+        </button>
+
+        <div id="authArea" class="text-sm">
+          <button id="signinBtn" class="bg-indigo-600 text-white px-3 py-2 rounded">Sign in</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-7xl mx-auto p-4">
+    <!-- Hero -->
+    <section class="rounded-xl p-6 brand-gradient text-white shadow-lg flex flex-col md:flex-row items-center gap-6">
+      <div class="flex-1">
+        <h1 class="text-3xl md:text-4xl font-extrabold">Affordable fashion & authentic kits — shipped across Pakistan</h1>
+        <p class="mt-3 max-w-xl opacity-90">Curated selection of clothing, football kits (Real Madrid, Barcelona, Ronaldo, Messi), watches and shoes — all priced PKR 1,000 to PKR 5,000.</p>
+        <div class="mt-4 flex gap-3">
+          <button id="ctaShop" class="bg-white text-indigo-600 px-4 py-3 rounded-lg font-semibold shadow">Shop Now</button>
+          <button id="ctaSell" class="border border-white px-4 py-3 rounded-lg">Start Selling</button>
+        </div>
+      </div>
+      <div class="w-56 h-56 bg-white rounded-xl overflow-hidden shadow-lg flex items-center justify-center">
+        <img src="https://picsum.photos/seed/hero/400/400" alt="hero" class="w-full h-full object-cover" />
+      </div>
+    </section>
+
+    <!-- Featured categories -->
+    <section class="mt-8">
+      <h3 class="text-xl font-semibold">Featured Categories</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+        <div class="rounded-lg overflow-hidden shadow card-tilt p-4 bg-white">
+          <div class="h-28 bg-cover bg-center rounded" style="background-image:url('https://picsum.photos/seed/clothing/600/300')"></div>
+          <div class="mt-2 font-medium">Clothing</div>
+        </div>
+        <div class="rounded-lg overflow-hidden shadow card-tilt p-4 bg-white">
+          <div class="h-28 bg-cover bg-center rounded" style="background-image:url('https://picsum.photos/seed/kits/600/300')"></div>
+          <div class="mt-2 font-medium">Football Kits</div>
+        </div>
+        <div class="rounded-lg overflow-hidden shadow card-tilt p-4 bg-white">
+          <div class="h-28 bg-cover bg-center rounded" style="background-image:url('https://picsum.photos/seed/watches/600/300')"></div>
+          <div class="mt-2 font-medium">Watches</div>
+        </div>
+        <div class="rounded-lg overflow-hidden shadow card-tilt p-4 bg-white">
+          <div class="h-28 bg-cover bg-center rounded" style="background-image:url('https://picsum.photos/seed/shoes/600/300')"></div>
+          <div class="mt-2 font-medium">Shoes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section class="mt-10">
+      <div class="flex items-center justify-between">
+        <h3 class="text-2xl font-bold">Products</h3>
+        <div class="text-sm text-gray-600" id="resultsCount">Showing 0 items</div>
+      </div>
+
+      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6"></div>
+    </section>
+
+    <!-- Pages container (about/contact/orders/etc) -->
+    <section id="pages" class="mt-10 space-y-6"></section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t mt-12">
+    <div class="max-w-7xl mx-auto p-6 flex flex-col md:flex-row justify-between items-start gap-6">
+      <div>
+        <h4 class="font-bold">PK-Shop</h4>
+        <p class="text-sm text-gray-600">Affordable fashion & football kits, delivered across Pakistan.</p>
+      </div>
+      <div class="flex gap-6">
+        <div>
+          <div class="font-medium">Support</div>
+          <div class="text-sm text-gray-600">03423296320</div>
+          <div class="text-sm text-gray-600">njv@njv.edu.pk</div>
+        </div>
+        <div>
+          <div class="font-medium">Company</div>
+          <button class="text-sm text-gray-600 block" id="fAbout">About Us</button>
+          <button class="text-sm text-gray-600 block" id="fContact">Contact</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart drawer (hidden by default) -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/30" id="cartCloseOverlay"></div>
+    <aside class="absolute right-0 top-0 w-full md:w-96 h-full bg-white p-4 shadow-lg">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold">Your Cart</h3>
+        <button id="closeCart" class="text-gray-500">Close</button>
+      </div>
+
+      <div id="cartItems" class="mt-4 space-y-4 overflow-auto h-[60vh] pr-2"></div>
+
+      <div class="mt-4 border-t pt-4">
+        <div class="flex items-center justify-between text-lg font-bold">Total <span id="cartTotal">PKR 0</span></div>
+
+        <form id="checkoutForm" class="mt-3">
+          <input id="checkoutName" placeholder="Full name" required class="w-full border p-2 rounded mt-2" />
+          <input id="checkoutPhone" placeholder="Mobile (e.g., 03XXXXXXXXX)" required class="w-full border p-2 rounded mt-2" />
+          <input id="checkoutEmail" placeholder="Email (optional)" class="w-full border p-2 rounded mt-2" />
+          <div class="mt-2">
+            <label class="mr-3"><input type="radio" name="pay" value="easypaisa" checked /> EasyPaisa</label>
+            <label class="ml-3"><input type="radio" name="pay" value="jazzcash" /> JazzCash</label>
+          </div>
+          <button type="submit" class="w-full bg-green-600 text-white py-2 rounded mt-3">Proceed to Pay (Demo)</button>
+          <div class="text-xs text-gray-500 mt-2">(For production: implement server-side EasyPaisa & JazzCash flows and verify callbacks)</div>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div id="addModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/40" id="closeAddModalOverlay"></div>
+    <div class="max-w-xl mx-auto mt-16 bg-white rounded shadow-lg p-6 relative">
+      <button id="closeAddModal" class="absolute right-3 top-3 text-gray-500">✕</button>
+      <h3 class="text-lg font-semibold">Add New Product (Sellers)</h3>
+      <form id="addProductForm" class="space-y-3 mt-4">
+        <input id="apTitle" placeholder="Product title" required class="w-full border p-2 rounded" />
+        <div class="flex gap-2">
+          <select id="apCategory" class="flex-1 border p-2 rounded">
+            <option>Clothing</option>
+            <option>Football Kits</option>
+            <option>Watches</option>
+            <option>Shoes</option>
+          </select>
+          <input id="apPrice" type="number" placeholder="Price PKR" required class="w-36 border p-2 rounded" />
+        </div>
+        <input id="apImg" placeholder="Image URL" class="w-full border p-2 rounded" />
+        <textarea id="apDesc" placeholder="Description" class="w-full border p-2 rounded"></textarea>
+        <div class="flex gap-2">
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded">Add Product</button>
+          <button type="button" id="cancelAdd" class="px-4 py-2 border rounded">Cancel</button>
+        </div>
+        <div class="text-xs text-gray-500">Note: Price must be between PKR 1,000 and PKR 5,000.</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/40" id="authCloseOverlay"></div>
+    <div class="max-w-md mx-auto mt-20 bg-white rounded shadow-lg p-6 relative">
+      <button id="closeAuth" class="absolute right-3 top-3 text-gray-500">✕</button>
+      <h3 class="text-lg font-semibold">Sign in / Sign up</h3>
+      <form id="authForm" class="space-y-3 mt-4">
+        <input id="authName" placeholder="Full name" required class="w-full border p-2 rounded" />
+        <input id="authEmail" placeholder="Email" required class="w-full border p-2 rounded" />
+        <div class="flex gap-2">
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded">Continue</button>
+          <button type="button" id="cancelAuth" class="px-4 py-2 border rounded">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast / notifications -->
+  <div id="toast" class="fixed right-6 bottom-6 z-50 hidden">
+    <div class="bg-black text-white px-4 py-2 rounded shadow">Notification</div>
+  </div>
+
+  <script>
+    /***********************************************
+     * PK-Shop — Single-file front-end demo
+     * - Persistent state in localStorage
+     * - Demo checkout (no real payment)
+     * - Seller add product with price enforcement (1000-5000)
+     * - Product alert subscription simulated
+     * - Geo-restriction hook shown (needs server)
+     ***********************************************/
+
+    // Owner/contact info
+    const OWNER = {
+      phone: '03423296320',
+      emails: ['njv@njv.edu.pk','abdulrazzaque786.soo@gmail.com'],
+      address: 'MA Jinnah Road, Saddar, Karachi, Pakistan'
+    };
+
+    // Initial products (within PKR 1,000 - 5,000)
+    const initialProducts = [
+      { id: 'rm21-1', title: 'Real Madrid Home 2021 - Replica', category: 'Football Kits', price: 3500, img: 'https://picsum.photos/seed/rm1/600/600', seller: 'Official Store', description: 'Replica kit — breathable fabric.' },
+      { id: 'bar20-1', title: 'FC Barcelona Away 2020 - Replica', category: 'Football Kits', price: 4200, img: 'https://picsum.photos/seed/bar1/600/600', seller: 'SportsHub', description: 'Comfort fit with official badge.' },
+      { id: 'ron-99', title: 'Cristiano Ronaldo Classic', category: 'Football Kits', price: 3000, img: 'https://picsum.photos/seed/ron/600/600', seller: 'FanStore', description: 'All-time classic Ronaldo kit.' },
+      { id: 'messi-10', title: 'Lionel Messi Legacy', category: 'Football Kits', price: 3200, img: 'https://picsum.photos/seed/messi/600/600', seller: 'FanStore', description: 'Commemorative Messi kit.' },
+      { id: 'tshirt-basic', title: 'Casual T-Shirt', category: 'Clothing', price: 1200, img: 'https://picsum.photos/seed/t1/600/600', seller: 'Trendy', description: '100% cotton tee.' },
+      { id: 'jeans-blue', title: 'Slim Jeans', category: 'Clothing', price: 2800, img: 'https://picsum.photos/seed/j1/600/600', seller: 'Denim', description: 'Stretch denim slim fit.' },
+      { id: 'watch-01', title: 'Sport Watch', category: 'Watches', price: 4500, img: 'https://picsum.photos/seed/w1/600/600', seller: 'WatchCo', description: 'Water-resistant. Lightweight.' },
+      { id: 'sneaker-01', title: 'Urban Sneakers', category: 'Shoes', price: 3900, img: 'https://picsum.photos/seed/s1/600/600', seller: 'ShoePoint', description: 'Comfortable everyday sneakers.' }
+    ];
+
+    // Utilities for localStorage
+    const persistent = {
+      get(k, fallback){ try { const v = JSON.parse(localStorage.getItem(k)); return v ?? fallback; } catch { return fallback; } },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    // App state
+    let PRODUCTS = persistent.get('products', initialProducts);
+    let CART = persistent.get('cart', []); // {id, qty}
+    let USER = persistent.get('user', null);
+    let PRODUCT_ALERT_SUBS = persistent.get('product_alert_subs', []); // array of emails
+    let ORDERS = persistent.get('orders', []);
+    let ALERT_LOG = persistent.get('alert_log', []);
+
+    // DOM refs
+    const productGrid = document.getElementById('productGrid');
+    const resultsCount = document.getElementById('resultsCount');
+    const searchInput = document.getElementById('search');
+    const cartBtn = document.getElementById('cartBtn');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartTotalEl = document.getElementById('cartTotal');
+    const cartCountEl = document.getElementById('cartCount');
+    const signinBtn = document.getElementById('signinBtn');
+    const authModal = document.getElementById('authModal');
+    const authForm = document.getElementById('authForm');
+    const authName = document.getElementById('authName');
+    const authEmail = document.getElementById('authEmail');
+    const authArea = document.getElementById('authArea');
+    const pages = document.getElementById('pages');
+
+    const addModal = document.getElementById('addModal');
+    const addProductForm = document.getElementById('addProductForm');
+
+    const toast = document.getElementById('toast');
+
+    // Navigation
+    document.getElementById('nav-home').addEventListener('click', () => showHome());
+    document.getElementById('nav-home-2').addEventListener('click', () => showHome());
+    document.getElementById('nav-about').addEventListener('click', () => showAbout());
+    document.getElementById('nav-contact').addEventListener('click', () => showContact());
+    document.getElementById('nav-orders').addEventListener('click', () => showOrders());
+    document.getElementById('fAbout').addEventListener('click', () => showAbout());
+    document.getElementById('fContact').addEventListener('click', () => showContact());
+    document.getElementById('ctaShop').addEventListener('click', () => { window.scrollTo({ top: document.querySelector('main').offsetTop, behavior: 'smooth' }); });
+    document.getElementById('ctaSell').addEventListener('click', () => openAddModal());
+
+    // Cart interactions
+    cartBtn.addEventListener('click', () => toggleCart(true));
+    document.getElementById('closeCart').addEventListener('click', () => toggleCart(false));
+    document.getElementById('cartCloseOverlay').addEventListener('click', () => toggleCart(false));
+    document.getElementById('cartCloseOverlay').addEventListener('click', () => toggleCart(false));
+
+    // Add modal interactions
+    document.getElementById('closeAddModal').addEventListener('click', closeAddModal);
+    document.getElementById('cancelAdd').addEventListener('click', closeAddModal);
+    document.getElementById('closeAddModalOverlay').addEventListener('click', closeAddModal);
+
+    // Auth interactions
+    signinBtn.addEventListener('click', () => openAuth());
+    document.getElementById('closeAuth').addEventListener('click', closeAuth);
+    document.getElementById('cancelAuth').addEventListener('click', closeAuth);
+    document.getElementById('authCloseOverlay').addEventListener('click', closeAuth);
+
+    // Search
+    searchInput.addEventListener('input', renderProducts);
+
+    // Checkout form
+    document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('checkoutName').value.trim();
+      const phone = document.getElementById('checkoutPhone').value.trim();
+      const email = document.getElementById('checkoutEmail').value.trim();
+      const payMethod = document.querySelector('input[name="pay"]:checked').value;
+
+      if(!name || !phone) { showToast('Please provide name and mobile number'); return; }
+      if(CART.length === 0) { showToast('Cart is empty'); return; }
+
+      // Create order (demo)
+      const items = CART.map(ci => {
+        const prod = PRODUCTS.find(p => p.id === ci.id) || { title: 'Unknown', price: 0 };
+        return { id: ci.id, title: prod.title, price: prod.price, qty: ci.qty };
+      });
+      const total = items.reduce((s,i) => s + i.price*i.qty, 0);
+      const order = { id: 'ORD-' + Date.now(), items, total, details: { name, phone, email, payMethod }, date: new Date().toISOString() };
+      ORDERS.unshift(order);
+      persistent.set('orders', ORDERS);
+
+      // In production: initiate payment by POST to server which calls EasyPaisa/JazzCash APIs.
+      // For demo: we mark order as placed and clear cart.
+      CART = [];
+      persistent.set('cart', CART);
+      renderCart();
+      toggleCart(false);
+      showToast('Order placed (demo): ' + order.id);
+      showOrders();
+      // Simulate sending confirmation email: call your server-side /send-email endpoint with order details.
+      // Example: POST /api/send-email { to:email, subject:'Order Confirmation', body:... }
+      console.log('Simulated email (order):', order);
+    });
+
+    // Add product (seller)
+    addProductForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('apTitle').value.trim();
+      const category = document.getElementById('apCategory').value;
+      const price = Number(document.getElementById('apPrice').value);
+      const img = document.getElementById('apImg').value.trim() || ('https://picsum.photos/seed/' + encodeURIComponent(title) + '/600/600');
+      const desc = document.getElementById('apDesc').value.trim();
+      if(!title || !price) { showToast('Please fill title and price'); return; }
+      if(price < 1000 || price > 5000) { showToast('Price must be between PKR 1,000 and PKR 5,000'); return; }
+      const newProduct = { id: title.replace(/\s+/g,'-').toLowerCase() + '-' + Date.now(), title, category, price, img, seller: (USER && USER.name) ? USER.name : 'Guest Seller', description: desc };
+      PRODUCTS.unshift(newProduct);
+      persistent.set('products', PRODUCTS);
+
+      // Notify product-alert subscribers (simulated)
+      if(PRODUCT_ALERT_SUBS.length > 0){
+        const alertEntry = { id: 'ALERT-' + Date.now(), message: 'New product: ' + newProduct.title, date: new Date().toISOString(), count: PRODUCT_ALERT_SUBS.length };
+        ALERT_LOG.unshift(alertEntry);
+        persistent.set('alert_log', ALERT_LOG);
+
+        // In production: call your server to send emails to PRODUCT_ALERT_SUBS (SendGrid/SMTP)
+        console.log('Simulated product-alert emails to:', PRODUCT_ALERT_SUBS, 'product:', newProduct);
+      }
+
+      showToast('Product added (demo): ' + newProduct.title);
+      closeAddModal();
+      renderProducts();
+    });
+
+    // Auth form submit
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = authName.value.trim();
+      const email = authEmail.value.trim();
+      if(!name || !email) { showToast('Please provide name and email'); return; }
+      USER = { id: 'USER-' + Date.now(), name, email };
+      persistent.set('user', USER);
+      closeAuth();
+      refreshAuthUI();
+      showToast('Signed in as ' + name);
+    });
+
+    // Initialize UI
+    function init(){
+      renderProducts();
+      renderCart();
+      refreshAuthUI();
+      showHome();
+
+      // Geo-restriction hook (optional)
+      // You might implement server-side geolocation (recommended). Example:
+      // fetch('/api/geo') -> returns { country: 'PK' } and block if not 'PK'
+      // For demo we do nothing here and allow all users.
+    }
+    init();
+
+    // Render products based on search
+    function renderProducts(){
+      const q = (searchInput.value || '').trim().toLowerCase();
+      const filtered = PRODUCTS.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+      productGrid.innerHTML = '';
+      resultsCount.textContent = 'Showing ' + filtered.length + ' items';
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition card-tilt';
+        card.innerHTML = `
+          <div class="h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
+            <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.title)}" class="w-full h-full object-cover" />
+          </div>
+          <div class="p-4">
+            <div class="font-semibold">${escapeHtml(p.title)}</div>
+            <div class="text-sm text-gray-500">${escapeHtml(p.seller || '')}</div>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="text-lg font-bold">PKR ${Number(p.price).toLocaleString()}</div>
+              <div class="flex gap-2">
+                <button class="bg-indigo-600 text-white px-3 py-2 rounded addBtn">Add</button>
+                <button class="px-3 py-2 rounded viewBtn border">View</button>
+              </div>
+            </div>
+          </div>`;
+        productGrid.appendChild(card);
+
+        card.querySelector('.addBtn').addEventListener('click', () => {
+          addToCart(p.id);
+        });
+        card.querySelector('.viewBtn').addEventListener('click', () => {
+          showProductPage(p);
+        });
+      });
+    }
+
+    function addToCart(prodId, qty=1){
+      const existing = CART.find(c => c.id === prodId);
+      if(existing) existing.qty += qty;
+      else CART.push({ id: prodId, qty });
+      persistent.set('cart', CART);
+      renderCart();
+      showToast('Added to cart');
+    }
+
+    function renderCart(){
+      cartItemsEl.innerHTML = '';
+      if(CART.length === 0){ cartItemsEl.innerHTML = '<div class="text-gray-500">Cart is empty.</div>'; cartTotalEl.textContent = 'PKR 0'; cartCountEl.classList.add('hidden'); return; }
+      let total = 0;
+      CART.forEach(ci => {
+        const prod = PRODUCTS.find(p => p.id === ci.id) || { title: 'Unknown', price: 0, img: '' };
+        const item = document.createElement('div');
+        item.className = 'flex items-center gap-3';
+        item.innerHTML = `
+          <img src="${escapeHtml(prod.img)}" class="w-16 h-16 object-cover rounded" />
+          <div class="flex-1">
+            <div class="font-medium">${escapeHtml(prod.title)}</div>
+            <div class="text-sm text-gray-500">PKR ${Number(prod.price).toLocaleString()}</div>
+            <div class="mt-2 flex items-center gap-2">
+              <button class="px-2 py-1 border rounded decBtn">-</button>
+              <div class="px-3 qty">${ci.qty}</div>
+              <button class="px-2 py-1 border rounded incBtn">+</button>
+            </div>
+          </div>
+          <div>
+            <button class="text-sm text-red-500 removeBtn">Remove</button>
+          </div>
+        `;
+        cartItemsEl.appendChild(item);
+        total += prod.price * ci.qty;
+
+        item.querySelector('.incBtn').addEventListener('click', () => {
+          ci.qty++;
+          persistent.set('cart', CART);
+          renderCart();
+        });
+        item.querySelector('.decBtn').addEventListener('click', () => {
+          ci.qty = Math.max(1, ci.qty - 1);
+          persistent.set('cart', CART);
+          renderCart();
+        });
+        item.querySelector('.removeBtn').addEventListener('click', () => {
+          CART = CART.filter(x => x.id !== ci.id);
+          persistent.set('cart', CART);
+          renderCart();
+        });
+      });
+      cartTotalEl.textContent = 'PKR ' + total.toLocaleString();
+      cartCountEl.textContent = CART.reduce((s,c)=>s+c.qty,0);
+      cartCountEl.classList.remove('hidden');
+    }
+
+    function toggleCart(show){
+      if(show) cartDrawer.classList.remove('hidden'); else cartDrawer.classList.add('hidden');
+      renderCart();
+    }
+
+    // Auth UI
+    function openAuth(){ authModal.classList.remove('hidden'); }
+    function closeAuth(){ authModal.classList.add('hidden'); }
+    function refreshAuthUI(){
+      if(USER){
+        authArea.innerHTML = `<div class="text-sm"><div class="font-medium">${escapeHtml(USER.name)}</div><button id="signoutBtn" class="text-xs text-gray-500">Sign out</button></div>`;
+        document.getElementById('signoutBtn').addEventListener('click', () => { USER = null; persistent.set('user', null); refreshAuthUI(); showToast('Signed out'); });
+      } else {
+        authArea.innerHTML = `<button id="signinBtn2" class="bg-indigo-600 text-white px-3 py-2 rounded">Sign in</button>`;
+        document.getElementById('signinBtn2').addEventListener('click', () => openAuth());
+      }
+    }
+
+    // Add modal functions
+    function openAddModal(){ addModal.classList.remove('hidden'); }
+    function closeAddModal(){ addModal.classList.add('hidden'); }
+
+    // Pages: home, about, contact, product view, orders
+    function showHome(){
+      pages.innerHTML = '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showAbout(){
+      pages.innerHTML = `
+        <div class="bg-white rounded p-6 shadow">
+          <h3 class="text-xl font-semibold">About Us</h3>
+          <p class="mt-3">We sell affordable fashion and authentic football kits across Pakistan. <strong>Mission:</strong> make style and fandom accessible to everyone, priced fairly between PKR 1,000 and 5,000.</p>
+          <div class="mt-4 grid md:grid-cols-3 gap-4">
+            <div class="p-4 rounded border">Fast Delivery across Pakistan</div>
+            <div class="p-4 rounded border">Secure Payments (EasyPaisa / JazzCash)</div>
+            <div class="p-4 rounded border">Open Seller Marketplace (Optional toggle)</div>
+          </div>
+        </div>
+      `;
+      window.scrollTo({ top: pages.offsetTop, behavior: 'smooth' });
+    }
+
+    function showContact(){
+      pages.innerHTML = `
+        <div class="bg-white rounded p-6 shadow grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="font-medium">Address</p>
+            <p>${escapeHtml(OWNER.address)}</p>
+            <p class="mt-3 font-medium">Phone</p>
+            <p>${escapeHtml(OWNER.phone)}</p>
+            <p class="mt-3 font-medium">Email</p>
+            <p>${escapeHtml(OWNER.emails.join(', '))}</p>
+            <div class="mt-6">
+              <iframe title="map" src="https://www.google.com/maps?q=${encodeURIComponent(OWNER.address)}&output=embed" class="w-full h-64 border-0 rounded"></iframe>
+            </div>
+          </div>
+          <div>
+            <form id="contactForm" class="space-y-3">
+              <input placeholder="Your name" id="cName" class="w-full border p-2 rounded" />
+              <input placeholder="Email" id="cEmail" class="w-full border p-2 rounded" />
+              <textarea placeholder="Message" id="cMessage" class="w-full border p-2 rounded"></textarea>
+              <div class="flex gap-2">
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Send Message</button>
+                <button type="button" id="subscribeAlerts" class="px-4 py-2 border rounded">Subscribe to New Product Alerts</button>
+              </div>
+              <div class="text-xs text-gray-500">Note: This contact form is demo-only — implement server endpoint to receive messages.</div>
+            </form>
+          </div>
+        </div>
+      `;
+      // contact form handlers
+      document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        showToast('Message submitted (demo)');
+        console.log('Contact msg (demo):', { name: document.getElementById('cName').value, email: document.getElementById('cEmail').value, message: document.getElementById('cMessage').value });
+      });
+      document.getElementById('subscribeAlerts').addEventListener('click', () => {
+        const email = (USER && USER.email) ? USER.email : prompt('Enter your email to receive product alerts:');
+        if(!email) return showToast('Email required to subscribe');
+        if(!PRODUCT_ALERT_SUBS.includes(email)){ PRODUCT_ALERT_SUBS.push(email); persistent.set('product_alert_subs', PRODUCT_ALERT_SUBS); showToast('Subscribed for product alerts'); }
+        else showToast('Already subscribed');
+      });
+
+      window.scrollTo({ top: pages.offsetTop, behavior: 'smooth' });
+    }
+
+    function showOrders(){
+      const ordersHTML = ORDERS.length === 0 ? '<div class="text-gray-600">No orders yet.</div>' : ORDERS.map(o => `
+        <div class="border rounded p-3">
+          <div class="font-semibold">${o.id} <span class="text-sm text-gray-500">${new Date(o.date).toLocaleString()}</span></div>
+          <div class="text-sm">Total: PKR ${Number(o.total).toLocaleString()}</div>
+          <div class="mt-2">${o.items.map(i => `<div class="text-sm">${i.qty} × ${escapeHtml(i.title)}</div>`).join('')}</div>
+        </div>
+      `).join('');
+      pages.innerHTML = `<div class="bg-white rounded p-6 shadow"><h3 class="text-xl font-semibold">My Orders</h3><div class="mt-4 space-y-4">${ordersHTML}</div></div>`;
+      window.scrollTo({ top: pages.offsetTop, behavior: 'smooth' });
+    }
+
+    function showProductPage(p){
+      pages.innerHTML = `
+        <div class="bg-white rounded p-6 shadow grid md:grid-cols-3 gap-6">
+          <div class="md:col-span-1">
+            <img src="${escapeHtml(p.img)}" class="w-full h-64 object-cover rounded" />
+          </div>
+          <div class="md:col-span-2">
+            <h3 class="text-2xl font-semibold">${escapeHtml(p.title)}</h3>
+            <div class="text-sm text-gray-500">${escapeHtml(p.seller || '')}</div>
+            <div class="mt-3 text-lg font-bold">PKR ${Number(p.price).toLocaleString()}</div>
+            <p class="mt-4">${escapeHtml(p.description || '')}</p>
+            <div class="mt-6 flex gap-3">
+              <button id="pAdd" class="bg-indigo-600 text-white px-4 py-2 rounded">Add to Cart</button>
+              <button id="pBuy" class="bg-green-600 text-white px-4 py-2 rounded">Buy Now</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('pAdd').addEventListener('click', () => { addToCart(p.id); showToast('Added to cart'); });
+      document.getElementById('pBuy').addEventListener('click', () => { addToCart(p.id); toggleCart(true); });
+      window.scrollTo({ top: pages.offsetTop, behavior: 'smooth' });
+    }
+
+    // Toast
+    function showToast(msg, ms=3000){
+      const el = toast.querySelector('div');
+      el.textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), ms);
+    }
+
+    // Escape html helper
+    function escapeHtml(str){ if(!str) return ''; return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); }
+
+    // Simple product-alert simulation (admin/seller adds product -> notify emails)
+    // Implement real emailing on server with SendGrid/SMTP.
+
+    // OPTIONAL: Geo-restriction (example)
+    // For robust geo-blocking, perform IP geolocation on your server and deny requests from outside Pakistan.
+    // Example server-side pseudo:
+    // const ip = req.ip; const geo = fetch(`https://ipapi.co/${ip}/json`); if(geo.country !== 'PK') return 403;
+    //
+    // If you want a quick client-side check (not secure): you can use 'https://ipapi.co/json' and check country, but client-side is spoofable.
+
+    // Accessibility: keyboard escape keys
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') { toggleCart(false); closeAddModal(); closeAuth(); }
+    });
+
+    // Small UX: clicking 'Start Selling' when not signed in opens auth
+    document.getElementById('ctaSell').addEventListener('click', () => {
+      if(!USER) openAuth();
+      else openAddModal();
+    });
+
+    // Helper: product alerts log view (developer)
+    // You can inspect ALERT_LOG in console or render in seller dashboard if needed.
+
+    // End of script
+  </script>
+
+</body>
+</html>

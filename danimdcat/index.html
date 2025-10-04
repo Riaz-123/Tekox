@@ -110,9 +110,9 @@
     <div class="container">
         <div id="user-form">
             <h1>DANI MDCAT Mock Test</h1>
-            <p>Test shuru karne se pehle apni details enter karein.</p>
-            <input type="text" id="userName" placeholder="Apna Naam Likhein" required>
-            <input type="text" id="userCity" placeholder="Apna Sheher (City) Likhein" required>
+            <p>Enter Your Details Before Starting the Test.</p>
+            <input type="text" id="userName" placeholder="Enter Your Name" required>
+            <input type="text" id="userCity" placeholder="Enter Your City" required>
             <button id="start-btn">Start Test</button>
         </div>
 
@@ -128,8 +128,8 @@
 
         <div id="result-container" class="hidden">
             <h2>Test Complete!</h2>
-            <p>Shabash, <span id="result-name">User</span>!</p>
-            <p>Aapka score hai:</p>
+            <p>Amazing, <span id="result-name">User</span>!</p>
+            <p>Your Score is:</p>
             <h1 id="score">0 / 0</h1>
             <p id="feedback-message">Saving your result...</p>
             <button onclick="location.reload()">Take Test Again</button>
@@ -447,7 +447,7 @@
         }
 
         function sendDataToGoogleSheet(name, city, userScore, totalScore) {
-            if (!googleSheetScriptURL || googleSheetScriptURL === 'https://script.google.com/macros/s/AKfycbwFzcjclPfXTOoYvmUl6Rh8AEHUwpIcfo8EClcDSNnlzxvy35ulNdA3hwKyhGkfmhGv/exec') {
+            if (!googleSheetScriptURL || googleSheetScriptURL === 'url ') {
                 feedbackMessageEl.textContent = "Google Sheet URL not configured.";
                 return;
             }
@@ -459,14 +459,14 @@
             fetch(googleSheetScriptURL, { method: 'POST', body: formData })
                 .then(response => {
                     if (response.ok) {
-                        feedbackMessageEl.textContent = "Aapka result save ho gaya hai. 👍";
+                        feedbackMessageEl.textContent = "Your Result Has Been Submitted. 👍";
                     } else {
-                        feedbackMessageEl.textContent = "Result save karne mein masla hua. (Error)";
+                        feedbackMessageEl.textContent = "Error Occured While SubmittiResultng";
                     }
                 })
                 .catch(error => {
                     console.error('Error!', error.message);
-                    feedbackMessageEl.textContent = "Result save karne mein masla hua. (Network Error)";
+                    feedbackMessageEl.textContent = "Error Occured While SubmittiResultng (Network Error)";
                 });
         }
     });

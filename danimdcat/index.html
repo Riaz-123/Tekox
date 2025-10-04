@@ -447,7 +447,7 @@
         }
 
         function sendDataToGoogleSheet(name, city, userScore, totalScore) {
-            if (!googleSheetScriptURL || googleSheetScriptURL === 'https://script.google.com/macros/s/AKfycbyp_yl1f8aWSPz53WM2g9E6Jl4Ykiv_-6Xt0P_jKZ7Qz5m28j3x9foF5TObdCb3E2lc/exec') {
+            if (!googleSheetScriptURL || googleSheetScriptURL === '') {
                 feedbackMessageEl.textContent = "Google Sheet URL not configured.";
                 return;
             }

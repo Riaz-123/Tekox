@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lectures - Dani Medico</title>
     <link rel="icon" href="https://i.imgur.com/7bC9k0L.png" type="image/png">
-    <meta name="description" content="Access high-quality MDCAT video lectures covering all subjects. Organized by topic for effective learning and revision.">
-    <meta name="keywords" content="MDCAT lectures, medical entrance exam, MDCAT preparation, video lessons, Dani Medico">
+    <meta name="description" content="Access high-quality MDCAT video lectures from various top academies, all in one place.">
+    <meta name="keywords" content="MDCAT lectures, medical entrance exam, MDCAT preparation, video lessons, Dani Medico, academy lectures">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
 
         * {
             margin: 0;
@@ -19,7 +20,8 @@
         }
 
         body {
-            background: linear-gradient(135deg, #f0f2f5 0%, #e0e6ec 100%);
+            /* --- UPDATED ATTRACTIVE BACKGROUND --- */
+            background: linear-gradient(135deg, #e9f5ff 0%, #f5f7fa 100%);
             color: #333333;
             min-height: 100vh;
             line-height: 1.6;
@@ -27,7 +29,6 @@
             flex-direction: column;
         }
 
-        /* Utility Classes */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -35,10 +36,8 @@
         }
         
         main {
-            flex-grow: 1; /* Ensures the main content takes up available space */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-grow: 1;
+            padding: 40px 0;
         }
 
         /* Header Styles */
@@ -51,12 +50,6 @@
             top: 0;
             z-index: 1000;
             transition: all 0.3s ease;
-        }
-
-        .header.scrolled {
-            background: linear-gradient(90deg, #0056b3 0%, #0097a7 100%);
-            padding: 10px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .nav-container {
@@ -77,8 +70,6 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            object-fit: cover;
         }
 
         .logo-text h1 {
@@ -94,6 +85,7 @@
             display: flex;
             gap: 25px;
             align-items: center;
+            transition: transform 0.3s ease-in-out;
         }
 
         .nav-link {
@@ -114,36 +106,12 @@
             background: rgba(255, 255, 255, 0.25);
             font-weight: 600;
         }
-
-        .vip-badge {
-            background: linear-gradient(45deg, #ff6b00, #ff8e00);
-            color: white;
-            padding: 6px 15px;
-            border-radius: 18px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
+        
         .menu-toggle {
             display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 21px;
+            color: white;
+            font-size: 1.8rem;
             cursor: pointer;
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 100%;
-            height: 3px;
-            background-color: white;
-            border-radius: 2px;
-            transition: all 0.3s ease;
         }
 
         /* Lectures Section Styles */
@@ -151,13 +119,10 @@
             background: #ffffff;
             border-radius: 25px;
             padding: 50px;
-            width: 100%;
-            margin: 40px 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             border: 1px solid #e0e0e0;
         }
 
-        /* New Heading Style */
         .lectures-section h2 {
             color: #007bff;
             margin-bottom: 35px;
@@ -180,37 +145,58 @@
             border-radius: 2px;
         }
 
-        .lecture-grid {
+        .academy-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5 columns horizontally */
-            gap: 25px;
+            /* --- UPDATED TO 5 COLUMNS --- */
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px; /* Reduced gap slightly for 5 columns */
         }
 
-        .lecture-box {
-            background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            height: 120px;
+        .academy-box {
+            background: linear-gradient(to right, #007bff, #00d4ff);
+            color: white;
+            height: 100px; /* Adjusted height for a cleaner look */
             border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            border: 1px solid #f0f0f0;
+            box-shadow: 0 5px 20px rgba(0, 123, 255, 0.2);
+            border: none;
             transition: all 0.3s ease;
             text-decoration: none;
-            color: #333333;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem; /* Adjusted font size for text */
-            font-weight: 600;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem; /* Adjusted font size for 5 columns */
+            font-weight: 500;
             text-align: center;
             padding: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .academy-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: skewX(-20deg);
+            transition: all 0.5s ease;
         }
 
-        .lecture-box:hover {
+        .academy-box:hover {
             transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.15);
-            border-color: #007bff;
-            color: #007bff;
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.3);
         }
 
+        .academy-box:hover::before {
+            left: 100%;
+        }
+
+        /* Footer Styles */
         .footer {
             text-align: center;
             padding: 30px;
@@ -218,22 +204,17 @@
             font-size: 0.95rem;
             border-top: 1px solid #e0e0e0;
             background-color: #f0f2f5;
+            margin-top: 40px;
         }
-
-        /* Responsive Design */
+        
+        /* --- RESPONSIVE DESIGN FOR GRID --- */
         @media (max-width: 992px) {
-            .nav-links {
-                gap: 15px;
-            }
-            .lecture-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3 columns for tablets */
-            }
+            .academy-grid { grid-template-columns: repeat(3, 1fr); }
             .lectures-section h2 { font-size: 2.2rem; }
         }
 
         @media (max-width: 768px) {
-            .nav-container { flex-wrap: nowrap; }
-            .menu-toggle { display: flex; }
+            .menu-toggle { display: block; }
             .nav-links {
                 position: absolute;
                 top: 70px;
@@ -247,7 +228,6 @@
                 opacity: 0;
                 pointer-events: none;
                 z-index: 999;
-                transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
             }
             .nav-links.open {
                 transform: translateX(0%);
@@ -259,24 +239,15 @@
                 text-align: center;
                 margin: 5px auto;
                 padding: 12px 0;
-                background: rgba(255, 255, 255, 0.1);
             }
-            .lectures-section {
-                 padding: 40px 25px;
-            }
-            .lecture-grid {
-                grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller tablets/phones */
-            }
+            .lectures-section { padding: 40px 25px; }
+            .academy-grid { grid-template-columns: repeat(2, 1fr); }
             .lectures-section h2 { font-size: 2rem; }
         }
         
         @media (max-width: 480px) {
-            .logo-img { width: 40px; height: 40px; }
-            .logo-text h1 { font-size: 1.5rem; }
-            .lecture-box {
-                font-size: 1.2rem;
-                height: 100px;
-            }
+            .academy-grid { grid-template-columns: 1fr; }
+            .academy-box { font-size: 1.2rem; height: 90px; }
             .lectures-section h2 { font-size: 1.8rem; }
         }
     </style>
@@ -291,36 +262,31 @@
                 </div>
             </a>
             <div class="menu-toggle" id="mobile-menu">
-                <span></span>
-                <span></span>
-                <span></span>
+                <i class="fas fa-bars"></i>
             </div>
             <nav class="nav-links" id="main-nav">
-                <a href="lecture/index.html" class="nav-link active">Lectures</a>
+                <a href="lectures.html" class="nav-link active">Lectures</a>
                 <a href="mcqs.html" class="nav-link">MCQs</a>
                 <a href="notes.html" class="nav-link">Notes</a>
                 <a href="past_papers.html" class="nav-link">Past Papers</a>
-                <div class="vip-badge">
-                    <i class="fas fa-users"></i> 60,000+ Students
-                </div>
             </nav>
         </div>
     </header>
 
     <main class="container">
         <section class="lectures-section">
-            <h2>Lectures</h2>
-            <div class="lecture-grid">
-                <a href="page-1.html" class="lecture-box">WAK Academy</a>
-                <a href="page-2.html" class="lecture-box">WAK Academy</a>
-                <a href="page-3.html" class="lecture-box">WAK Academy</a>
-                <a href="page-4.html" class="lecture-box">WAK Academy</a>
-                <a href="page-5.html" class="lecture-box">WAK Academy</a>
-                <a href="page-6.html" class="lecture-box">WAK Academy</a>
-                <a href="page-7.html" class="lecture-box">WAK Academy</a>
-                <a href="page-8.html" class="lecture-box">WAK Academy</a>
-                <a href="page-9.html" class="lecture-box">WAK Academy</a>
-                <a href="page-10.html" class="lecture-box">WAK Academy</a>
+            <h2><i class="fas fa-chalkboard-teacher"></i> Lectures</h2>
+            <div class="academy-grid">
+                <a href="#" class="academy-box">WAK Academy</a>
+                <a href="#" class="academy-box">KIPS Academy</a>
+                <a href="#" class="academy-box">STEP Academy</a>
+                <a href="#" class="academy-box">Nearpeer</a>
+                <a href="#" class="academy-box">Star Academy</a>
+                <a href="#" class="academy-box">GRIP Institute</a>
+                <a href="#" class="academy-box">UHS Lectures</a>
+                <a href="#" class="academy-box">PMC Videos</a>
+                <a href="#" class="academy-box">Future Medicos</a>
+                <a href="#" class="academy-box">Top Institute</a>
             </div>
         </section>
     </main>
@@ -330,35 +296,11 @@
     </footer>
 
     <script>
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Mobile menu toggle
         const mobileMenu = document.getElementById('mobile-menu');
         const mainNav = document.getElementById('main-nav');
-
         mobileMenu.addEventListener('click', () => {
             mainNav.classList.toggle('open');
-            mobileMenu.classList.toggle('active');
-        });
-
-        // Close menu when a link is clicked (for mobile)
-        document.querySelectorAll('#main-nav .nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (mainNav.classList.contains('open')) {
-                    mainNav.classList.remove('open');
-                    mobileMenu.classList.remove('active');
-                }
-            });
         });
     </script>
 </body>
 </html>
-

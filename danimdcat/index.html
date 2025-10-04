@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANI MDCAT PREPARATION</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="user-form">
+            <h1>DANI MDCAT Mock Test</h1>
+            <p>Test shuru karne se pehle apni details enter karein.</p>
+            <input type="text" id="userName" placeholder="Apna Naam Likhein" required>
+            <input type="text" id="userCity" placeholder="Apna Sheher (City) Likhein" required>
+            <button id="start-btn">Start Test</button>
+        </div>
+
+        <div id="quiz-container" class="hidden">
+            <div id="quiz-header">
+                <h2 id="subject-title">Subject</h2>
+                <p>Question <span id="question-number">1</span> of <span id="total-questions">200</span></p>
+            </div>
+            <p id="question-text">Yahan sawal ayega...</p>
+            <div id="options-container">
+                </div>
+            <button id="next-btn">Next</button>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <h2>Test Complete!</h2>
+            <p>Shabash, <span id="result-name">User</span>!</p>
+            <p>Aapka score hai:</p>
+            <h1 id="score">0 / 0</h1>
+            <p id="feedback-message">Saving your result...</p>
+            <button onclick="location.reload()">Take Test Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

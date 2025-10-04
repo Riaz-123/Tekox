@@ -1462,7 +1462,7 @@ function showResults() {
 }
 
 function sendDataToGoogleSheet(name, city, userScore, totalScore) {
-    if (!googleSheetScriptURL || googleSheetScriptURL === 'YAHAN_APNA_GOOGLE_SHEET_SCRIPT_URL_PASTE_KAREIN') {
+    if (!googleSheetScriptURL || googleSheetScriptURL === 'https://script.google.com/macros/s/AKfycbwFzcjclPfXTOoYvmUl6Rh8AEHUwpIcfo8EClcDSNnlzxvy35ulNdA3hwKyhGkfmhGv/exec') {
         feedbackMessageEl.textContent = "Google Sheet URL not configured.";
         return;
     }

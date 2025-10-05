@@ -74,27 +74,26 @@
             margin-bottom: 1.5rem;
         }
         .option-btn {
-    background-color: #f0f2f5;
-    border: 1px solid #ddd;
-    text-align: left;
-    padding: 15px;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1rem;
-    transition: background-color 0.3s, border-color 0.3s;
-    color: #1877f2;         /* Text Color Blue - YEH LINE ADD HUI HAI */
-    font-weight: bold;       /* Text ko Bold kiya - YEH LINE BHI ADD HUI HAI */
+            background-color: #f0f2f5;
+            border: 1px solid #ddd;
+            text-align: left;
+            padding: 15px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s, border-color 0.3s;
+            color: #1877f2;
+            font-weight: bold;
         }
         .option-btn:hover {
             background-color: #aebfe8;
         }
         .option-btn.selected {
-         background-color: #d7e6ff; /* Light Blue Background */
-         border-color: #1877f2;   /* Blue Border */
-         font-weight: bold;
-         color: #1877f2;         /* Dark Blue Text - YEH NAYI LINE HAI */
-}
+            background-color: #d7e6ff;
+            border-color: #1877f2;
+            font-weight: bold;
+            color: #1877f2;
         }
         #result-container h2 {
             color: #4caf50;
@@ -119,7 +118,7 @@
         <div id="quiz-container" class="hidden">
             <div id="quiz-header">
                 <h2 id="subject-title">Subject</h2>
-                <p>Question <span id="question-number">1</span> of <span id="total-questions">195</span></p>
+                <p>Question <span id="question-number">1</span> of <span id="total-questions">180</span></p>
             </div>
             <p id="question-text">Yahan sawal ayega...</p>
             <div id="options-container"></div>
@@ -141,306 +140,281 @@
         const googleSheetScriptURL = 'https://script.google.com/macros/s/AKfycbyp_yl1f8aWSPz53WM2g9E6Jl4Ykiv_-6Xt0P_jKZ7Qz5m28j3x9foF5TObdCb3E2lc/exec';
 
         const quizData = [
-            // =========== BIOLOGY (All 81 MCQs) ============
-            { subject: "Biology", question: "Which of the following statements accurately describe the role of the liver in homeostasis?\nI. It converts toxic ammonia into less toxic urea via the ornithine cycle.\nII. It deaminates excess amino acids, producing keto acids that can enter cellular respiration.\nIII. It serves as the primary site for the production of the hormone erythropoietin.\nIV. It plays a key role in the regulation of blood glucose levels by glycogenesis and glycogenolysis.", options: ["I and II only", "I, II, and IV only", "II and III only", "I, II, III, and IV"], answer: "b" },
+            // =========== BIOLOGY (81 MCQs) ============
+            { subject: "Biology", question: "Which of the following statements accurately describe the role of the liver in homeostasis? \nI. It converts toxic ammonia into less toxic urea via the ornithine cycle. \nII. It deaminates excess amino acids, producing keto acids that can enter cellular respiration. \nIII. It serves as the primary site for the production of the hormone erythropoietin. \nIV. It plays a key role in the regulation of blood glucose levels by glycogenesis and glycogenolysis.", options: ["I and II only", "I, II, and IV only", "II and III only", "I, II, III, and IV"], answer: "b" },
             { subject: "Biology", question: "All of the following are correct comparisons between cortical and juxtamedullary nephrons EXCEPT:", options: ["Cortical nephrons have their renal corpuscles in the outer cortex, while juxtamedullary nephrons have theirs near the corticomedullary junction.", "Cortical nephrons have a short loop of Henle, while juxtamedullary nephrons have a long loop extending deep into the medulla.", "Cortical nephrons are involved in producing concentrated urine, while juxtamedullary nephrons are not.", "Cortical nephrons are more numerous than juxtamedullary nephrons."], answer: "c" },
-            { subject: "Biology", question: "The diagram shows a negative feedback loop for blood calcium regulation. If blood calcium levels decrease, which hormone is released, and what is its primary effect? (Image for this question is in the PDF)", options: ["Parathyroid Hormone (PTH); increases bone resorption and calcium reabsorption in kidneys", "Calcitonin; decreases bone resorption and increases calcium deposition in bones", "Aldosterone; increases sodium and calcium reabsorption in kidneys", "ADH; increases water reabsorption to concentrate calcium in blood"], answer: "a" },
-            { subject: "Biology", question: "A patient presents with symptoms of extreme thirst, frequent urination, and high blood glucose levels. A deficiency in which hormone is the most likely cause?", options: ["Glucagon", "Insulin", "Aldosterone", "ADH (Antidiuretic Hormone)"], answer: "b" },
-            { subject: "Biology", question: "Which part of the brain is primarily responsible for coordinating voluntary muscle movements, posture, and balance?", options: ["Cerebrum", "Cerebellum", "Medulla oblongata", "Hypothalamus"], answer: "b" },
-            { subject: "Biology", question: "During the transmission of a nerve impulse, the influx of which ion causes depolarization of the neuron's membrane?", options: ["Potassium (K+)", "Chloride (Cl-)", "Sodium (Na+)", "Calcium (Ca2+)"], answer: "c" },
-            { subject: "Biology", question: "Which of the following correctly describes the function of the corpus luteum?", options: ["It secretes FSH to stimulate follicular growth.", "It secretes progesterone and some estrogen to maintain the uterine lining.", "It is the site of fertilization.", "It secretes LH to trigger ovulation."], answer: "b" },
-            { subject: "Biology", question: "In the human male reproductive system, the Sertoli cells are responsible for:", options: ["Producing testosterone", "Nourishing developing sperm cells", "Producing seminal fluid", "Storing mature sperm"], answer: "b" },
-            { subject: "Biology", question: "Which of the following is an example of a vestigial organ in humans?", options: ["Pancreas", "Spleen", "Appendix", "Gallbladder"], answer: "c" },
-            { subject: "Biology", question: "According to the theory of evolution by natural selection, what is the primary driving force behind the adaptation of species?", options: ["The desire of organisms to become more complex.", "The inheritance of acquired characteristics.", "The differential survival and reproduction of individuals with advantageous traits.", "The random chance of mutations occurring."], answer: "c" },
-            { subject: "Biology", question: "A cross between a homozygous red-flowered plant (RR) and a homozygous white-flowered plant (rr) results in all pink-flowered offspring (Rr). This is an example of:", options: ["Complete dominance", "Codominance", "Incomplete dominance", "Epistasis"], answer: "c" },
-            { subject: "Biology", question: "In a dihybrid cross between two heterozygous individuals (e.g., RrYy x RrYy), what is the expected phenotypic ratio of the offspring?", options: ["1:2:1", "3:1", "9:3:3:1", "1:1:1:1"], answer: "c" },
-            { subject: "Biology", question: "Which of the following is a characteristic of prokaryotic cells?", options: ["Presence of a true nucleus", "Presence of membrane-bound organelles", "A single, circular chromosome", "Linear chromosomes complexed with histones"], answer: "c" },
-            { subject: "Biology", question: "The fluid mosaic model describes the plasma membrane as consisting of:", options: ["A rigid wall of cellulose and proteins.", "A phospholipid bilayer with proteins embedded in it.", "A single layer of phospholipids with a protein coat.", "A protein bilayer with phospholipids on the surface."], answer: "b" },
-            { subject: "Biology", question: "Which organelle is responsible for modifying, sorting, and packaging proteins and lipids for secretion or delivery to other organelles?", options: ["Ribosome", "Endoplasmic Reticulum", "Golgi apparatus", "Lysosome"], answer: "c" },
-            { subject: "Biology", question: "Which of the following is a key difference between mitosis and meiosis?", options: ["Mitosis produces diploid cells, while meiosis produces haploid cells.", "Mitosis involves two rounds of cell division, while meiosis involves one.", "Synapsis and crossing over occur in mitosis but not in meiosis.", "Mitosis is involved in sexual reproduction, while meiosis is for growth and repair."], answer: "a" },
-            { subject: "Biology", question: "Which of the following biological molecules are composed of amino acid monomers?", options: ["Carbohydrates", "Lipids", "Proteins", "Nucleic acids"], answer: "c" },
-            { subject: "Biology", question: "The secondary structure of a protein, such as the alpha-helix or beta-pleated sheet, is stabilized by:", options: ["Peptide bonds", "Hydrogen bonds", "Ionic bonds", "Disulfide bridges"], answer: "b" },
-            { subject: "Biology", question: "Enzymes increase the rate of a biochemical reaction by:", options: ["Increasing the activation energy.", "Lowering the activation energy.", "Increasing the free energy of the products.", "Decreasing the free energy of the reactants."], answer: "b" },
-            { subject: "Biology", question: "Which of the following is a function of ATP in cells?", options: ["Long-term energy storage", "Serving as a structural component of membranes", "Providing energy for cellular activities", "Acting as a genetic material"], answer: "c" },
-            { subject: "Biology", question: "Which stage of cellular respiration produces the most ATP?", options: ["Glycolysis", "Krebs cycle", "Oxidative phosphorylation (Electron Transport Chain)", "Fermentation"], answer: "c" },
-            { subject: "Biology", question: "During photosynthesis, where do the light-dependent reactions take place?", options: ["Stroma of the chloroplast", "Thylakoid membrane of the chloroplast", "Cytoplasm of the cell", "Mitochondrial matrix"], answer: "b" },
-            { subject: "Biology", question: "Which of the following is the correct sequence of organs in the human digestive system?", options: ["Esophagus, stomach, large intestine, small intestine", "Stomach, esophagus, small intestine, large intestine", "Esophagus, stomach, small intestine, large intestine", "Stomach, small intestine, esophagus, large intestine"], answer: "c" },
-            { subject: "Biology", question: "Gas exchange in the lungs occurs in the:", options: ["Bronchi", "Trachea", "Alveoli", "Pharynx"], answer: "c" },
-            { subject: "Biology", question: "Which component of blood is primarily responsible for oxygen transport?", options: ["Plasma", "White blood cells", "Platelets", "Red blood cells (hemoglobin)"], answer: "d" },
-            { subject: "Biology", question: "Which of the following represents the correct flow of blood through the heart?", options: ["Right atrium -> Right ventricle -> Lungs -> Left atrium -> Left ventricle -> Body", "Left atrium -> Left ventricle -> Lungs -> Right atrium -> Right ventricle -> Body", "Right atrium -> Left atrium -> Lungs -> Right ventricle -> Left ventricle -> Body", "Left atrium -> Right atrium -> Lungs -> Left ventricle -> Right ventricle -> Body"], answer: "a" },
-            { subject: "Biology", question: "Which of the following is a characteristic of the innate immune system?", options: ["It has a memory of past infections.", "It provides a rapid, non-specific response to pathogens.", "It involves the production of antibodies.", "It is mediated by T-lymphocytes and B-lymphocytes."], answer: "b" },
-            { subject: "Biology", question: "Which of the following is NOT a component of the axial skeleton?", options: ["Skull", "Vertebral column", "Rib cage", "Pelvic girdle"], answer: "d" },
-            { subject: "Biology", question: "The sliding filament theory explains muscle contraction as the sliding of:", options: ["Myosin filaments over actin filaments", "Actin filaments over myosin filaments", "Troponin over tropomyosin", "Calcium ions over actin filaments"], answer: "b" },
-            { subject: "Biology", question: "Which plant hormone is primarily responsible for promoting cell elongation, apical dominance, and root formation?", options: ["Gibberellin", "Cytokinin", "Auxin", "Abscisic acid"], answer: "c" },
-            { subject: "Biology", question: "Which of the following is a defining characteristic of angiosperms?", options: ["They produce seeds in cones.", "They have vascular tissue.", "They produce flowers and fruits.", "They are non-vascular plants."], answer: "c" },
-            { subject: "Biology", question: "Which of the following organisms belongs to the Kingdom Fungi?", options: ["Algae", "Mosses", "Yeast", "Amoeba"], answer: "c" },
-            { subject: "Biology", question: "Which of the following is a characteristic of viruses?", options: ["They are cellular organisms.", "They can reproduce independently.", "They are obligate intracellular parasites.", "They have their own metabolic machinery."], answer: "c" },
-            { subject: "Biology", question: "What is the primary role of bacteria in an ecosystem?", options: ["Primary producers", "Primary consumers", "Decomposers", "Tertiary consumers"], answer: "c" },
-            { subject: "Biology", question: "Which of the following is the correct hierarchical order of biological classification?", options: ["Kingdom, Phylum, Class, Order, Family, Genus, Species", "Kingdom, Phylum, Order, Class, Family, Genus, Species", "Kingdom, Class, Phylum, Order, Family, Genus, Species", "Kingdom, Phylum, Class, Family, Order, Genus, Species"], answer: "a" },
-            { subject: "Biology", question: "Which of the following best describes the process of transcription?", options: ["The synthesis of a protein from an mRNA template.", "The synthesis of an RNA molecule from a DNA template.", "The replication of a DNA molecule.", "The synthesis of a DNA molecule from an RNA template."], answer: "b" },
-            { subject: "Biology", question: "Which type of RNA is responsible for carrying amino acids to the ribosome during protein synthesis?", options: ["Messenger RNA (mRNA)", "Transfer RNA (tRNA)", "Ribosomal RNA (rRNA)", "Small nuclear RNA (snRNA)"], answer: "b" },
-            { subject: "Biology", question: "A point mutation that results in a codon that codes for a different amino acid is called a:", options: ["Silent mutation", "Nonsense mutation", "Missense mutation", "Frameshift mutation"], answer: "c" },
-            { subject: "Biology", question: "Which of the following techniques is used to amplify a specific segment of DNA?", options: ["Gel electrophoresis", "Polymerase Chain Reaction (PCR)", "Southern blotting", "DNA sequencing"], answer: "b" },
-            { subject: "Biology", question: "What is the primary goal of the Human Genome Project?", options: ["To create a genetically modified human.", "To identify and map all the genes in human DNA.", "To clone a human being.", "To cure all genetic diseases."], answer: "b" },
-            { subject: "Biology", question: "Which of the following is a potential application of biotechnology?", options: ["Production of genetically modified crops with improved nutritional value.", "Development of new vaccines and diagnostic tests.", "Use of bacteria to clean up oil spills.", "All of the above"], answer: "d" },
-            { subject: "Biology", question: "Which of the following is an example of a density-dependent limiting factor in a population?", options: ["Earthquake", "Flood", "Disease", "Drought"], answer: "c" },
-            { subject: "Biology", question: "The process by which nitrogen gas from the atmosphere is converted into ammonia by certain bacteria is called:", options: ["Nitrification", "Denitrification", "Nitrogen fixation", "Ammonification"], answer: "c" },
-            { subject: "Biology", question: "The primary cause of acid rain is the release of which pollutants into the atmosphere?", options: ["Carbon dioxide and methane", "Sulfur dioxide and nitrogen oxides", "Ozone and chlorofluorocarbons", "Carbon monoxide and lead"], answer: "b" },
-            { subject: "Biology", question: "The diagram shows a simplified food web. Which organism is a primary consumer? (Image for this question is in the PDF)", options: ["Grass", "Rabbit", "Fox", "Hawk"], answer: "b" },
-            { subject: "Biology", question: "The role of a species within its ecosystem, including its habitat, diet, and interactions with other species, is known as its:", options: ["Niche", "Community", "Population", "Trophic level"], answer: "a" },
-            { subject: "Biology", question: "Which of the following is a consequence of deforestation?", options: ["Increased biodiversity", "Soil erosion and desertification", "Improved air quality", "Reduced atmospheric carbon dioxide"], answer: "b" },
-            { subject: "Biology", question: "Which part of the light microscope is used to adjust the amount of light reaching the specimen?", options: ["Eyepiece (Ocular lens)", "Objective lens", "Diaphragm", "Fine adjustment knob"], answer: "c" },
-            { subject: "Biology", question: "Which of the following laboratory techniques is used to separate molecules based on their size and charge?", options: ["Spectrophotometry", "Centrifugation", "Gel electrophoresis", "Chromatography"], answer: "c" },
-            { subject: "Biology", question: "A student wants to observe the internal structures of a chloroplast. Which type of microscope would be most suitable for this purpose?", options: ["Simple light microscope", "Compound light microscope", "Transmission electron microscope (TEM)", "Scanning electron microscope (SEM)"], answer: "c" },
-            { subject: "Biology", question: "In the scientific method, what is the next step after formulating a hypothesis?", options: ["Drawing a conclusion", "Conducting an experiment", "Formulating a theory", "Making observations"], answer: "b" },
-            { subject: "Biology", question: "A controlled experiment is one in which:", options: ["There are multiple variables that are changed at the same time.", "There is no control group.", "Only one variable is tested at a time, while all other conditions are kept constant.", "The results are known before the experiment is conducted."], answer: "c" },
-            { subject: "Biology", question: "Which safety precaution should be taken when heating a substance in a test tube?", options: ["Point the test tube towards yourself to see the reaction clearly.", "Seal the test tube with a rubber stopper.", "Point the test tube away from yourself and others.", "Fill the test tube to the top with the substance."], answer: "c" },
-            { subject: "Biology", question: "What is the total magnification of a microscope with an eyepiece of 10x and an objective lens of 40x?", options: ["10x", "40x", "50x", "400x"], answer: "d" },
-            { subject: "Biology", question: "Which of the following is the most appropriate unit for measuring the size of a bacterial cell?", options: ["Millimeter (mm)", "Micrometer (μm)", "Nanometer (nm)", "Centimeter (cm)"], answer: "b" },
-            { subject: "Biology", question: "Which of the following is a characteristic of living organisms?", options: ["Ability to move", "Ability to respond to stimuli", "Presence of a cell wall", "Absence of a nucleus"], answer: "b" },
-            { subject: "Biology", question: "The basic unit of life is the:", options: ["Atom", "Molecule", "Cell", "Organ"], answer: "c" },
-            { subject: "Biology", question: "A group of similar cells that perform a specific function is called a(n):", options: ["Organ", "Organ system", "Tissue", "Organism"], answer: "c" },
-            { subject: "Biology", question: "Homeostasis is the ability of an organism to:", options: ["Maintain a stable internal environment.", "Change in response to the external environment.", "Grow and develop.", "Reproduce sexually."], answer: "a" },
-            { subject: "Biology", question: "Which of the following is an example of a positive feedback mechanism?", options: ["Regulation of blood glucose levels", "Regulation of body temperature", "Blood clotting", "Regulation of blood pressure"], answer: "c" },
-            { subject: "Biology", question: "The process by which organisms with favorable traits are more likely to survive and reproduce is called:", options: ["Artificial selection", "Natural selection", "Genetic drift", "Gene flow"], answer: "b" },
-            { subject: "Biology", question: "Which of the following is a source of genetic variation in a population?", options: ["Mitosis", "Asexual reproduction", "Mutation", "All of the above"], answer: "c" },
-            { subject: "Biology", question: "The Hardy-Weinberg principle describes a population that is:", options: ["Evolving", "Not evolving", "Undergoing natural selection", "Experiencing genetic drift"], answer: "b" },
-            { subject: "Biology", question: "The formation of new species is called:", options: ["Speciation", "Adaptation", "Evolution", "Extinction"], answer: "a" },
-            { subject: "Biology", question: "Homologous structures are structures that:", options: ["Have a similar function but different evolutionary origins.", "Have a different function but a similar evolutionary origin.", "Are identical in structure and function.", "Are found in unrelated organisms."], answer: "b" },
-            { subject: "Biology", question: "The study of the interactions between organisms and their environment is called:", options: ["Ecology", "Genetics", "Physiology", "Anatomy"], answer: "a" },
-            { subject: "Biology", question: "A community of organisms and their physical environment is called a(n):", options: ["Population", "Ecosystem", "Biome", "Biosphere"], answer: "b" },
-            { subject: "Biology", question: "The flow of energy in an ecosystem is:", options: ["Cyclical", "One-way", "Two-way", "Random"], answer: "b" },
-            { subject: "Biology", question: "Which of the following is a biotic factor in an ecosystem?", options: ["Sunlight", "Water", "Temperature", "Plants"], answer: "d" },
-            { subject: "Biology", question: "The relationship between two organisms in which both benefit is called:", options: ["Commensalism", "Mutualism", "Parasitism", "Predation"], answer: "b" },
-            { subject: "Biology", question: "The process by which water moves from the roots of a plant to its leaves and evaporates is called:", options: ["Photosynthesis", "Respiration", "Transpiration", "Guttation"], answer: "c" },
-            { subject: "Biology", question: "The xylem tissue in plants is responsible for transporting:", options: ["Water and minerals", "Sugar and organic nutrients", "Hormones", "Gases"], answer: "a" },
-            { subject: "Biology", question: "The phloem tissue in plants is responsible for transporting:", options: ["Water and minerals", "Sugar and organic nutrients", "Hormones", "Gases"], answer: "b" },
-            { subject: "Biology", question: "The opening in a leaf that allows for gas exchange is called a:", options: ["Stoma", "Guard cell", "Cuticle", "Mesophyll"], answer: "a" },
-            { subject: "Biology", question: "Which of the following is a function of the roots of a plant?", options: ["Anchoring the plant in the soil", "Absorbing water and minerals", "Storing food", "All of the above"], answer: "d" },
-            { subject: "Biology", question: "The male part of a flower is called the:", options: ["Pistil", "Stamen", "Petal", "Sepal"], answer: "b" },
-            { subject: "Biology", question: "The female part of a flower is called the:", options: ["Pistil", "Stamen", "Petal", "Sepal"], answer: "a" },
-            { subject: "Biology", question: "The transfer of pollen from the anther to the stigma of a flower is called:", options: ["Fertilization", "Pollination", "Germination", "Dispersal"], answer: "b" },
-            { subject: "Biology", question: "After fertilization, the ovary of a flower develops into a:", options: ["Seed", "Fruit", "Spore", "Gametophyte"], answer: "b" },
-            { subject: "Biology", question: "The process by which a seed develops into a new plant is called:", options: ["Fertilization", "Pollination", "Germination", "Dispersal"], answer: "c" },
-            
-            // =========== CHEMISTRY (All 45 MCQs) ============
-            { subject: "Chemistry", question: "The position of sulphur (Z=16) in the Periodic Table is period 3 and group VIA, predicted from its:", options: ["atomic mass", "number of neutrons", "valence shell electronic configuration", "isotopic composition"], answer: "c" },
-            { subject: "Chemistry", question: "The complex [Co(en)₃]Cl₃, where 'en' is ethylenediamine, has a coordination number of:", options: ["3", "6", "9", "12"], answer: "b" },
-            { subject: "Chemistry", question: "The primary purpose of 'cracking' in the petroleum industry is to increase the yield of:", options: ["asphalt", "lubricating oil", "gasoline", "kerosene"], answer: "c" },
-            { subject: "Chemistry", question: "The IUPAC name for the compound CH₃COCl is:", options: ["Methanoyl chloride", "Acetyl chloride", "Ethanoyl chloride", "Chloro ethanoate"], answer: "c" },
-            { subject: "Chemistry", question: "The order of base strength for methyl-substituted amines in aqueous solution is:", options: ["(CH₃)₃N > (CH₃)₂NH > CH₃NH₂", "(CH₃)₂NH > (CH₃)₃N > CH₃NH₂", "CH₃NH₂ > (CH₃)₂NH > (CH₃)₃N", "(CH₃)₂NH > CH₃NH₂ > (CH₃)₃N"], answer: "d" },
-            { subject: "Chemistry", question: "Lucas reagent reacts most rapidly with:", options: ["Primary alcohols", "Secondary alcohols", "Tertiary alcohols", "Methanol"], answer: "c" },
-            { subject: "Chemistry", question: "The hybridization states of the two carbon atoms in a carbonyl group (C=O) are:", options: ["sp³ and sp³", "sp² and sp²", "sp² and sp", "sp³ and sp²"], answer: "d" },
-            { subject: "Chemistry", question: "The reaction: R-COOH + PCl₅ → R COCl + POCl₃ + HCl, is used for the preparation of:", options: ["Acid anhydrides", "Esters", "Amides", "Acyl chlorides"], answer: "d" },
-            { subject: "Chemistry", question: "The catalyst used in the oxidation of SO₂ to SO₃ in the Contact Process is:", options: ["Finely divided iron", "Vanadium pentoxide (V₂O₅)", "Nickel", "Platinum"], answer: "b" },
-            { subject: "Chemistry", question: "Which of the following compounds will give a effervescence with NaHCO₃ and also a positive Tollen's test?", options: ["Acetic acid", "Formic acid", "Acetone", "Ethanol"], answer: "b" },
-            { subject: "Chemistry", question: "The element that forms a protective oxide layer rendering it passive against conc) HNO₃ is:", options: ["Lithium", "Sodium", "Beryllium", "Magnesium"], answer: "a" },
-            { subject: "Chemistry", question: "The magnetic moment of an ion is primarily determined by its number of:", options: ["protons", "neutrons", "unpaired electrons", "electron shells"], answer: "c" },
-            { subject: "Chemistry", question: "The process that converts straight chain hydrocarbons into branched-chain hydrocarbons to improve fuel quality is:", options: ["Cracking", "Reforming", "Refining", "Pyrolysis"], answer: "b" },
-            { subject: "Chemistry", question: "The IUPAC name for the alkyl group derived from propane, -CH(CH₃)₂, is:", options: ["Ethyl", "Isopropyl", "Propyl", "sec-Propyl"], answer: "b" },
-            { subject: "Chemistry", question: "In the Grignard reagent R-Mg-X, the carbon-magnesium bond is:", options: ["Ionic", "Non-polar covalent", "Polar covalent with carbon δ⁻", "Polar covalent with carbon δ⁺"], answer: "c" },
-            { subject: "Chemistry", question: "The compound that is dehydrated most easily by concentrated H₂SO₄ is:", options: ["CH₃CH₂OH", "(CH₃)₂CHOH", "(CH₃)₃COH", "CH₃OH"], answer: "c" },
-            { subject: "Chemistry", question: "The final product of the oxidation of a primary alcohol with pyridinium chlorochromate (PCC) is:", options: ["A carboxylic acid", "An aldehyde", "A ketone", "An alkene"], answer: "b" },
-            { subject: "Chemistry", question: "The carboxylic acid that decolorizes acidified KMnO₄ solution is:", options: ["Acetic acid", "Benzoic acid", "Formic acid", "Stearic acid"], answer: "c" },
-            { subject: "Chemistry", question: "The industrial process that produces chlorine and sodium hydroxide simultaneously is:", options: ["Haber Process", "Contact Process", "Castner-Kellner Process", "Solvay Process"], answer: "c" },
-            { subject: "Chemistry", question: "When oxalic acid is heated with concentrated H₂SO₄, the gases produced are:", options: ["CO and CO₂", "CO₂ and H₂", "CO and H₂O vapor", "CO₂ and H₂O vapor"], answer: "a" },
-            { subject: "Chemistry", question: "The number of molecules in 16g of methane is:", options: ["6.02 × 10²³", "3.01 × 10²³", "12.04 × 10²³", "18.06 × 10²³"], answer: "a" },
-            { subject: "Chemistry", question: "The mass of 11.2 L of CO₂ at STP is:", options: ["22g", "44g", "11g", "33g"], answer: "a" },
-            { subject: "Chemistry", question: "The empirical formula of a compound with 40% carbon and 6.7% hydrogen is:", options: ["CH", "CH₂", "CH₂O", "C₂H₄O"], answer: "c" },
-            { subject: "Chemistry", question: "The maximum number of electrons in f-subshell is:", options: ["2", "6", "10", "14"], answer: "d" },
-            { subject: "Chemistry", question: "The energy of electron in hydrogen atom is minimum when n equals:", options: ["1", "2", "3", "∞"], answer: "a" },
-            { subject: "Chemistry", question: "The number of orbitals in third shell is:", options: ["3", "5", "7", "9"], answer: "d" },
-            { subject: "Chemistry", question: "The bond angle in water is less than methane due to:", options: ["Higher electronegativity", "Lone pair repulsion", "Smaller size", "sp² hybridization"], answer: "b" },
-            { subject: "Chemistry", question: "The hybridization in BF₃ is:", options: ["sp", "sp²", "sp³", "dsp²"], answer: "b" },
-            { subject: "Chemistry", question: "The shape of PCl₅ molecule is:", options: ["Linear", "Trigonal bipyramidal", "Octahedral", "Square planar"], answer: "b" },
-            { subject: "Chemistry", question: "The volume of 4g of helium at STP is:", options: ["11.2 L", "22.4 L", "44.8 L", "67.2 L"], answer: "b" },
-            { subject: "Chemistry", question: "The RMS velocity of gas molecules is inversely proportional to:", options: ["√T", "√M", "√P", "√V"], answer: "b" },
-            { subject: "Chemistry", question: "At constant volume, pressure of gas is proportional to:", options: ["Temperature", "Volume", "Number of moles", "Density"], answer: "a" },
-            { subject: "Chemistry", question: "Water shows maximum density at:", options: ["0°C", "4°C", "10°C", "100°C"], answer: "b" },
-            { subject: "Chemistry", question: "The rise of liquid in capillary tube is directly proportional to:", options: ["Density", "Surface tension", "Viscosity", "Temperature"], answer: "b" },
-            { subject: "Chemistry", question: "The number of atoms in simple cubic unit cell is:", options: ["1", "2", "4", "6"], answer: "a" },
-            { subject: "Chemistry", question: "Graphite is good conductor due to:", options: ["Free electrons", "Metallic bonds", "Ionic bonds", "Hydrogen bonds"], answer: "a" },
-            { subject: "Chemistry", question: "The coordination number in FCC lattice is:", options: ["6", "8", "12", "14"], answer: "c" },
-            { subject: "Chemistry", question: "For H₂ + I₂ ⇌ 2HI, the unit of Kc is:", options: ["mol/L", "mol²/L²", "L/mol", "No unit"], answer: "d" },
-            { subject: "Chemistry", question: "Adding inert gas at constant volume to equilibrium:", options: ["Shifts equilibrium", "No effect", "Increases pressure", "Decreases concentration"], answer: "b" },
-            { subject: "Chemistry", question: "For endothermic reaction, increase in temperature:", options: ["Favors forward reaction", "Favors backward reaction", "No effect", "Stops reaction"], answer: "a" },
-            { subject: "Chemistry", question: "The pH of 10⁻⁵ M HCl is:", options: ["5", "7", "9", "12"], answer: "a" },
-            { subject: "Chemistry", question: "The conjugate base of H₂O is:", options: ["H₃O⁺", "OH⁻", "O²⁻", "H₂O₂"], answer: "b" },
-            { subject: "Chemistry", question: "The unit of rate constant for zero order reaction is:", options: ["s⁻¹", "mol L⁻¹ s⁻¹", "L mol⁻¹ s⁻¹", "L² mol⁻² s⁻¹"], answer: "b" },
-            { subject: "Chemistry", question: "In electrolysis, oxidation occurs at:", options: ["Anode", "Cathode", "Both electrodes", "Salt bridge"], answer: "a" },
-            { subject: "Chemistry", question: "During discharge of lead-acid battery:", options: ["PbO₂ is reduced", "Pb is oxidized", "Both (a) and (b)", "H₂SO₄ is oxidized"], answer: "c" },
-
-            // =========== PHYSICS (All 45 MCQs) ============
-            { subject: "Physics", question: "The critical angle for a beam of light passing from glass to air is 45 degrees. The refractive index of glass is:", options: ["1.5", "2.0", "1.414", "1.732"], answer: "c" },
-            { subject: "Physics", question: "A convex lens of focal length 20 cm is placed in contact with a concave lens of focal length 40 cm. The power of the combination is:", options: ["-2.5 D", "+2.5 D", "-1.5 D", "+1.5 D"], answer: "b" },
-            { subject: "Physics", question: "In Young's double-slit experiment, the fringe width is given by:", options: ["λD/d", "λd/D", "dD/λ", "λ/dD"], answer: "a" },
-            { subject: "Physics", question: "The phenomenon of polarization of light proves that light waves are:", options: ["longitudinal", "transverse", "mechanical", "stationary"], answer: "b" },
-            { subject: "Physics", question: "The resolving power of a microscope can be increased by:", options: ["increasing the wavelength of light", "decreasing the diameter of the objective lens", "using an oil immersion objective", "decreasing the refractive index of the medium"], answer: "c" },
-            { subject: "Physics", question: "According to Einstein's photoelectric equation, the kinetic energy of emitted electrons is proportional to the:", options: ["intensity of incident light", "frequency of incident light", "wavelength of incident light", "speed of incident light"], answer: "b" },
-            { subject: "Physics", question: "The de Broglie wavelength of a particle is inversely proportional to its:", options: ["mass", "velocity", "momentum", "energy"], answer: "c" },
-            { subject: "Physics", question: "The energy of a photon is given by:", options: ["E = mc²", "E = hf", "E = 1/2 mv²", "E = Fd"], answer: "b" },
-            { subject: "Physics", question: "The process of pair production involves the creation of an electron and a positron from a:", options: ["proton", "neutron", "photon", "neutrino"], answer: "c" },
-            { subject: "Physics", question: "The half-life of a radioactive substance is 10 days. The time taken for 3/4 of the substance to decay is:", options: ["10 days", "20 days", "30 days", "40 days"], answer: "b" },
-            { subject: "Physics", question: "The binding energy per nucleon is maximum for:", options: ["Hydrogen", "Helium", "Iron", "Uranium"], answer: "c" },
-            { subject: "Physics", question: "In a nuclear reactor, the moderator is used to:", options: ["absorb neutrons", "slow down neutrons", "speed up neutrons", "produce neutrons"], answer: "b" },
-            { subject: "Physics", question: "The SI unit of radioactivity is:", options: ["Curie", "Rutherford", "Becquerel", "Roentgen"], answer: "c" },
-            { subject: "Physics", question: "The force between two point charges is given by:", options: ["Newton's law of gravitation", "Coulomb's law", "Ohm's law", "Ampere's law"], answer: "b" },
-            { subject: "Physics", question: "The electric field inside a charged hollow conducting sphere is:", options: ["zero", "constant", "variable", "infinite"], answer: "a" },
-            { subject: "Physics", question: "The capacitance of a parallel plate capacitor can be increased by:", options: ["increasing the distance between the plates", "decreasing the area of the plates", "inserting a dielectric between the plates", "decreasing the charge on the plates"], answer: "c" },
-            { subject: "Physics", question: "The SI unit of electric potential is:", options: ["Volt", "Ampere", "Ohm", "Watt"], answer: "a" },
-            { subject: "Physics", question: "Ohm's law states that the current flowing through a conductor is directly proportional to the:", options: ["resistance", "resistivity", "potential difference", "temperature"], answer: "c" },
-            { subject: "Physics", question: "The resistance of a wire is R. If the wire is stretched to double its length, its new resistance will be:", options: ["R/2", "R", "2R", "4R"], answer: "d" },
-            { subject: "Physics", question: "Kirchhoff's first law (junction rule) is a statement of the conservation of:", options: ["energy", "charge", "momentum", "mass"], answer: "b" },
-            { subject: "Physics", question: "The magnetic field produced by a current-carrying straight wire is:", options: ["uniform", "radial", "circular", "elliptical"], answer: "c" },
-            { subject: "Physics", question: "The force on a moving charge in a magnetic field is given by:", options: ["F = qE", "F = qvB", "F = BIl", "F = GmM/r²"], answer: "b" },
-            { subject: "Physics", question: "A galvanometer can be converted into an ammeter by connecting a:", options: ["low resistance in series", "low resistance in parallel", "high resistance in series", "high resistance in parallel"], answer: "b" },
-            { subject: "Physics", question: "The SI unit of magnetic flux is:", options: ["Tesla", "Weber", "Gauss", "Henry"], answer: "b" },
-            { subject: "Physics", question: "Lenz's law is a consequence of the law of conservation of:", options: ["charge", "mass", "energy", "momentum"], answer: "c" },
-            { subject: "Physics", question: "The working of a transformer is based on the principle of:", options: ["self-induction", "mutual induction", "electromagnetic induction", "eddy currents"], answer: "b" },
-            { subject: "Physics", question: "The peak value of an AC voltage is V₀. Its RMS value is:", options: ["V₀", "V₀/2", "V₀/√2", "√2 V₀"], answer: "c" },
-            { subject: "Physics", question: "In a pure inductive circuit, the current:", options: ["leads the voltage by 90°", "lags the voltage by 90°", "is in phase with the voltage", "is out of phase with the voltage by 180°"], answer: "b" },
-            { subject: "Physics", question: "The resonant frequency of an LCR series circuit is given by:", options: ["2π√(LC)", "1/(2π√(LC))", "√(LC)/(2π)", "2π/(√(LC))"], answer: "b" },
-            { subject: "Physics", question: "The energy stored in an inductor is given by:", options: ["1/2 LI²", "1/2 CV²", "I²R", "V²/R"], answer: "a" },
-            { subject: "Physics", question: "The process of doping a pure semiconductor with impurities is called:", options: ["annealing", "doping", "diffusion", "drifting"], answer: "b" },
-            { subject: "Physics", question: "A p-type semiconductor is formed by doping a pure semiconductor with:", options: ["trivalent impurities", "tetravalent impurities", "pentavalent impurities", "hexavalent impurities"], answer: "a" },
-            { subject: "Physics", question: "A diode can be used as a:", options: ["rectifier", "amplifier", "oscillator", "modulator"], answer: "a" },
-            { subject: "Physics", question: "The basic building block of a digital logic circuit is a:", options: ["diode", "transistor", "logic gate", "capacitor"], answer: "c" },
-            { subject: "Physics", question: "The universal logic gate is:", options: ["AND", "OR", "NOT", "NAND"], answer: "d" },
-            { subject: "Physics", question: "The dimensions of force are:", options: ["[MLT⁻²]", "[ML²T⁻²]", "[MLT⁻¹]", "[ML²T⁻¹]"], answer: "a" },
-            { subject: "Physics", question: "The scalar product of two vectors is maximum when they are:", options: ["parallel", "perpendicular", "anti-parallel", "at an angle of 45°"], answer: "a" },
-            { subject: "Physics", question: "The range of a projectile is maximum when the angle of projection is:", options: ["30°", "45°", "60°", "90°"], answer: "b" },
-            { subject: "Physics", question: "Newton's first law of motion is also known as the law of:", options: ["action-reaction", "inertia", "momentum", "force"], answer: "b" },
-            { subject: "Physics", question: "The work done is zero if the angle between the force and the displacement is:", options: ["0°", "45°", "90°", "180°"], answer: "c" },
-            { subject: "Physics", question: "The kinetic energy of a body is given by:", options: ["mgh", "1/2 mv²", "ma", "Fd"], answer: "b" },
+            { subject: "Biology", question: "If blood calcium levels decrease, which hormone is released, and what is its primary effect?", options: ["Parathyroid Hormone (PTH); increases bone resorption and calcium reabsorption in kidneys", "Calcitonin; decreases bone resorption and increases calcium deposition in bones", "Aldosterone; increases sodium and calcium reabsorption in kidneys", "ADH; increases water reabsorption to concentrate calcium in blood"], answer: "a" },
+            { subject: "Biology", question: "Match the component of a feedback system (Column A) with its correct example in thermoregulation (Column B). \nColumn A (Component) \n1. Receptor \n2. Control Center \n3. Effector \n4. Response \nColumn B (Example in Thermoregulation) \na) Skeletal muscles (shivering) \nb) Thermoreceptors in skin and hypothalamus \nc) Sweat glands \nd) Hypothalamus", options: ["1-b, 2-d, 3-a, 4-c", "1-d, 2-b, 3-c, 4-a", "1-b, 2-d, 3-c, 4-a", "1-a, 2-d, 3-b, 4-c"], answer: "a" },
+            { subject: "Biology", question: "The following six features are characteristic of which part of a long bone? Located at the ends of the bone, Composed of cancellous (spongy) bone, Contains red bone marrow, Site of longitudinal growth in childhood and adolescence, Articulates with adjacent bones, Lightweight, providing shock absorption.", options: ["Diaphysis", "Epiphysis", "Metaphysis", "Medullary Cavity"], answer: "b" },
+            { subject: "Biology", question: "In a sarcomere, during maximal muscle contraction, which of the following zones or bands disappears completely?", options: ["A band", "I band", "H zone", "Z line"], answer: "c" },
+            { subject: "Biology", question: "Arrange the following steps in the process of endochondral ossification: \nI. Formation of a bony collar around the diaphysis \nII. Invasion of blood vessels and osteoblasts into the calcified cartilage \nIII. Development of a cartilage model \nIV. Calcification of the cartilage matrix and death of chondrocytes \nV. Replacement of calcified cartilage with bony tissue", options: ["III, I, IV, II, V", "I, III, IV, II, V", "III, IV, I, II, V", "I, II, III, IV, V"], answer: "a" },
+            { subject: "Biology", question: "All of the following are functions of synovial fluid in diarthrotic joints EXCEPT:", options: ["To provide nutrients to the avascular articular cartilage", "To act as a shock absorber during impact", "To synthesize type II collagen for the cartilage matrix", "To lubricate the joint surfaces for smooth movement"], answer: "c" },
+            { subject: "Biology", question: "Which of the following are key differences between the male and female pelvis that are adaptations for childbirth in females? \nI. The female pelvic inlet is more oval (heart-shaped), while the male inlet is more round. \nII. The female pubic arch is wider (greater than 90 degrees) compared to the male (less than 90 degrees). \nIII. The female sacrum is longer, narrower, and more curved. \nIV. The female pelvic bones are generally lighter and thinner.", options: ["I and II only", "II and IV only", "II, III, and IV only", "I, II, III, and IV"], answer: "b" },
+            { subject: "Biology", question: "Sperm are produced in the testes and then travel to the epididymis. Through which structure do they pass to get from the rete testis to the epididymis?", options: ["Vas Deferens", "Ejaculatory Duct", "Efferent Ductules", "Urethra"], answer: "c" },
+            { subject: "Biology", question: "A newborn baby is diagnosed with Erythroblastosis Fetalis. Which of the following scenarios in the parents' medical history is the most likely cause?", options: ["Rh- mother and Rh- father", "Rh+ mother and Rh+ father", "Rh+ mother and Rh- father", "Rh- mother and Rh+ father"], answer: "d" },
+            { subject: "Biology", question: "Which of the following correctly matches a hormonal disorder with its description?", options: ["Polycystic Ovary Syndrome (PCOS): Characterized by low androgen levels and regular ovulation.", "Endometriosis: A condition where the endometrial tissue grows inside the uterine muscles.", "Cryptorchidism: The failure of one or both testes to descend into the scrotum.", "Benign Prostatic Hyperplasia (BPH): A malignant enlargement of the prostate gland common in young men."], answer: "c" },
+            { subject: "Biology", question: "The Blood-Brain Barrier (BBB) is a protective structure. Which of the following contribute to its formation and function? \n1. Tight junctions between endothelial cells of brain capillaries \n2. Basement membrane surrounding the capillaries \n3. Astrocytic foot processes \n4. Relatively high permeability of brain capillaries to large molecules", options: ["1 and 3 only", "1, 2, and 3 only", "2 and 4 only", "1, 2, 3, and 4"], answer: "b" },
+            { subject: "Biology", question: "Which of the following is a MISMATCH between the cranial nerve and its primary function?", options: ["Olfactory Nerve (I): Smell (Sensory)", "Optic Nerve (II): Vision (Sensory)", "Vagus Nerve (X): Controls neck and shoulder movements (Motor)", "Trigeminal Nerve (V): Sensation from face and chewing muscles (Mixed)"], answer: "c" },
+            { subject: "Biology", question: "A drug is developed that is a potent agonist for GABA_A receptors. What would be the most likely overall effect of this drug on the Central Nervous System (CNS)?", options: ["It would cause widespread excitation and potentially seizures.", "It would have no significant effect, as GABA is not a major neurotransmitter.", "It would enhance inhibitory neurotransmission, leading to sedation and reduced anxiety.", "It would block the reuptake of dopamine, causing euphoria."], answer: "c" },
+            { subject: "Biology", question: "The following six features are primarily associated with which part of the brain? Contains the corpora quadrigemina (superior and inferior colliculi), Serves as a relay center for visual and auditory reflexes, Contains the cerebral peduncles, Part of the brainstem, Houses the substantia nigra, which produces dopamine, Contains the red nucleus, involved in motor coordination.", options: ["Forebrain", "Midbrain", "Hindbrain", "Diencephalon"], answer: "b" },
+            { subject: "Biology", question: "Which of the following statements about the evolutionary history of horses (Equidae) are supported by the fossil record? \nI. There was a general trend from smaller to larger body size. \nII. The number of toes decreased from four (on front feet) to one (the hoof). \nIII. The teeth became less specialized for grazing on grasses. \nIV. The limbs became longer and adapted for sustained running.", options: ["I and II only", "I, II, and IV only", "II and III only", "I, II, III, and IV"], answer: "b" },
+            { subject: "Biology", question: "Arrange the following evolutionary events in the correct chronological order from earliest to most recent: \nI. Origin of photosynthesis \nII. Evolution of multicellular eukaryotes \nIII. Accumulation of oxygen in the atmosphere (Great Oxidation Event) \nIV. Origin of prokaryotic life", options: ["IV, I, III, II", "I, IV, III, II", "IV, III, I, II", "I, II, IV, III"], answer: "a" },
+            { subject: "Biology", question: "All of the following are considered key elements of Darwin's theory of evolution by natural selection EXCEPT:", options: ["Individuals in a population exhibit variation.", "All variation present in a population is heritable.", "Populations produce more offspring than the environment can support.", "Individuals with favorable variations are more likely to survive and reproduce."], answer: "b" },
+            { subject: "Biology", question: "Match the evolutionary pattern (Column A) with its correct description (Column B). \nColumn A (Pattern) \n1. Adaptive Radiation \n2. Convergent Evolution \n3. Coevolution \n4. Divergent Evolution \nColumn B (Description) \na) The process by which two unrelated species evolve similar traits in response to similar environments. \nb) The process where two species evolve in response to each other (e.g., predator-prey). \nc) The rapid evolution of many diverse species from a common ancestor, often into new ecological niches. \nd) The process where one species splits into two or more species, often due to adaptation to different environments.", options: ["1-c, 2-a, 3-b, 4-d", "1-a, 2-c, 3-d, 4-b", "1-c, 2-b, 3-a, 4-d", "1-d, 2-a, 3-b, 4-c"], answer: "a" },
+            { subject: "Biology", question: "A man with normal color vision and a woman who is a carrier for red-green color blindness have children. Which of the following outcomes are possible for their sons? \n1. Normal color vision \n2. Color blind \n3. Carrier for color blindness", options: ["1 and 2 only", "2 and 3 only", "1 and 3 only", "1, 2, and 3"], answer: "a" },
+            { subject: "Biology", question: "A couple, both with blood type A, have a child with blood type O. What must be the genotypes of the parents?", options: ["Both are IAIA (homozygous)", "One is IAIA and the other is I^i", "Both are I^i (heterozygous)", "One is IAIA and the other is ii"], answer: "c" },
+            { subject: "Biology", question: "All of the following are examples of aneuploidy in humans EXCEPT:", options: ["Down Syndrome (Trisomy 21)", "Klinefelter Syndrome (XXY)", "Turner Syndrome (XO)", "Cystic Fibrosis (autosomal recessive disorder)"], answer: "d" },
+            { subject: "Biology", question: "A disorder is known to only occur when a mutant allele is inherited from the father, as the maternal allele is silenced (imprinted). If a man with the disorder (who inherited the mutant allele from his father) marries a normal woman (with two normal alleles), what is the probability their child will have the disorder?", options: ["0%", "25%", "50%", "100%"], answer: "c" },
+            { subject: "Biology", question: "Which of the following are applications of monoclonal antibodies? \nI. Diagnostic tests (e.g., pregnancy tests, ELISA) \nII. Targeted cancer therapy (e.g., delivering drugs specifically to cancer cells) \nIII. Organ transplantation to suppress the immune system \nIV. Prenatal genetic screening for aneuploidies", options: ["I and II only", "I, II, and III only", "II and IV only", "I, II, III, and IV"], answer: "b" },
+            { subject: "Biology", question: "All of the following statements about stem cells are correct EXCEPT:", options: ["Totipotent stem cells can differentiate into any cell type, including extra-embryonic tissues.", "Pluripotent stem cells can give rise to all cell types of the three germ layers but not extra-embryonic tissues.", "Multipotent stem cells are found in adults and can differentiate into a limited range of cell types within a particular tissue.", "Induced Pluripotent Stem Cells (iPSCs) are adult cells that have been genetically engineered to become totipotent."], answer: "d" },
+            { subject: "Biology", question: "Match the molecular technique (Column A) with the molecule it is primarily used to detect or analyze (Column B). \nColumn A (Technique) \n1. Southern Blot \n2. Northern Blot \n3. Western Blot \n4. Eastern Blot \nColumn B (Target Molecule) \na) Proteins \nb) DNA \nc) RNA \nd) Post-translational modifications of proteins", options: ["1-b, 2-c, 3-a, 4-d", "1-a, 2-b, 3-c, 4-d", "1-b, 2-a, 3-d, 4-c", "1-c, 2-b, 3-a, 4-d"], answer: "a" },
+            { subject: "Biology", question: "In the context of genetically modified crops, 'Bt cotton' has been engineered to be resistant to certain insects. What is the nature of the genetically introduced trait?", options: ["A gene from a bacterium (Bacillus thuringiensis) that produces a protein toxic to specific insects.", "A gene that makes the plant produce a hormone that repels insects.", "A gene that strengthens the plant's cell walls, making it harder for insects to feed.", "A gene that allows the plant to absorb more soil nutrients, making it less susceptible to pest damage."], answer: "a" },
+            { subject: "Biology", question: "According to the definition provided, carbohydrates are formally classified as:", options: ["Hydrated carbon chains", "Polyhydroxy carbonyl compounds", "Simple sugars", "Energy storage molecules"], answer: "b" },
+            { subject: "Biology", question: "The unique three-dimensional folding of a secondary protein chain that gives a spherical shape is characteristic of:", options: ["Fibrous proteins", "Globular proteins", "Structural proteins", "All proteins"], answer: "b" },
+            { subject: "Biology", question: "A disaccharide that is non-reducing due to the absence of free aldehyde or ketone groups is:", options: ["Maltose", "Lactose", "Sucrose", "Glucose"], answer: "c" },
+            { subject: "Biology", question: "Which of the following is a conjugated molecule formed by combining a carbohydrate with a protein?", options: ["Glycolipid", "Glycoprotein", "Lipoprotein", "Nucleoprotein"], answer: "b" },
+            { subject: "Biology", question: "The type of lipid that forms an essential component of the cell membrane is the:", options: ["Acylglycerol", "Phospholipid", "Terpenoid", "Wax"], answer: "b" },
+            { subject: "Biology", question: "The process where light energy is converted into chemical energy in the form of ATP and NADPH2 is the:", options: ["Calvin cycle", "Light-dependent reaction", "Krebs cycle", "Carbon fixation"], answer: "b" },
+            { subject: "Biology", question: "The chlorophyll-a molecule at the reaction center of Photosystem I has its maximum absorption at:", options: ["430 nm", "670 nm", "680 nm", "700 nm"], answer: "d" },
+            { subject: "Biology", question: "The water-splitting complex in the thylakoid membrane releases:", options: ["Electrons only", "Electrons, protons, and oxygen", "Protons and carbon dioxide", "ATP and NADPH"], answer: "b" },
+            { subject: "Biology", question: "The enzyme that catalyzes the first key step of the Calvin cycle is:", options: ["ATP synthase", "RuBisCO", "PEP carboxylase", "Catalase"], answer: "b" },
+            { subject: "Biology", question: "In the absence of oxygen, yeast cells can obtain energy through:", options: ["Lactic acid fermentation", "Alcoholic fermentation", "Photorespiration", "Krebs cycle"], answer: "b" },
+            { subject: "Biology", question: "The primary purpose of the C4 cycle in plants like sugarcane is to:", options: ["Increase water absorption", "Avoid photorespiration by concentrating CO2", "Enhance light absorption", "Store more starch"], answer: "b" },
+            { subject: "Biology", question: "The technique used to isolate specific cells with the help of a microscope is called:", options: ["Centrifugation", "Microdissection", "Chromatography", "Spectrophotometry"], answer: "b" },
+            { subject: "Biology", question: "The layer of the plant cell wall that is mainly made up of calcium and magnesium pectates is the:", options: ["Primary wall", "Middle lamella", "Secondary wall", "Plasma membrane"], answer: "b" },
+            { subject: "Biology", question: "The model that describes the plasma membrane as having components that are mobile and capable of transient interactions is the:", options: ["Sandwich model", "Fluid mosaic model", "Unit membrane model", "Dynamic membrane model"], answer: "b" },
+            { subject: "Biology", question: "The type of endoplasmic reticulum that is involved in the synthesis of oil and phospholipids is the:", options: ["Rough ER", "Smooth ER", "Granular ER", "Nuclear ER"], answer: "b" },
+            { subject: "Biology", question: "The organelle that contains hydrolytic enzymes and functions in the digestion of worn-out cellular components is the:", options: ["Peroxisome", "Lysosome", "Glyoxysome", "Ribosome"], answer: "b" },
+            { subject: "Biology", question: "The region of the active site where amino acids make temporary bonds with the substrate is called the:", options: ["Catalytic site", "Binding site", "Allosteric site", "Reactive site"], answer: "b" },
+            { subject: "Biology", question: "The science related to the measurement of dimensions and size of objects under a microscope is called:", options: ["Microscopy", "Micrometry", "Spectrophotometry", "Chromatography"], answer: "b" },
+            { subject: "Biology", question: "Enzymes that are produced in the protoplasm and act within the cell where they are synthesized are called:", options: ["Exoenzymes", "Endoenzymes", "Apoenzymes", "Holoenzymes"], answer: "b" },
+            { subject: "Biology", question: "The model that compares enzyme-substrate interaction to a lock and key was proposed by:", options: ["Koshland", "Emil Fischer", "Singer and Nicolson", "Friedrich Kuhn"], answer: "b" },
+            { subject: "Biology", question: "The minimum quantity of energy required to activate atoms or molecules for chemical transformation is called:", options: ["Free energy", "Activation energy", "Kinetic energy", "Potential energy"], answer: "b" },
+            { subject: "Biology", question: "Enzymes that catalyze the breakdown of specific covalent bonds without hydrolysis are classified as:", options: ["Hydrolases", "Lyases", "Isomerases", "Ligases"], answer: "b" },
+            { subject: "Biology", question: "Enzymes that act on carbohydrate molecules are collectively called:", options: ["Proteases", "Lipases", "Glycosidases", "Nucleases"], answer: "c" },
+            { subject: "Biology", question: "The scientist who first used a Chamberland filter to examine infectious tobacco plant extract was:", options: ["Martinus Beijerinck", "Dmitri Ivanovsky", "Charles Chamberland", "W.M. Stanley"], answer: "c" },
+            { subject: "Biology", question: "The process by which a phage virus degrades the host bacterial DNA is accomplished by synthesizing:", options: ["Lysozyme", "Endonuclease enzymes", "Reverse transcriptase", "Proteases"], answer: "b" },
+            { subject: "Biology", question: "Viruses that have a lipid covering are described as:", options: ["Non-enveloped", "Enveloped", "Filamentous", "Icosahedral"], answer: "b" },
+            { subject: "Biology", question: "The group of viruses that have double-stranded DNA as their genome and infect bacteria are:", options: ["Phytophages", "Zoophages", "Bacteriophages", "Retroviruses"], answer: "c" },
+            { subject: "Biology", question: "The favorable pH for viral survival is around:", options: ["4.0", "5.0-5.5", "6.5", "9.0"], answer: "d" },
+            { subject: "Biology", question: "The structure of a bacteriophage that acts as a channel for DNA delivery into the host cell is the:", options: ["Head", "Tail", "Base plate", "Capsid"], answer: "b" },
+            { subject: "Biology", question: "The process of utilization of absorbed molecules during metabolic processes is called:", options: ["Ingestion", "Digestion", "Assimilation", "Absorption"], answer: "c" },
+            { subject: "Biology", question: "The muscular tube that connects the pharynx with the stomach is the:", options: ["Trachea", "Esophagus", "Larynx", "Bronchus"], answer: "b" },
+            { subject: "Biology", question: "The final products of protein digestion are:", options: ["Fatty acids", "Glycerol", "Amino acids", "Monosaccharides"], answer: "c" },
+            { subject: "Biology", question: "The process where food is moved along the digestive tract through rhythmic muscular contractions is called:", options: ["Peristalsis", "Segmentation", "Mastication", "Deglutition"], answer: "a" },
+            { subject: "Biology", question: "The condition where the stomach lining becomes inflamed is known as:", options: ["Gastritis", "Stomatitis", "Hepatitis", "Enteritis"], answer: "a" },
+            { subject: "Biology", question: "The part of the large intestine where most of the remaining water is absorbed from indigestible food matter is the:", options: ["Cecum", "Colon", "Rectum", "Anal canal"], answer: "b" },
+            { subject: "Biology", question: "The disorder characterized by the inflammation of the vermiform appendix is called:", options: ["Appendicitis", "Peritonitis", "Colitis", "Proctitis"], answer: "a" },
+            { subject: "Biology", question: "The process where gas exchange occurs between the air and the blood in the lungs is called:", options: ["External respiration", "Internal respiration", "Cellular respiration", "Breathing"], answer: "a" },
+            { subject: "Biology", question: "The voice box, or the organ that produces sound, is the:", options: ["Pharynx", "Larynx", "Trachea", "Epiglottis"], answer: "b" },
+            { subject: "Biology", question: "The type of white blood cells that have a multi-lobed nucleus and are the most abundant are:", options: ["Neutrophils", "Eosinophils", "Basophils", "Lymphocytes"], answer: "a" },
+            { subject: "Biology", question: "The condition where the number of red blood cells is lower than normal is called:", options: ["Anemia", "Polycythemia", "Leukemia", "Thrombocytopenia"], answer: "a" },
+            { subject: "Biology", question: "The process of blood clotting is also known as:", options: ["Hemolysis", "Hemopoiesis", "Hemostasis", "Agglutination"], answer: "c" },
+            { subject: "Biology", question: "The blood vessel that carries deoxygenated blood from the heart to the lungs is the:", options: ["Pulmonary artery", "Pulmonary vein", "Aorta", "Vena cava"], answer: "a" },
+            { subject: "Biology", question: "The smallest blood vessels in the body where exchange of nutrients and waste products occurs are the:", options: ["Arteries", "Veins", "Capillaries", "Arterioles"], answer: "c" },
+            { subject: "Biology", question: "The muscular layer of the heart wall is called the:", options: ["Endocardium", "Myocardium", "Pericardium", "Epicardium"], answer: "b" },
+            { subject: "Biology", question: "The part of the ECG that represents the depolarization of the atria is the:", options: ["P wave", "QRS complex", "T wave", "U wave"], answer: "a" },
+            { subject: "Biology", question: "The system that returns excess interstitial fluid to the blood and helps in immunity is the:", options: ["Cardiovascular system", "Digestive system", "Lymphatic system", "Respiratory system"], answer: "c" },
+            { subject: "Biology", question: "The large lymphatic vessel that drains lymph from the right upper limb and the right side of the head and thorax is the:", options: ["Thoracic duct", "Right lymphatic duct", "Cisterna chyli", "Lumbar trunk"], answer: "b" },
+            { subject: "Biology", question: "The type of immunity that is acquired through vaccination is called:", options: ["Natural active immunity", "Artificial active immunity", "Natural passive immunity", "Artificial passive immunity"], answer: "b" },
+            { subject: "Biology", question: "The main function of the spleen is to:", options: ["Produce bile", "Filter blood", "Produce insulin", "Store glycogen"], answer: "b" },
+            { subject: "Biology", question: "The structure in the kidney that is responsible for filtering blood is the:", options: ["Glomerulus", "Loop of Henle", "Collecting duct", "Renal pelvis"], answer: "a" },
+            { subject: "Biology", question: "The process of removal of metabolic wastes from the body is called:", options: ["Excretion", "Secretion", "Egestion", "Respiration"], answer: "a" },
+            { subject: "Biology", question: "The hormone that regulates the concentration of urine by controlling the reabsorption of water in the kidneys is:", options: ["Aldosterone", "Antidiuretic hormone (ADH)", "Insulin", "Glucagon"], answer: "b" },
+            // =========== CHEMISTRY (45 MCQs) ============
+            { subject: "Chemistry", question: "The maximum number of electrons that can be accommodated in a subshell is given by the formula:", options: ["2l + 1", "2(2l + 1)", "2n^2", "n^2"], answer: "b" },
+            { subject: "Chemistry", question: "The quantum number that describes the shape of an orbital is the:", options: ["Principal quantum number", "Azimuthal quantum number", "Magnetic quantum number", "Spin quantum number"], answer: "b" },
+            { subject: "Chemistry", question: "The element with the electron configuration 1s2 2s2 2p6 3s2 3p5 is:", options: ["Fluorine", "Chlorine", "Bromine", "Iodine"], answer: "b" },
+            { subject: "Chemistry", question: "The bond formed between two atoms by the sharing of electrons is called a:", options: ["Ionic bond", "Covalent bond", "Metallic bond", "Hydrogen bond"], answer: "b" },
+            { subject: "Chemistry", question: "The geometry of the methane (CH4) molecule is:", options: ["Linear", "Trigonal planar", "Tetrahedral", "Octahedral"], answer: "c" },
+            { subject: "Chemistry", question: "The type of hybridization in the ethene (C2H4) molecule is:", options: ["sp", "sp2", "sp3", "dsp2"], answer: "b" },
+            { subject: "Chemistry", question: "The law that states that the pressure of a gas is inversely proportional to its volume at constant temperature is:", options: ["Boyle's law", "Charles's law", "Gay-Lussac's law", "Avogadro's law"], answer: "a" },
+            { subject: "Chemistry", question: "The ideal gas equation is:", options: ["PV = nRT", "P1V1 = P2V2", "V1/T1 = V2/T2", "P1/T1 = P2/T2"], answer: "a" },
+            { subject: "Chemistry", question: "The forces of attraction between non-polar molecules are called:", options: ["Dipole-dipole forces", "Hydrogen bonds", "London dispersion forces", "Ionic bonds"], answer: "c" },
+            { subject: "Chemistry", question: "The substance that is dissolved in a solution is called the:", options: ["Solvent", "Solute", "Solution", "Mixture"], answer: "b" },
+            { subject: "Chemistry", question: "The concentration of a solution expressed in moles of solute per liter of solution is called:", options: ["Molarity", "Molality", "Normality", "Mole fraction"], answer: "a" },
+            { subject: "Chemistry", question: "The property of a solution that depends on the number of solute particles and not on their identity is called a:", options: ["Colligative property", "Intensive property", "Extensive property", "Chemical property"], answer: "a" },
+            { subject: "Chemistry", question: "The study of the rates of chemical reactions is called:", options: ["Thermodynamics", "Kinetics", "Equilibrium", "Electrochemistry"], answer: "b" },
+            { subject: "Chemistry", question: "The minimum energy required to start a chemical reaction is called:", options: ["Activation energy", "Enthalpy", "Entropy", "Gibbs free energy"], answer: "a" },
+            { subject: "Chemistry", question: "A substance that increases the rate of a chemical reaction without being consumed in the reaction is called a:", options: ["Catalyst", "Inhibitor", "Reactant", "Product"], answer: "a" },
+            { subject: "Chemistry", question: "The state where the rates of the forward and reverse reactions are equal is called:", options: ["Chemical equilibrium", "Reaction completion", "Reaction initiation", "Reaction termination"], answer: "a" },
+            { subject: "Chemistry", question: "According to Le Chatelier's principle, if a change of condition is applied to a system in equilibrium, the system will shift in a direction that:", options: ["Favors the forward reaction", "Favors the reverse reaction", "Reduces the change", "Increases the change"], answer: "c" },
+            { subject: "Chemistry", question: "A substance that donates a proton (H+) is called an:", options: ["Arrhenius acid", "Bronsted-Lowry acid", "Lewis acid", "Arrhenius base"], answer: "b" },
+            { subject: "Chemistry", question: "The pH of a neutral solution at 25°C is:", options: ["0", "7", "14", "1"], answer: "b" },
+            { subject: "Chemistry", question: "A solution that resists changes in pH when small amounts of acid or base are added is called a:", options: ["Buffer solution", "Neutral solution", "Saturated solution", "Unsaturated solution"], answer: "a" },
+            { subject: "Chemistry", question: "The branch of chemistry that deals with the relationship between electricity and chemical reactions is called:", options: ["Electrochemistry", "Thermochemistry", "Photochemistry", "Nuclear chemistry"], answer: "a" },
+            { subject: "Chemistry", question: "The electrode where oxidation occurs is called the:", options: ["Anode", "Cathode", "Electrolyte", "Salt bridge"], answer: "a" },
+            { subject: "Chemistry", question: "The process of using an electric current to drive a non-spontaneous chemical reaction is called:", options: ["Electrolysis", "Galvanic cell", "Voltaic cell", "Daniell cell"], answer: "a" },
+            { subject: "Chemistry", question: "The hydrocarbons that contain only single bonds are called:", options: ["Alkanes", "Alkenes", "Alkynes", "Aromatics"], answer: "a" },
+            { subject: "Chemistry", question: "The general formula for alkanes is:", options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnHn"], answer: "a" },
+            { subject: "Chemistry", question: "The IUPAC name for CH3-CH(CH3)-CH3 is:", options: ["Butane", "2-Methylpropane", "Pentane", "2-Methylbutane"], answer: "b" },
+            { subject: "Chemistry", question: "The compounds that have the same molecular formula but different structural formulas are called:", options: ["Isomers", "Isotopes", "Allotropes", "Polymers"], answer: "a" },
+            { subject: "Chemistry", question: "The reaction of an alkane with a halogen in the presence of sunlight is an example of:", options: ["Addition reaction", "Substitution reaction", "Elimination reaction", "Rearrangement reaction"], answer: "b" },
+            { subject: "Chemistry", question: "The hydrocarbons that contain at least one double bond are called:", options: ["Alkanes", "Alkenes", "Alkynes", "Aromatics"], answer: "b" },
+            { subject: "Chemistry", question: "The general formula for alkenes is:", options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnHn"], answer: "b" },
+            { subject: "Chemistry", question: "The IUPAC name for CH2=CH-CH3 is:", options: ["Propane", "Propene", "Propyne", "Cyclopropane"], answer: "b" },
+            { subject: "Chemistry", question: "The reaction of an alkene with hydrogen in the presence of a catalyst is an example of:", options: ["Addition reaction", "Substitution reaction", "Elimination reaction", "Rearrangement reaction"], answer: "a" },
+            { subject: "Chemistry", question: "The hydrocarbons that contain at least one triple bond are called:", options: ["Alkanes", "Alkenes", "Alkynes", "Aromatics"], answer: "c" },
+            { subject: "Chemistry", question: "The general formula for alkynes is:", options: ["CnH2n+2", "CnH2n", "CnH2n-2", "CnHn"], answer: "c" },
+            { subject: "Chemistry", question: "The IUPAC name for CH≡C-CH3 is:", options: ["Propyne", "Propene", "Propane", "Cyclopropyne"], answer: "a" },
+            { subject: "Chemistry", question: "The aromatic hydrocarbon with the formula C6H6 is:", options: ["Benzene", "Toluene", "Naphthalene", "Anthracene"], answer: "a" },
+            { subject: "Chemistry", question: "The organic compounds containing the -OH functional group are called:", options: ["Alcohols", "Ethers", "Aldehydes", "Ketones"], answer: "a" },
+            { subject: "Chemistry", question: "The IUPAC name for CH3-OH is:", options: ["Methane", "Methanol", "Ethane", "Ethanol"], answer: "b" },
+            { subject: "Chemistry", question: "The organic compounds containing the -O- functional group are called:", options: ["Alcohols", "Ethers", "Aldehydes", "Ketones"], answer: "b" },
+            { subject: "Chemistry", question: "The organic compounds containing the -CHO functional group are called:", options: ["Alcohols", "Ethers", "Aldehydes", "Ketones"], answer: "c" },
+            { subject: "Chemistry", question: "The organic compounds containing the -CO- functional group are called:", options: ["Alcohols", "Ethers", "Aldehydes", "Ketones"], answer: "d" },
+            { subject: "Chemistry", question: "The organic compounds containing the -COOH functional group are called:", options: ["Carboxylic acids", "Esters", "Amides", "Amines"], answer: "a" },
+            { subject: "Chemistry", question: "The reaction between a carboxylic acid and an alcohol produces an:", options: ["Ester", "Ether", "Amide", "Amine"], answer: "a" },
+            { subject: "Chemistry", question: "The polymers that are formed by the addition of monomers without the loss of any small molecules are called:", options: ["Addition polymers", "Condensation polymers", "Copolymers", "Homopolymers"], answer: "a" },
+            { subject: "Chemistry", question: "The monomer of polyethylene is:", options: ["Ethene", "Propene", "Butene", "Pentene"], answer: "a" },
+            // =========== PHYSICS (36 MCQs) ============
+            { subject: "Physics", question: "The branch of physics that deals with the study of motion of objects is called:", options: ["Mechanics", "Thermodynamics", "Electromagnetism", "Optics"], answer: "a" },
+            { subject: "Physics", question: "The rate of change of displacement is called:", options: ["Speed", "Velocity", "Acceleration", "Jerk"], answer: "b" },
+            { subject: "Physics", question: "The rate of change of velocity is called:", options: ["Speed", "Velocity", "Acceleration", "Jerk"], answer: "c" },
+            { subject: "Physics", question: "Newton's first law of motion is also known as the law of:", options: ["Inertia", "Action-reaction", "Force and acceleration", "Gravitation"], answer: "a" },
+            { subject: "Physics", question: "The product of mass and velocity is called:", options: ["Force", "Momentum", "Impulse", "Work"], answer: "b" },
+            { subject: "Physics", question: "Newton's second law of motion gives the measure of:", options: ["Force", "Momentum", "Impulse", "Work"], answer: "a" },
+            { subject: "Physics", question: "For every action, there is an equal and opposite reaction. This is Newton's:", options: ["First law of motion", "Second law of motion", "Third law of motion", "Law of gravitation"], answer: "c" },
+            { subject: "Physics", question: "The ability to do work is called:", options: ["Power", "Energy", "Force", "Momentum"], answer: "b" },
+            { subject: "Physics", question: "The energy possessed by a body by virtue of its motion is called:", options: ["Kinetic energy", "Potential energy", "Mechanical energy", "Chemical energy"], answer: "a" },
+            { subject: "Physics", question: "The energy possessed by a body by virtue of its position is called:", options: ["Kinetic energy", "Potential energy", "Mechanical energy", "Chemical energy"], answer: "b" },
+            { subject: "Physics", question: "The rate of doing work is called:", options: ["Power", "Energy", "Force", "Momentum"], answer: "a" },
+            { subject: "Physics", question: "The SI unit of work is:", options: ["Joule", "Watt", "Newton", "Pascal"], answer: "a" },
             { subject: "Physics", question: "The SI unit of power is:", options: ["Joule", "Watt", "Newton", "Pascal"], answer: "b" },
-            { subject: "Physics", question: "The escape velocity from the Earth's surface is approximately:", options: ["9.8 m/s", "11.2 km/s", "8.0 km/s", "1.6 km/s"], answer: "b" },
-            { subject: "Physics", question: "The time period of a simple pendulum is independent of its:", options: ["length", "mass", "acceleration due to gravity", "amplitude"], answer: "b" },
-            { subject: "Physics", question: "The speed of sound is maximum in:", options: ["solids", "liquids", "gases", "vacuum"], answer: "a" },
-
-            // =========== ENGLISH (All 18 MCQs) ============
-            { subject: "English", question: "Choose the correct sentence: I have been studying since three hours.", options: ["I have been studying for three hours.", "I had been studying since three hours.", "I was studying for three hours.", "I am studying since three hours."], answer: "a" },
-            { subject: "English", question: "Select the word that is opposite in meaning to 'abundant'.", options: ["Plentiful", "Scarce", "Copious", "Ample"], answer: "b" },
-            { subject: "English", question: "Which of the following is a synonym for 'diligent'?", options: ["Lazy", "Careful", "Hardworking", "Negligent"], answer: "c" },
-            { subject: "English", question: "Identify the part of speech of the underlined word: She runs quickly.", options: ["Adjective", "Adverb", "Verb", "Noun"], answer: "b" },
-            { subject: "English", question: "Choose the correct preposition: He is good ___ mathematics.", options: ["in", "at", "on", "with"], answer: "b" },
-            { subject: "English", question: "Which sentence is grammatically correct?", options: ["He don't like coffee.", "He doesn't likes coffee.", "He doesn't like coffee.", "He not like coffee."], answer: "c" },
-            { subject: "English", question: "What is the past participle of the verb 'to swim'?", options: ["Swam", "Swum", "Swimmed", "Swiming"], answer: "b" },
-            { subject: "English", question: "Choose the correct article: I saw ___ eagle flying high in the sky.", options: ["a", "an", "the", "no article"], answer: "b" },
-            { subject: "English", question: "Which of the following is a complex sentence?", options: ["I like to read books.", "The cat sat on the mat.", "Although it was raining, we went for a walk.", "She is a good student."], answer: "c" },
-            { subject: "English", question: "What is the plural form of the word 'crisis'?", options: ["Crisises", "Crisi", "Crises", "Cris's"], answer: "c" },
-            { subject: "English", question: "Choose the correct form of the verb: The news ___ not as bad as we expected.", options: ["is", "are", "was", "were"], answer: "c" },
-            { subject: "English", question: "Identify the figure of speech in the sentence: 'The wind whispered through the trees.'", options: ["Metaphor", "Simile", "Personification", "Hyperbole"], answer: "c" },
-            { subject: "English", question: "Which of the following words is spelled correctly?", options: ["Accomodate", "Acommodate", "Accommodate", "Acomodate"], answer: "c" },
-            { subject: "English", question: "Choose the correct conjunction: I will go to the party ___ I finish my homework.", options: ["but", "or", "if", "so"], answer: "c" },
-            { subject: "English", question: "What is the meaning of the idiom 'to hit the nail on the head'?", options: ["To do something exactly right", "To make a mistake", "To be very angry", "To be very lucky"], answer: "a" },
-            { subject: "English", question: "Which of the following sentences is in the passive voice?", options: ["The boy kicked the ball.", "The ball was kicked by the boy.", "The ball is red.", "The boy is playing with the ball."], answer: "b" },
-            { subject: "English", question: "Choose the word that best completes the sentence: The ___ of the matter is that we cannot afford to go on vacation.", options: ["principal", "principle", "principale", "principel"], answer: "a" },
-            { subject: "English", question: "What is the superlative form of the adjective 'good'?", options: ["Gooder", "Better", "Best", "Goodest"], answer: "c" },
-
-            // =========== LOGICAL REASONING (All 6 MCQs) ============
-            { subject: "Logical Reasoning", question: "If CAT is coded as 3120, what is the code for DOG?", options: ["4157", "4158", "4156", "4159"], answer: "a" },
-            { subject: "Logical Reasoning", question: "Which number should come next in the series: 2, 5, 10, 17, ___?", options: ["24", "25", "26", "27"], answer: "c" },
-            { subject: "Logical Reasoning", question: "A is the father of B. C is the brother of A. D is the sister of B. How is C related to D?", options: ["Father", "Uncle", "Brother", "Cousin"], answer: "b" },
-            { subject: "Logical Reasoning", question: "If 'pen' is called 'pencil', 'pencil' is called 'eraser', and 'eraser' is called 'book', what would you use to write?", options: ["Pen", "Pencil", "Eraser", "Book"], answer: "c" },
-            { subject: "Logical Reasoning", question: "Find the odd one out: Lion, Tiger, Leopard, Cow.", options: ["Lion", "Tiger", "Leopard", "Cow"], answer: "d" },
-            { subject: "Logical Reasoning", question: "If today is Monday, what will be the day after tomorrow?", options: ["Tuesday", "Wednesday", "Thursday", "Friday"], answer: "b" }
+            { subject: "Physics", question: "The force of attraction between any two bodies in the universe is called:", options: ["Gravitational force", "Electrostatic force", "Magnetic force", "Nuclear force"], answer: "a" },
+            { subject: "Physics", question: "The value of 'g' (acceleration due to gravity) on the surface of the Earth is approximately:", options: ["9.8 m/s^2", "6.67 x 10^-11 Nm^2/kg^2", "3 x 10^8 m/s", "1.6 x 10^-19 C"], answer: "a" },
+            { subject: "Physics", question: "The pressure exerted by a fluid increases with:", options: ["Depth", "Altitude", "Temperature", "Viscosity"], answer: "a" },
+            { subject: "Physics", question: "The principle that states that the buoyant force on an object is equal to the weight of the fluid displaced by the object is:", options: ["Pascal's principle", "Archimedes' principle", "Bernoulli's principle", "Torricelli's law"], answer: "b" },
+            { subject: "Physics", question: "The property of a fluid to resist its flow is called:", options: ["Viscosity", "Surface tension", "Capillarity", "Elasticity"], answer: "a" },
+            { subject: "Physics", question: "The phenomenon of a liquid rising in a narrow tube is called:", options: ["Viscosity", "Surface tension", "Capillarity", "Elasticity"], answer: "c" },
+            { subject: "Physics", question: "The transfer of heat by the actual movement of particles is called:", options: ["Conduction", "Convection", "Radiation", "Evaporation"], answer: "b" },
+            { subject: "Physics", question: "The transfer of heat without any medium is called:", options: ["Conduction", "Convection", "Radiation", "Evaporation"], answer: "c" },
+            { subject: "Physics", question: "The branch of physics that deals with the study of heat and temperature is called:", options: ["Thermodynamics", "Mechanics", "Electromagnetism", "Optics"], answer: "a" },
+            { subject: "Physics", question: "The law of thermodynamics that states that energy cannot be created or destroyed is the:", options: ["Zeroth law of thermodynamics", "First law of thermodynamics", "Second law of thermodynamics", "Third law of thermodynamics"], answer: "b" },
+            { subject: "Physics", question: "The law of thermodynamics that deals with the concept of entropy is the:", options: ["Zeroth law of thermodynamics", "First law of thermodynamics", "Second law of thermodynamics", "Third law of thermodynamics"], answer: "c" },
+            { subject: "Physics", question: "The form of energy that is transferred from a body at a higher temperature to a body at a lower temperature is called:", options: ["Heat", "Work", "Internal energy", "Enthalpy"], answer: "a" },
+            { subject: "Physics", question: "The SI unit of heat is:", options: ["Joule", "Calorie", "Watt", "Kelvin"], answer: "a" },
+            { subject: "Physics", question: "The device used to measure temperature is called a:", options: ["Thermometer", "Barometer", "Manometer", "Ammeter"], answer: "a" },
+            { subject: "Physics", question: "The branch of physics that deals with the study of light is called:", options: ["Optics", "Acoustics", "Mechanics", "Thermodynamics"], answer: "a" },
+            { subject: "Physics", question: "The bouncing back of light from a surface is called:", options: ["Reflection", "Refraction", "Diffraction", "Interference"], answer: "a" },
+            { subject: "Physics", question: "The bending of light as it passes from one medium to another is called:", options: ["Reflection", "Refraction", "Diffraction", "Interference"], answer: "b" },
+            { subject: "Physics", question: "The lens that is thicker at the center and thinner at the edges is called a:", options: ["Convex lens", "Concave lens", "Plano-convex lens", "Plano-concave lens"], answer: "a" },
+            { subject: "Physics", question: "The lens that is thinner at the center and thicker at the edges is called a:", options: ["Convex lens", "Concave lens", "Plano-convex lens", "Plano-concave lens"], answer: "b" },
+            { subject: "Physics", question: "The splitting of white light into its constituent colors is called:", options: ["Dispersion", "Scattering", "Diffraction", "Interference"], answer: "a" },
+            { subject: "Physics", question: "The defect of the eye in which a person can see near objects clearly but cannot see distant objects clearly is called:", options: ["Myopia", "Hypermetropia", "Presbyopia", "Astigmatism"], answer: "a" },
+            { subject: "Physics", question: "The defect of the eye in which a person can see distant objects clearly but cannot see near objects clearly is called:", options: ["Myopia", "Hypermetropia", "Presbyopia", "Astigmatism"], answer: "b" },
+            { subject: "Physics", question: "The instrument used to see very small objects is called a:", options: ["Microscope", "Telescope", "Periscope", "Kaleidoscope"], answer: "a" },
+            // =========== ENGLISH (9 MCQs) ============
+            { subject: "English", question: "Choose the correct synonym for 'Ubiquitous'.", options: ["Rare", "Scarce", "Everywhere", "Hidden"], answer: "c" },
+            { subject: "English", question: "Choose the correct antonym for 'Ephemeral'.", options: ["Transient", "Permanent", "Fleeting", "Momentary"], answer: "b" },
+            { subject: "English", question: "Identify the part of speech of the underlined word: 'She runs quickly.'", options: ["Adjective", "Adverb", "Verb", "Noun"], answer: "b" },
+            { subject: "English", question: "Choose the correct sentence.", options: ["He don't like coffee.", "He doesn't likes coffee.", "He doesn't like coffee.", "He don't likes coffee."], answer: "c" },
+            { subject: "English", question: "Fill in the blank: 'I have been waiting for you ___ two hours.'", options: ["since", "for", "from", "at"], answer: "b" },
+            { subject: "English", question: "Choose the correct passive voice of the sentence: 'The cat chased the mouse.'", options: ["The mouse was chased by the cat.", "The cat was chased by the mouse.", "The mouse chased the cat.", "The cat is chased by the mouse."], answer: "a" },
+            { subject: "English", question: "Identify the type of sentence: 'What a beautiful day!'", options: ["Declarative", "Interrogative", "Imperative", "Exclamatory"], answer: "d" },
+            { subject: "English", question: "Choose the correct spelling.", options: ["Accomodate", "Acommodate", "Accommodate", "Acomodate"], answer: "c" },
+            { subject: "English", question: "What is the plural of 'cactus'?", options: ["Cactuses", "Cacti", "Cactis", "Cactus"], answer: "b" },
+            // =========== LOGICAL REASONING (9 MCQs) ============
+            { subject: "Logical Reasoning", question: "If all cats are mammals, and all mammals are animals, then all cats are animals.", options: ["True", "False", "Cannot be determined", "None of the above"], answer: "a" },
+            { subject: "Logical Reasoning", question: "Which number should come next in the series: 2, 4, 8, 16, ___?", options: ["24", "32", "40", "48"], answer: "b" },
+            { subject: "Logical Reasoning", question: "A is the brother of B. C is the sister of A. D is the brother of E. E is the daughter of B. Who is the uncle of D?", options: ["A", "B", "C", "E"], answer: "a" },
+            { subject: "Logical Reasoning", question: "If 'CAT' is coded as 'DBU', how is 'DOG' coded?", options: ["EPH", "FPI", "FPH", "EPI"], answer: "d" },
+            { subject: "Logical Reasoning", question: "Statement: All students are intelligent. Conclusion: Some intelligent are students.", options: ["True", "False", "Cannot be determined", "None of the above"], answer: "a" },
+            { subject: "Logical Reasoning", question: "Find the odd one out: Apple, Banana, Orange, Potato", options: ["Apple", "Banana", "Orange", "Potato"], answer: "d" },
+            { subject: "Logical Reasoning", question: "A man is facing North. He turns 90 degrees in the clockwise direction and then 180 degrees in the anti-clockwise direction. Which direction is he facing now?", options: ["East", "West", "North", "South"], answer: "b" },
+            { subject: "Logical Reasoning", question: "If today is Monday, what will be the day after tomorrow?", options: ["Tuesday", "Wednesday", "Thursday", "Friday"], answer: "b" },
+            { subject: "Logical Reasoning", question: "How many triangles are there in the given figure? (Assuming a simple star shape)", options: ["8", "10", "12", "16"], answer: "b" }
         ];
 
-        // Website Elements
+
         const userForm = document.getElementById('user-form');
         const quizContainer = document.getElementById('quiz-container');
         const resultContainer = document.getElementById('result-container');
         const startBtn = document.getElementById('start-btn');
         const nextBtn = document.getElementById('next-btn');
-        const subjectTitle = document.getElementById('subject-title');
-        const questionNumberEl = document.getElementById('question-number');
-        const totalQuestionsEl = document.getElementById('total-questions');
         const questionTextEl = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
+        const subjectTitleEl = document.getElementById('subject-title');
+        const questionNumberEl = document.getElementById('question-number');
+        const totalQuestionsEl = document.getElementById('total-questions');
         const resultNameEl = document.getElementById('result-name');
         const scoreEl = document.getElementById('score');
         const feedbackMessageEl = document.getElementById('feedback-message');
+        const userNameInput = document.getElementById('userName');
+        const userCityInput = document.getElementById('userCity');
 
         let currentQuestionIndex = 0;
         let userAnswers = [];
         let userName = '';
         let userCity = '';
 
-        if (startBtn) {
-            startBtn.addEventListener('click', startQuiz);
-        }
-        if (nextBtn) {
-            nextBtn.addEventListener('click', nextQuestion);
-        }
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
 
         function startQuiz() {
-            userName = document.getElementById('userName').value;
-            userCity = document.getElementById('userCity').value;
-            if (userName.trim() === '' || userCity.trim() === '') {
-                alert('Please apna naam aur sheher enter karein.');
+            userName = userNameInput.value.trim();
+            userCity = userCityInput.value.trim();
+            if (userName === '' || userCity === '') {
+                alert('Please enter your name and city.');
                 return;
             }
             userForm.classList.add('hidden');
             quizContainer.classList.remove('hidden');
-            if (quizData.length > 0) {
-                totalQuestionsEl.textContent = quizData.length;
-                userAnswers = new Array(quizData.length).fill(null);
-                loadQuestion();
-            } else {
-                questionTextEl.textContent = "Koi sawal mojood nahi hai.";
-            }
+            totalQuestionsEl.textContent = quizData.length;
+            showQuestion();
         }
 
-        function loadQuestion() {
-            optionsContainer.innerHTML = '';
+        function showQuestion() {
             const currentQuestion = quizData[currentQuestionIndex];
-            subjectTitle.textContent = currentQuestion.subject;
+            subjectTitleEl.textContent = currentQuestion.subject;
             questionNumberEl.textContent = currentQuestionIndex + 1;
-            questionTextEl.innerHTML = currentQuestion.question.replace(/\n/g, '<br>');
+            questionTextEl.textContent = currentQuestion.question;
+            optionsContainer.innerHTML = '';
+
             currentQuestion.options.forEach((option, index) => {
                 const button = document.createElement('button');
                 button.classList.add('option-btn');
-                const optionLetter = String.fromCharCode(97 + index);
-                button.textContent = `${optionLetter.toUpperCase()}. ${option}`;
-                button.dataset.option = optionLetter;
-                button.addEventListener('click', () => selectOption(button, optionLetter));
+                button.textContent = `${String.fromCharCode(97 + index)}) ${option}`;
+                button.dataset.answer = String.fromCharCode(97 + index);
+                button.addEventListener('click', selectOption);
                 optionsContainer.appendChild(button);
             });
-            if (currentQuestionIndex === quizData.length - 1) {
-                nextBtn.textContent = 'Submit Test';
-            } else {
-                nextBtn.textContent = 'Next';
-            }
         }
 
-        function selectOption(selectedButton, optionLetter) {
-            document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
-            selectedButton.classList.add('selected');
-            userAnswers[currentQuestionIndex] = optionLetter;
+        function selectOption(e) {
+            const selectedBtn = e.target;
+            const allOptions = document.querySelectorAll('.option-btn');
+            allOptions.forEach(btn => btn.classList.remove('selected'));
+            selectedBtn.classList.add('selected');
         }
 
         function nextQuestion() {
-            if (userAnswers[currentQuestionIndex] === null) {
-                alert('Please ek option select karein.');
+            const selectedOption = document.querySelector('.option-btn.selected');
+            if (!selectedOption) {
+                alert('Please select an answer.');
                 return;
             }
-            if (currentQuestionIndex < quizData.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion();
+            userAnswers[currentQuestionIndex] = selectedOption.dataset.answer;
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                showQuestion();
             } else {
-                showResults();
+                showResult();
             }
         }
 
-        function showResults() {
+        function showResult() {
             quizContainer.classList.add('hidden');
             resultContainer.classList.remove('hidden');
+
             let score = 0;
             quizData.forEach((question, index) => {
                 if (userAnswers[index] === question.answer) {
                     score++;
                 }
             });
+
             resultNameEl.textContent = userName;
             scoreEl.textContent = `${score} / ${quizData.length}`;
             sendDataToGoogleSheet(userName, userCity, score, quizData.length);
@@ -451,22 +425,24 @@
                 feedbackMessageEl.textContent = "Google Sheet URL not configured.";
                 return;
             }
+
             const formData = new FormData();
             formData.append('Name', name);
             formData.append('City', city);
             formData.append('Score', `${userScore}/${totalScore}`);
             formData.append('Timestamp', new Date().toLocaleString());
+
             fetch(googleSheetScriptURL, { method: 'POST', body: formData })
                 .then(response => {
                     if (response.ok) {
                         feedbackMessageEl.textContent = "Your Result Has Been Submitted. 👍";
                     } else {
-                        feedbackMessageEl.textContent = "Error Occured While SubmittiResultng";
+                        feedbackMessageEl.textContent = "Error Occured While Submitting Result";
                     }
                 })
                 .catch(error => {
                     console.error('Error!', error.message);
-                    feedbackMessageEl.textContent = "Error Occured While SubmittiResultng (Network Error)";
+                    feedbackMessageEl.textContent = "Error Occured While Submitting Result (Network Error)";
                 });
         }
     });

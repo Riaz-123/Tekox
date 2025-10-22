@@ -241,15 +241,20 @@
 
             showLoader(resultsDiv);
 
-            try {
-                // Simulate network delay for effect
-                await new Promise(resolve => setTimeout(resolve, 2000));
+           try {
+    // Simulate network delay for effect
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-                const response = await fetch(`let num = 123;
- let url = 'https://fam-official.serv00.net/api/database.php?num=`;        
-            const data = await response.json();
+    // Define the num value
+    let number = 123;
 
-                resultsDiv.innerHTML = ""; // Clear loader
+    // Construct the URL with the query parameter
+    let url = `https://fam-official.serv00.net/api/database.php?number=${encodeURIComponent(num)}`;
+
+    // Make the API call
+    const response = await fetch(url);
+
+    // Check if the response is okay (status 200)
 
                 if (data.status !== "success") {
                     resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${data.message}</p>`;

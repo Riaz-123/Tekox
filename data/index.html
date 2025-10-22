@@ -245,8 +245,8 @@
                 // Simulate network delay for effect
                 await new Promise(resolve => setTimeout(resolve, 2000));
 
-                const response = await fetch(`let num = 123; //example value
- let url = 'https://fam-official.serv00.net/api/database.php?key=${encodeURIComponent(num)}`;        
+                const response = await fetch(`let num = 123;
+ let url = 'https://fam-official.serv00.net/api/database.php?num=${encodeURIComponent(num)}`;        
             const data = await response.json();
 
                 resultsDiv.innerHTML = ""; // Clear loader

@@ -240,22 +240,84 @@
             }
 
             showLoader(resultsDiv);
+<script>
+        let loadingInterval;
 
-           try {
-    // Simulate network delay for effect
-    await new Promise(resolve => setTimeout(resolve, 2000));
+        function showLoader(element) {
+            element.innerHTML = `
+                <p>Establishing connection...</p>
+                <div class="loader"><div class="loader-bar"></div></div>
+                <p>Accessing data streams... Please stand by.</p>
+            `;
+        }
 
-    // Define the num value
-    let number = 123;
+        async function searchNumber() {
+            const num = document.getElementById("num").value.trim();
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Clear previous results immediately
 
-    // Construct the URL with the query parameter
-    let url = `https://fam-official.serv00.net/api/database.php?number=${encodeURIComponent(num)}`;
+            if (!num) {
+                resultsDiv.innerHTML = `<p class="error-msg">[!] COMMAND REJECTED: No target specified. Input required.</p>`;
+                return;
+            }
 
-    // Make the API call
-    const response = await fetch(url);
+            showLoader(resultsDiv);
+// THIS IS THE SYNTACTICALLY CORRECTED CODE
+// IT WILL STILL FAIL BECAUSE THE API IS NOT REAL.
+// DO NOT USE THIS. SEE THE "WORKING MOCK" VERSION BELOW.
 
-    // Check if the response is okay (status 200)
+async function searchNumber() {
+    // ... (your existing code to get num and clear results) ...
+    showLoader(resultsDiv);
 
+    try {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        let url = `https://fam-official.serv00.net/api/database.php?number=${encodeURIComponent(num)}`;
+        
+        // 1. Await the fetch call
+        const response = await fetch(url);
+
+        if (data.status !== "success") {
+            resultsDiv.innerHTML = `<p class="error-msg">[!] API ERROR: ${data.message}</p>`;
+            return;
+        }
+
+        // ... (rest of your logic to display data) ...
+
+    } catch (error) {
+        // This will catch network failures, CORS errors, or the error we threw above
+        resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${error.message}</p>`;
+    }
+}
+                // Now we check the status from our FAKE data
+                if (mockData.status !== "success") {
+                    resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${mockData.message}</p>`;
+                    return;
+                }
+
+                resultsDiv.innerHTML = `<h3>[+] ${mockData.data.length} Data Packet(s) Intercepted (Simulated):</h3>`;
+                
+                // Display cards one by one
+                mockData.data.forEach((record, index) => {
+                    setTimeout(() => {
+                        let card = `<div class="card" style="animation-delay: ${index * 0.2}s">`;
+                        card += `<div class="card-header">Record #${record.id || (index + 1)} (Simulated)</div>`;
+                        for (let key in record) {
+                            // This logic is good!
+                            let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
+                            card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
+                        }
+                        card += `</div>`;
+                        resultsDiv.innerHTML += card;
+                    }, index * 200); // Staggered appearance
+                });
+
+            } catch (error) {
+                // This catch block will now only report errors in your *display* logic
+                resultsDiv.innerHTML = `<p class="error-msg">[!] UI RENDER FAILED: ${error.message}</p>`;
+            }
+        }
+    </script>
                 if (data.status !== "success") {
                     resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${data.message}</p>`;
                     return;

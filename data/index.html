@@ -272,7 +272,7 @@ async function searchNumber() {
 
     try {
         await new Promise(resolve => setTimeout(resolve, 2000));
-        let url = `https://fam-official.serv00.net/api/database.php?number=${encodeURIComponent(num)}`;
+        let url = `https://fam-official.serv00.net/api/database.php?number=${(num)}`;
         
         // 1. Await the fetch call
         const response = await fetch(url);

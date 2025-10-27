@@ -211,7 +211,7 @@
     <div class="container">
         <h2><span style="font-size: 1em;">></span> Live SIM DATA</h2>
         <div class="input-group">
-            <input type="text" id="num" placeholder="Enter number">
+            <input type="text" id="phone" placeholder="Enter number">
             <button onclick="searchNumber()">SEARCH</button>
             <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="btn">[FOR MORE UPDATES]</a>
         </div>
@@ -230,7 +230,7 @@
         }
 
         async function searchNumber() {
-            const num = document.getElementById("num").value.trim();
+            const num = document.getElementById("phone").value.trim();
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = ""; // Clear previous results immediately
 
@@ -252,7 +252,7 @@
         }
 
         async function searchNumber() {
-            const num = document.getElementById("num").value.trim();
+            const num = document.getElementById("phone").value.trim();
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = ""; // Clear previous results immediately
 
@@ -272,7 +272,7 @@ async function searchNumber() {
 
     try {
         await new Promise(resolve => setTimeout(resolve, 2000));
-        let url = `https://fam-official.serv00.net/api/database.php?number=${(num)}`;
+        let url = `https://kami-database.vercel.app/api/search?phone=${(phone)}`;
         
         // 1. Await the fetch call
         const response = await fetch(url);

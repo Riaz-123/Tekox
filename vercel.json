@@ -44,7 +44,7 @@
   ],
   "routes": [
     { "src": "/", "dest": "/index.html" },
-    { "src": "/", "bgr": "bg.html" },
+    { "src": "/bgr", "dest": "/bg.html" },
     { "src": "/", "dest": "/sitemap.xml" },
     { "src": "/", "dest": "/googlec78bbe1045b011fe.html" },
     { "src": "/lecture", "dest": "/lecture.html" },

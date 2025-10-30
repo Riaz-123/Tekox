@@ -4,7 +4,7 @@
     { "src": "index.html", "use": "@vercel/static" },
     { "src": "ark/index.html", "use": "@vercel/static" },
     { "src": "Asia.cup/index.html", "use": "@vercel/static" },
-    { "src": "bg/index.html", "usel": "@vercel/static" },
+    { "src": "bg/index.html", "use": "@vercel/static" },
     { "src": "danimdcat/index.html", "use": "@vercel/static" },
     { "src": "data/index.html", "use": "@vercel/static" },
     { "src": "fun/index.html", "use": "@vercel/static" },

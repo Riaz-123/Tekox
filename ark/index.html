@@ -5,150 +5,181 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MED-MISSION</title>
     <style>
-        :root {
-            --dominant-color: #F5F5F5; /* Off-White */
-            --secondary-color: #34495E; /* Navy Blue/Charcoal Gray */
-            --accent-color: #FFC300;   /* Gold/Yellow */
-        }
+    :root {
+        --dominant-color: #F5F5F5; /* Off-White */
+        --secondary-color: #34495E; /* Navy Blue/Charcoal Gray */
+        --accent-color: #FFC300;   /* Gold/Yellow */
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--dominant-color);
-            color: var(--secondary-color); /* Default text color */
-        }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: var(--secondary-color); /* Default text color */
 
-        header {
-            background-color: var(--secondary-color);
-            color: var(--dominant-color);
-            padding: 1rem 0;
-            text-align: center;
-        }
+        /* --- BACKGROUND IMAGE & ANIMATION --- */
+        background-image: url('https://ibb.co/rR2FpLMQ'); /* <<< IMPORTANT: Replace with the actual URL or path to your image */
+        background-size: cover; /* Ensures the image covers the entire background */
+        background-repeat: no-repeat;
+        background-attachment: fixed; /* Keeps background fixed during scroll */
+        background-position: center center; /* Initial position */
+        animation: backgroundPan 30s linear infinite alternate; /* Adjust time for speed */
+        /* --- END BACKGROUND IMAGE & ANIMATION --- */
 
-        header h1 {
-            margin: 0;
-            color: var(--dominant-color);
-        }
+        /* Fallback background color if image doesn't load or is disabled */
+        background-color: var(--dominant-color);
+    }
 
-        nav {
-            background-color: var(--secondary-color);
-            padding: 0.5rem 0;
-            text-align: center;
+    @keyframes backgroundPan {
+        0% {
+            background-position: 0% 0%; /* Start top-left */
         }
+        100% {
+            background-position: 100% 100%; /* End bottom-right */
+        }
+    }
 
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
+    header {
+        background-color: var(--secondary-color);
+        color: var(--dominant-color);
+        padding: 1rem 0;
+        text-align: center;
+        /* Add some transparency to header to see background */
+        background-color: rgba(52, 73, 94, 0.85); /* secondary-color with 85% opacity */
+    }
 
-        nav ul li {
-            margin: 0 15px;
-        }
+    header h1 {
+        margin: 0;
+        color: var(--dominant-color);
+    }
 
-        nav ul li a {
-            color: var(--dominant-color);
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+    nav {
+        background-color: var(--secondary-color);
+        padding: 0.5rem 0;
+        text-align: center;
+        /* Add some transparency to nav to see background */
+        background-color: rgba(52, 73, 94, 0.85); /* secondary-color with 85% opacity */
+    }
 
-        nav ul li a:hover,
-        nav ul li a.active {
-            color: var(--accent-color);
-        }
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
 
-        .container {
-            max-width: 960px;
-            margin: 2rem auto;
-            padding: 0 20px;
-        }
+    nav ul li {
+        margin: 0 15px;
+    }
 
-        .hero-section {
-            background-color: var(--dominant-color);
-            padding: 4rem 0;
-            text-align: center;
-        }
+    nav ul li a {
+        color: var(--dominant-color);
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
 
-        .hero-section h2 {
-            color: var(--secondary-color);
-            font-size: 2.5em;
-            margin-bottom: 1rem;
-        }
+    nav ul li a:hover,
+    nav ul li a.active {
+        color: var(--accent-color);
+    }
 
-        .hero-section p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #555; /* Slightly darker than dominant for better contrast */
-        }
+    .container {
+        max-width: 960px;
+        margin: 2rem auto;
+        padding: 0 20px;
+    }
 
-        .cta-button {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: var(--secondary-color); /* Text on button is secondary for contrast */
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 1.5rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+    .hero-section {
+        /* Adjusted hero section background to be slightly transparent dominant color */
+        background-color: rgba(245, 245, 245, 0.8); /* dominant-color with 80% opacity */
+        padding: 4rem 0;
+        text-align: center;
+        border-radius: 8px; /* Added for softer look with transparent background */
+        margin-top: 3rem; /* Give some space from nav */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    }
 
-        .cta-button:hover {
-            background-color: #e6b100; /* Slightly darker accent on hover */
-            color: var(--secondary-color);
-        }
+    .hero-section h2 {
+        color: var(--secondary-color);
+        font-size: 2.5em;
+        margin-bottom: 1rem;
+    }
 
-        .cards-section {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 3rem;
-        }
+    .hero-section p {
+        font-size: 1.1em;
+        line-height: 1.6;
+        color: #555;
+    }
 
-        .card {
-            background-color: #ffffff; /* Pure white for cards to stand out on off-white dominant */
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            margin: 1rem;
-            width: calc(33% - 2rem); /* Three cards per row, adjusting for margin */
-            box-sizing: border-box;
-            text-align: center;
-        }
+    .cta-button {
+        display: inline-block;
+        background-color: var(--accent-color);
+        color: var(--secondary-color);
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        margin-top: 1.5rem;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-        .card h3 {
-            color: var(--secondary-color);
-            margin-top: 0;
-        }
+    .cta-button:hover {
+        background-color: #e6b100;
+        color: var(--secondary-color);
+    }
 
-        .card p {
-            color: #666;
-            font-size: 0.95em;
-        }
+    .cards-section {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 3rem;
+    }
 
-        footer {
-            background-color: var(--secondary-color);
-            color: var(--dominant-color);
-            text-align: center;
-            padding: 1.5rem 0;
-            margin-top: 3rem;
-            font-size: 0.9em;
-        }
+    .card {
+        /* Adjusted card background to be slightly transparent white */
+        background-color: rgba(255, 255, 255, 0.9); /* pure white with 90% opacity */
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin: 1rem;
+        width: calc(33% - 2rem);
+        box-sizing: border-box;
+        text-align: center;
+    }
 
-        footer a {
-            color: var(--accent-color);
-            text-decoration: none;
-        }
+    .card h3 {
+        color: var(--secondary-color);
+        margin-top: 0;
+    }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    .card p {
+        color: #666;
+        font-size: 0.95em;
+    }
+
+    footer {
+        background-color: var(--secondary-color);
+        color: var(--dominant-color);
+        text-align: center;
+        padding: 1.5rem 0;
+        margin-top: 3rem;
+        font-size: 0.9em;
+        /* Add some transparency to footer to see background */
+        background-color: rgba(52, 73, 94, 0.85); /* secondary-color with 85% opacity */
+    }
+
+    footer a {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+</style>
 </head>
 <body>
 

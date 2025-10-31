@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MED-MISSION</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --dominant-color: #F5F5F5; /* Primary Off-White background for general page (if no image) */
@@ -19,7 +20,7 @@
 
             /* Helper for RGB conversion (for rgba) */
             --secondary-color-rgb: 52, 73, 94;
-            --layer-color-rgb: 240, 242, 245; /* RGB for the new layer color */
+            --layer-color-rgb: 240, 242, 245;
         }
 
         body {
@@ -27,7 +28,7 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
-            color: var(--text-dark); /* Default text color for light sections */
+            color: var(--text-dark);
 
             /* --- BACKGROUND IMAGE & ANIMATION --- */
             background-image: url('https://i.ibb.co/f2R5FqD/Blue-medical-background-vector-source-files-h5.jpg');
@@ -38,8 +39,13 @@
             animation: backgroundPan 30s linear infinite alternate;
             /* --- END BACKGROUND IMAGE & ANIMATION --- */
 
-            /* Fallback background color if image doesn't load or is disabled */
-            background-color: #DDE1E6; /* Slightly darker than dominant to show off layers */
+            background-color: #DDE1E6;
+            overflow-x: hidden; /* Prevent horizontal scroll due to sidebar */
+            transition: margin-left 0.3s ease; /* Smooth transition for content push */
+        }
+
+        body.sidebar-open {
+            margin-left: 300px; /* Push content to the right when sidebar is open */
         }
 
         @keyframes backgroundPan {
@@ -58,17 +64,22 @@
         header {
             background-color: rgba(var(--secondary-color-rgb), 0.95);
             color: var(--text-light);
-            padding: 1rem 0;
+            padding: 1rem 20px; /* Adjusted padding to match container if needed */
             box-shadow: 0 2px 5px var(--shadow-medium);
             position: sticky;
             top: 0;
             z-index: 1000;
+            width: 100%; /* Ensure header takes full width */
+            box-sizing: border-box; /* Include padding in width */
+            transition: transform 0.3s ease; /* Smooth transition for content push */
         }
 
-        header .container {
+        header .header-content { /* New wrapper for header content */
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1200px; /* Constrain header content width */
+            margin: 0 auto;
         }
 
         header .logo {
@@ -79,64 +90,139 @@
             text-transform: uppercase;
         }
 
-        /* --- Navigation Styling --- */
-        nav ul {
+        /* --- Hamburger Menu Icon --- */
+        .hamburger-menu {
+            background: none;
+            border: none;
+            color: var(--dominant-color);
+            font-size: 1.8em;
+            cursor: pointer;
+            padding: 5px;
+            display: block; /* Always show hamburger for sidebar toggle */
+            z-index: 1001; /* Ensure it's clickable above other content */
+        }
+
+        /* Hide desktop nav for this setup */
+        nav {
+            display: none;
+        }
+
+        /* --- Sidebar Styling --- */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px; /* Start off-screen */
+            width: 300px;
+            height: 100%;
+            background-color: rgba(var(--secondary-color-rgb), 0.98); /* Almost opaque */
+            color: var(--text-light);
+            box-shadow: 2px 0 10px var(--shadow-strong);
+            transition: left 0.3s ease;
+            z-index: 1002; /* Higher than header */
+            padding-top: 20px; /* Space for content */
+            box-sizing: border-box;
+        }
+
+        #sidebar.open {
+            left: 0; /* Slide in */
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+            border-bottom: 1px solid rgba(var(--text-light-rgb), 0.1); /* Subtle separator */
+        }
+        
+        /* Helper for RGB conversion for text-light */
+        :root {
+            --text-light-rgb: 236, 239, 241;
+        }
+
+
+        .sidebar-header .sidebar-logo {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: var(--dominant-color);
+            text-transform: uppercase;
+        }
+
+        .sidebar-close-btn {
+            background: none;
+            border: none;
+            color: var(--dominant-color);
+            font-size: 1.8em;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .sidebar-nav ul {
             list-style: none;
             padding: 0;
-            margin: 0;
-            display: flex;
+            margin: 20px 0;
         }
 
-        nav ul li {
-            margin-left: 30px;
-        }
-
-        nav ul li a {
+        .sidebar-nav ul li a {
+            display: block; /* Make entire list item clickable */
+            padding: 15px 20px;
             color: var(--text-light);
             text-decoration: none;
             font-weight: 500;
             font-size: 1.1em;
-            padding: 8px 0;
-            position: relative;
-            transition: color 0.3s ease;
+            border-left: 4px solid transparent; /* For active/hover indicator */
+            transition: background-color 0.3s ease, color 0.3s ease, border-left-color 0.3s ease;
         }
 
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
+        .sidebar-nav ul li a:hover,
+        .sidebar-nav ul li a.active {
+            background-color: rgba(var(--accent-color-rgb), 0.1); /* Subtle accent background on hover */
+            color: var(--accent-color);
+            border-left-color: var(--accent-color);
+        }
+
+        /* Helper for RGB conversion for accent-color */
+        :root {
+            --accent-color-rgb: 255, 195, 0;
+        }
+
+        /* --- Overlay for dimmed background --- */
+        .overlay {
+            position: fixed;
+            top: 0;
             left: 0;
-            width: 0;
-            height: 3px;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover::after,
-        nav ul li a.active::after {
             width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+            z-index: 1001; /* Between content and sidebar */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        nav ul li a:hover {
-            color: var(--accent-color);
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        nav ul li a.active {
-            color: var(--accent-color);
+        /* --- Main Content Styling (Adjusted for sidebar push) --- */
+        main {
+            transition: margin-left 0.3s ease;
         }
 
-        /* --- Hero Section --- */
         .hero-section {
-            background-color: rgba(var(--layer-color-rgb), 0.95); /* Using the new layer color */
+            background-color: rgba(var(--layer-color-rgb), 0.95);
             padding: 6rem 0;
             text-align: center;
-            margin: 4rem 0;
+            margin: 4rem auto; /* Adjusted for centered main content */
             border-radius: 12px;
             box-shadow: 0 8px 20px var(--shadow-medium);
             position: relative;
             overflow: hidden;
+            max-width: 1200px; /* Ensure sections don't go full width if body is pushed */
+            box-sizing: border-box;
         }
-
+        
         .hero-section h2 {
             color: var(--secondary-color);
             font-size: 3.5em;
@@ -177,9 +263,12 @@
         .features-section {
             padding: 4rem 0;
             margin-bottom: 4rem;
-            background-color: rgba(var(--layer-color-rgb), 0.95); /* Using the new layer color */
+            background-color: rgba(var(--layer-color-rgb), 0.95);
             border-radius: 12px;
             box-shadow: 0 8px 20px var(--shadow-medium);
+            max-width: 1200px;
+            margin: 0 auto 4rem auto; /* Centered main content */
+            box-sizing: border-box;
         }
 
         .features-section h2 {
@@ -198,7 +287,7 @@
         }
 
         .feature-card {
-            background-color: #ffffff; /* Pure white for innermost layer */
+            background-color: #ffffff;
             border-radius: 10px;
             box-shadow: 0 4px 15px var(--shadow-light);
             padding: 2rem;
@@ -234,6 +323,7 @@
             margin-top: 4rem;
             font-size: 0.9em;
             box-shadow: 0 -2px 5px var(--shadow-medium);
+            transition: transform 0.3s ease;
         }
 
         footer p {
@@ -261,18 +351,32 @@
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <div class="logo">MED-MISSION</div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="active">Home</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </nav>
+    <div class="overlay" id="overlay"></div>
+
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">MED-MISSION</div>
+            <button class="sidebar-close-btn" id="sidebarCloseBtn">
+                <i class="fas fa-times"></i> </button>
         </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Patient Info</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <button class="hamburger-menu" id="hamburgerMenu">
+                <i class="fas fa-bars"></i> </button>
+            <div class="logo">MED-MISSION</div>
+            <div></div> </div>
     </header>
 
     <main>
@@ -315,8 +419,7 @@
                 </div>
             </div>
         </section>
-        
-        </main>
+    </main>
 
     <footer>
         <div class="container">
@@ -324,6 +427,24 @@
             <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Site Map</a></p>
         </div>
     </footer>
+
+    <script>
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+        const overlay = document.getElementById('overlay');
+        const body = document.body;
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            body.classList.toggle('sidebar-open');
+        }
+
+        hamburgerMenu.addEventListener('click', toggleSidebar);
+        sidebarCloseBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar); // Close sidebar when clicking overlay
+    </script>
 
 </body>
 </html>

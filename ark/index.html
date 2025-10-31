@@ -4,225 +4,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MED-MISSION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-    :root {
-        --dominant-color: #F5F5F5; /* Off-White */
-        --secondary-color: #34495E; /* Navy Blue/Charcoal Gray */
-        --accent-color: #FFC300;   /* Gold/Yellow */
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        color: var(--secondary-color); /* Default text color */
-
-        /* --- BACKGROUND IMAGE & ANIMATION --- */
-        /* --- BACKGROUND IMAGE & ANIMATION --- */
-        background-image: url('https://i.ibb.co/f2R5FqD/Blue-medical-background-vector-source-files-h5.jpg');
-        background-size: cover; /* Ensures the image covers the entire background */
-        background-repeat: no-repeat;
-        background-attachment: fixed; /* Keeps background fixed during scroll */
-        background-position: center center; /* Initial position */
-        animation: backgroundPan 30s linear infinite alternate; /* Adjust time for speed */
-        /* --- END BACKGROUND IMAGE & ANIMATION --- */
-
-        /* Fallback background color if image doesn't load or is disabled */
-        background-color: var(--dominant-color);
-    }
-
-    @keyframes backgroundPan {
-        0% {
-            background-position: 0% 0%; /* Start top-left */
+        :root {
+            --dominant-color: #F5F5F5; /* Off-White */
+            --secondary-color: #34495E; /* Navy Blue/Charcoal Gray */
+            --accent-color: #FFC300;   /* Gold/Yellow */
+            --text-light: #ECEFF1;     /* Lighter text for dark backgrounds */
+            --text-dark: #212121;      /* Darker text for light backgrounds */
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.2);
+            --shadow-strong: rgba(0, 0, 0, 0.3);
         }
-        100% {
-            background-position: 100% 100%; /* End bottom-right */
+
+        body {
+            font-family: 'Roboto', sans-serif; /* Using Roboto from Google Fonts */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: var(--text-dark); /* Default text color for light sections */
+
+            /* --- BACKGROUND IMAGE & ANIMATION --- */
+            background-image: url('https://i.ibb.co/f2R5FqD/Blue-medical-background-vector-source-files-h5.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            animation: backgroundPan 30s linear infinite alternate;
+            /* --- END BACKGROUND IMAGE & ANIMATION --- */
+
+            /* Fallback background color if image doesn't load or is disabled */
+            background-color: #e0e0e0; /* A slightly darker off-white for contrast with translucent elements */
         }
-    }
 
-    header {
-        background-color: var(--secondary-color);
-        color: var(--dominant-color);
-        padding: 1rem 0;
-        text-align: center;
-        /* Add some transparency to header to see background */
-        background-color: rgba(52, 73, 94, 0.85); /* secondary-color with 85% opacity */
-    }
+        @keyframes backgroundPan {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
 
-    header h1 {
-        margin: 0;
-        color: var(--dominant-color);
-    }
+        /* --- Global Container --- */
+        .container {
+            max-width: 1200px; /* Increased max-width for more spacious layout */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    nav {
-        background-color: var(--secondary-color);
-        padding: 0.5rem 0;
-        text-align: center;
-        /* Add some transparency to nav to see background */
-        background-color: rgba(52, 73, 94, 0.85); /* secondary-color with 85% opacity */
-    }
+        /* --- Header Styling --- */
+        header {
+            background-color: rgba(var(--secondary-color-rgb), 0.95); /* Nearly opaque secondary color */
+            color: var(--text-light);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px var(--shadow-medium); /* Material shadow */
+            position: sticky; /* Sticky header */
+            top: 0;
+            z-index: 1000; /* Ensure header is above other content */
+        }
 
-    nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-    }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    nav ul li {
-        margin: 0 15px;
-    }
+        header .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--dominant-color); /* Logo in dominant color for pop */
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-    nav ul li a {
-        color: var(--dominant-color);
-        text-decoration: none;
-        font-weight: bold;
-        transition: color 0.3s ease;
-    }
+        /* --- Navigation Styling --- */
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
 
-    nav ul li a:hover,
-    nav ul li a.active {
-        color: var(--accent-color);
-    }
+        nav ul li {
+            margin-left: 30px; /* More spacing between nav items */
+        }
 
-    .container {
-        max-width: 960px;
-        margin: 2rem auto;
-        padding: 0 20px;
-    }
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1em;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
 
-    .hero-section {
-        /* Adjusted hero section background to be slightly transparent dominant color */
-        background-color: rgba(245, 245, 245, 0.8); /* dominant-color with 80% opacity */
-        padding: 4rem 0;
-        text-align: center;
-        border-radius: 8px; /* Added for softer look with transparent background */
-        margin-top: 3rem; /* Give some space from nav */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-    }
+        nav ul li a::after { /* Underline effect on hover/active */
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
 
-    .hero-section h2 {
-        color: var(--secondary-color);
-        font-size: 2.5em;
-        margin-bottom: 1rem;
-    }
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
 
-    .hero-section p {
-        font-size: 1.1em;
-        line-height: 1.6;
-        color: #555;
-    }
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
 
-    .cta-button {
-        display: inline-block;
-        background-color: var(--accent-color);
-        color: var(--secondary-color);
-        padding: 12px 25px;
-        text-decoration: none;
-        border-radius: 5px;
-        font-weight: bold;
-        margin-top: 1.5rem;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
+        nav ul li a.active {
+            color: var(--accent-color);
+        }
 
-    .cta-button:hover {
-        background-color: #e6b100;
-        color: var(--secondary-color);
-    }
+        /* --- Hero Section --- */
+        .hero-section {
+            background-color: rgba(245, 245, 245, 0.9); /* Slightly more opaque dominant color */
+            padding: 6rem 0; /* More vertical padding */
+            text-align: center;
+            margin: 4rem 0; /* Spacing from header and other sections */
+            border-radius: 12px; /* Softer rounded corners */
+            box-shadow: 0 8px 20px var(--shadow-medium); /* Deeper shadow */
+            position: relative; /* For potential internal positioning */
+            overflow: hidden; /* Ensures shadows or pseudo-elements stay within */
+        }
 
-    .cards-section {
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        margin-top: 3rem;
-    }
+        .hero-section h2 {
+            color: var(--secondary-color);
+            font-size: 3.5em; /* Larger, more impactful heading */
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
 
-    .card {
-        /* Adjusted card background to be slightly transparent white */
-        background-color: rgba(255, 255, 255, 0.9); /* pure white with 90% opacity */
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 1.5rem;
-        margin: 1rem;
-        width: calc(33% - 2rem);
-        box-sizing: border-box;
-        text-align: center;
-    }
+        .hero-section p {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #424242; /* Darker grey for body text */
+            max-width: 800px;
+            margin: 0 auto 2.5rem auto; /* Centered paragraph, more margin below */
+        }
 
-    .card h3 {
-        color: var(--secondary-color);
-        margin-top: 0;
-    }
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            padding: 15px 35px; /* Larger button */
+            text-decoration: none;
+            border-radius: 8px; /* Slightly more rounded */
+            font-weight: 700; /* Bolder text */
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px var(--shadow-light); /* Button shadow */
+        }
 
-    .card p {
-        color: #666;
-        font-size: 0.95em;
-    }
+        .cta-button:hover {
+            background-color: #e6b100; /* Slightly darker accent on hover */
+            transform: translateY(-2px); /* Lift effect */
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
 
-    footer {
-        background-color: var(--secondary-color);
-        color: var(--dominant-color);
-        text-align: center;
-        padding: 1.5rem 0;
-        margin-top: 3rem;
-        font-size: 0.9em;
-        /* Add some transparency to footer to see background */
-        background-color: rgba(52, 73, 94, 0.85); /* secondary-color with 85% opacity */
-    }
+        /* --- Features Section (formerly cards-section) --- */
+        .features-section {
+            padding: 4rem 0;
+            margin-bottom: 4rem;
+            background-color: rgba(255, 255, 255, 0.95); /* White, nearly opaque background */
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow-medium);
+        }
 
-    footer a {
-        color: var(--accent-color);
-        text-decoration: none;
-    }
+        .features-section h2 {
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
 
-    footer a:hover {
-        text-decoration: underline;
-    }
-</style>
+        .features-grid {
+            display: grid; /* Using CSS Grid for more control */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+            gap: 30px; /* Space between grid items */
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            background-color: #ffffff; /* Pure white */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px var(--shadow-light); /* Subtle card shadow */
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px); /* Lift on hover */
+            box-shadow: 0 8px 20px var(--shadow-medium);
+        }
+
+        .feature-card h3 {
+            color: var(--secondary-color);
+            font-size: 1.6em;
+            font-weight: 500;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #555;
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        /* --- Footer Styling --- */
+        footer {
+            background-color: rgba(var(--secondary-color-rgb), 0.95);
+            color: var(--text-light);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            font-size: 0.9em;
+            box-shadow: 0 -2px 5px var(--shadow-medium); /* Shadow to separate from content */
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+        }
+
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--dominant-color); /* Hover to dominant color */
+            text-decoration: underline;
+        }
+
+        /* Helper for RGB conversion (for rgba) */
+        :root {
+            --secondary-color-rgb: 52, 73, 94;
+        }
+
+        /* --- Add some icons for a more complete look (using placeholder) --- */
+        .icon {
+            font-size: 3em;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
 
     <header>
-        <h1>MED-MISSION</h1>
+        <div class="container">
+            <div class="logo">MED-MISSION</div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <nav>
-        <ul>
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <h2>Your Health, Our <span style="color:var(--accent-color);">Mission</span></h2>
+                <p>Providing compassionate and expert medical care with a focus on advanced technology and patient-centered approaches. Partner with us for your journey to lasting wellness.</p>
+                <a href="#" class="cta-button">Explore Services</a>
+            </div>
+        </section>
 
-    <div class="hero-section">
-        <div class="container">
-            <h2>Your Health, Our Mission</h2>
-            <p>Providing top-tier medical care with compassion and expertise. Discover how we can help you on your journey to wellness.</p>
-            <a href="#" class="cta-button">Learn More</a>
-        </div>
-    </div>
-
-    <div class="container cards-section">
-        <div class="card">
-            <h3>Expert Doctors</h3>
-            <p>Our team of highly qualified medical professionals is dedicated to your health.</p>
-        </div>
-        <div class="card">
-            <h3>Advanced Technology</h3>
-            <p>Utilizing the latest medical equipment for accurate diagnoses and effective treatments.</p>
-        </div>
-        <div class="card">
-            <h3>Patient-Centered Care</h3>
-            <p>We prioritize your comfort and well-being in every step of your treatment.</p>
-        </div>
-    </div>
+        <section class="features-section">
+            <div class="container">
+                <h2>Why Choose MED-MISSION?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="icon">⚕️</div> <h3>Expert Doctors</h3>
+                        <p>Our team comprises highly qualified and experienced medical professionals dedicated to providing the best possible care.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🔬</div> <h3>Advanced Technology</h3>
+                        <p>We leverage cutting-edge medical equipment and innovative techniques for accurate diagnoses and effective treatments.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">💖</div> <h3>Patient-Centered Care</h3>
+                        <p>Your comfort and well-being are our top priority. We tailor treatments to individual needs with empathy and respect.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">⏱️</div> <h3>Efficient Services</h3>
+                        <p>Streamlined processes and effective scheduling ensure you receive timely and convenient medical attention.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🌱</div> <h3>Holistic Wellness</h3>
+                        <p>Beyond treatment, we promote overall well-being, offering advice and resources for a healthier lifestyle.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="icon">🤝</div> <h3>Community Trust</h3>
+                        <p>Built on a foundation of trust and reliable service, we are a valued part of the community's health network.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 MED-MISSION. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            <p>&copy; 2023 MED-MISSION. All rights reserved.</p>
+            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Site Map</a></p>
         </div>
     </footer>
 

@@ -7,7 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --dominant-color: #F5F5F5; /* Off-White */
+            --dominant-color: #F5F5F5; /* Primary Off-White background for general page (if no image) */
+            --layer-color: #F0F2F5;    /* NEW: Slightly darker off-white for main content sections/boxes */
             --secondary-color: #34495E; /* Navy Blue/Charcoal Gray */
             --accent-color: #FFC300;   /* Gold/Yellow */
             --text-light: #ECEFF1;     /* Lighter text for dark backgrounds */
@@ -15,17 +16,30 @@
             --shadow-light: rgba(0, 0, 0, 0.1);
             --shadow-medium: rgba(0, 0, 0, 0.2);
             --shadow-strong: rgba(0, 0, 0, 0.3);
+
+            /* Helper for RGB conversion (for rgba) */
+            --secondary-color-rgb: 52, 73, 94;
+            --layer-color-rgb: 240, 242, 245; /* RGB for the new layer color */
         }
 
         body {
-            font-family: 'Roboto', sans-serif; /* Using Roboto from Google Fonts */
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
             color: var(--text-dark); /* Default text color for light sections */
 
+            /* --- BACKGROUND IMAGE & ANIMATION --- */
+            background-image: url('https://i.ibb.co/f2R5FqD/Blue-medical-background-vector-source-files-h5.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            animation: backgroundPan 30s linear infinite alternate;
+            /* --- END BACKGROUND IMAGE & ANIMATION --- */
+
             /* Fallback background color if image doesn't load or is disabled */
-            background-color: #e0e0e0; /* A slightly darker off-white for contrast with translucent elements */
+            background-color: #DDE1E6; /* Slightly darker than dominant to show off layers */
         }
 
         @keyframes backgroundPan {
@@ -35,20 +49,20 @@
 
         /* --- Global Container --- */
         .container {
-            max-width: 1200px; /* Increased max-width for more spacious layout */
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
         /* --- Header Styling --- */
         header {
-            background-color: rgba(var(--secondary-color-rgb), 0.95); /* Nearly opaque secondary color */
+            background-color: rgba(var(--secondary-color-rgb), 0.95);
             color: var(--text-light);
             padding: 1rem 0;
-            box-shadow: 0 2px 5px var(--shadow-medium); /* Material shadow */
-            position: sticky; /* Sticky header */
+            box-shadow: 0 2px 5px var(--shadow-medium);
+            position: sticky;
             top: 0;
-            z-index: 1000; /* Ensure header is above other content */
+            z-index: 1000;
         }
 
         header .container {
@@ -60,7 +74,7 @@
         header .logo {
             font-size: 1.8em;
             font-weight: 700;
-            color: var(--dominant-color); /* Logo in dominant color for pop */
+            color: var(--dominant-color);
             letter-spacing: 1px;
             text-transform: uppercase;
         }
@@ -74,7 +88,7 @@
         }
 
         nav ul li {
-            margin-left: 30px; /* More spacing between nav items */
+            margin-left: 30px;
         }
 
         nav ul li a {
@@ -87,7 +101,7 @@
             transition: color 0.3s ease;
         }
 
-        nav ul li a::after { /* Underline effect on hover/active */
+        nav ul li a::after {
             content: '';
             position: absolute;
             bottom: 0;
@@ -113,19 +127,19 @@
 
         /* --- Hero Section --- */
         .hero-section {
-            background-color: rgba(245, 245, 245, 0.9); /* Slightly more opaque dominant color */
-            padding: 6rem 0; /* More vertical padding */
+            background-color: rgba(var(--layer-color-rgb), 0.95); /* Using the new layer color */
+            padding: 6rem 0;
             text-align: center;
-            margin: 4rem 0; /* Spacing from header and other sections */
-            border-radius: 12px; /* Softer rounded corners */
-            box-shadow: 0 8px 20px var(--shadow-medium); /* Deeper shadow */
-            position: relative; /* For potential internal positioning */
-            overflow: hidden; /* Ensures shadows or pseudo-elements stay within */
+            margin: 4rem 0;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-section h2 {
             color: var(--secondary-color);
-            font-size: 3.5em; /* Larger, more impactful heading */
+            font-size: 3.5em;
             font-weight: 700;
             margin-bottom: 1.5rem;
             line-height: 1.2;
@@ -134,36 +148,36 @@
         .hero-section p {
             font-size: 1.3em;
             line-height: 1.8;
-            color: #424242; /* Darker grey for body text */
+            color: #424242;
             max-width: 800px;
-            margin: 0 auto 2.5rem auto; /* Centered paragraph, more margin below */
+            margin: 0 auto 2.5rem auto;
         }
 
         .cta-button {
             display: inline-block;
             background-color: var(--accent-color);
             color: var(--secondary-color);
-            padding: 15px 35px; /* Larger button */
+            padding: 15px 35px;
             text-decoration: none;
-            border-radius: 8px; /* Slightly more rounded */
-            font-weight: 700; /* Bolder text */
+            border-radius: 8px;
+            font-weight: 700;
             font-size: 1.1em;
             letter-spacing: 0.5px;
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 10px var(--shadow-light); /* Button shadow */
+            box-shadow: 0 4px 10px var(--shadow-light);
         }
 
         .cta-button:hover {
-            background-color: #e6b100; /* Slightly darker accent on hover */
-            transform: translateY(-2px); /* Lift effect */
+            background-color: #e6b100;
+            transform: translateY(-2px);
             box-shadow: 0 6px 15px var(--shadow-medium);
         }
 
-        /* --- Features Section (formerly cards-section) --- */
+        /* --- Features Section --- */
         .features-section {
             padding: 4rem 0;
             margin-bottom: 4rem;
-            background-color: rgba(255, 255, 255, 0.95); /* White, nearly opaque background */
+            background-color: rgba(var(--layer-color-rgb), 0.95); /* Using the new layer color */
             border-radius: 12px;
             box-shadow: 0 8px 20px var(--shadow-medium);
         }
@@ -177,23 +191,23 @@
         }
 
         .features-grid {
-            display: grid; /* Using CSS Grid for more control */
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
-            gap: 30px; /* Space between grid items */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
             padding: 0 20px;
         }
 
         .feature-card {
-            background-color: #ffffff; /* Pure white */
+            background-color: #ffffff; /* Pure white for innermost layer */
             border-radius: 10px;
-            box-shadow: 0 4px 15px var(--shadow-light); /* Subtle card shadow */
+            box-shadow: 0 4px 15px var(--shadow-light);
             padding: 2rem;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px); /* Lift on hover */
+            transform: translateY(-5px);
             box-shadow: 0 8px 20px var(--shadow-medium);
         }
 
@@ -219,7 +233,7 @@
             padding: 2rem 0;
             margin-top: 4rem;
             font-size: 0.9em;
-            box-shadow: 0 -2px 5px var(--shadow-medium); /* Shadow to separate from content */
+            box-shadow: 0 -2px 5px var(--shadow-medium);
         }
 
         footer p {
@@ -233,16 +247,11 @@
         }
 
         footer a:hover {
-            color: var(--dominant-color); /* Hover to dominant color */
+            color: var(--dominant-color);
             text-decoration: underline;
         }
 
-        /* Helper for RGB conversion (for rgba) */
-        :root {
-            --secondary-color-rgb: 52, 73, 94;
-        }
-
-        /* --- Add some icons for a more complete look (using placeholder) --- */
+        /* --- Icon Styling --- */
         .icon {
             font-size: 3em;
             color: var(--accent-color);

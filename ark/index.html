@@ -3,447 +3,1924 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MED-MISSION</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>LUMHS MOCK TEST 1 - DANI MEDICO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="icon" href="/dani.png" type="image/png">
     <style>
         :root {
-            --dominant-color: #F5F5F5; /* Primary Off-White background for general page (if no image) */
-            --layer-color: #F0F2F5;    /* NEW: Slightly darker off-white for main content sections/boxes */
-            --secondary-color: #34495E; /* Navy Blue/Charcoal Gray */
-            --accent-color: #FFC300;   /* Gold/Yellow */
-            --text-light: #ECEFF1;     /* Lighter text for dark backgrounds */
-            --text-dark: #212121;      /* Darker text for light backgrounds */
-            --shadow-light: rgba(0, 0, 0, 0.1);
-            --shadow-medium: rgba(0, 0, 0, 0.2);
-            --shadow-strong: rgba(0, 0, 0, 0.3);
+            --primary-blue: #007bff;
+            --secondary-offwhite: #f7f7f7;
+            --tertiary-green: #2ecc71;
+            --dark-text: #333;
+            --light-text: #fff;
+            --light-grey-bg: #e0e0e0;
+            --danger-red: #dc3545;
+        }
 
-            /* Helper for RGB conversion (for rgba) */
-            --secondary-color-rgb: 52, 73, 94;
-            --layer-color-rgb: 240, 242, 245;
+        /* === USER'S EXISTING STYLES === */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: var(--secondary-offwhite);
+            color: var(--dark-text);
             line-height: 1.6;
-            color: var(--text-dark);
-
-            /* --- BACKGROUND IMAGE & ANIMATION --- */
-            background-image: url('https://i.ibb.co/f2R5FqD/Blue-medical-background-vector-source-files-h5.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: center center;
-            animation: backgroundPan 30s linear infinite alternate;
-            /* --- END BACKGROUND IMAGE & ANIMATION --- */
-
-            background-color: #DDE1E6;
-            overflow-x: hidden; /* Prevent horizontal scroll due to sidebar */
-            transition: margin-left 0.3s ease; /* Smooth transition for content push */
+            overflow-x: hidden;
         }
 
-        body.sidebar-open {
-            margin-left: 300px; /* Push content to the right when sidebar is open */
-        }
-
-        @keyframes backgroundPan {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
-
-        /* --- Global Container --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-
-        /* --- Header Styling --- */
-        header {
-            background-color: rgba(var(--secondary-color-rgb), 0.95);
-            color: var(--text-light);
-            padding: 1rem 20px; /* Adjusted padding to match container if needed */
-            box-shadow: 0 2px 5px var(--shadow-medium);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            width: 100%; /* Ensure header takes full width */
-            box-sizing: border-box; /* Include padding in width */
-            transition: transform 0.3s ease; /* Smooth transition for content push */
-        }
-
-        header .header-content { /* New wrapper for header content */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px; /* Constrain header content width */
-            margin: 0 auto;
-        }
-
-        header .logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--dominant-color);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        /* --- Hamburger Menu Icon --- */
-        .hamburger-menu {
-            background: none;
-            border: none;
-            color: var(--dominant-color);
-            font-size: 1.8em;
-            cursor: pointer;
-            padding: 5px;
-            display: block; /* Always show hamburger for sidebar toggle */
-            z-index: 1001; /* Ensure it's clickable above other content */
-        }
-
-        /* Hide desktop nav for this setup */
-        nav {
-            display: none;
-        }
-
-        /* --- Sidebar Styling --- */
-        #sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px; /* Start off-screen */
-            width: 300px;
-            height: 100%;
-            background-color: rgba(var(--secondary-color-rgb), 0.98); /* Almost opaque */
-            color: var(--text-light);
-            box-shadow: 2px 0 10px var(--shadow-strong);
-            transition: left 0.3s ease;
-            z-index: 1002; /* Higher than header */
-            padding-top: 20px; /* Space for content */
-            box-sizing: border-box;
-        }
-
-        #sidebar.open {
-            left: 0; /* Slide in */
-        }
-
-        .sidebar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 20px;
-            border-bottom: 1px solid rgba(var(--text-light-rgb), 0.1); /* Subtle separator */
-        }
-        
-        /* Helper for RGB conversion for text-light */
-        :root {
-            --text-light-rgb: 236, 239, 241;
-        }
-
-
-        .sidebar-header .sidebar-logo {
-            font-size: 1.6em;
-            font-weight: 700;
-            color: var(--dominant-color);
-            text-transform: uppercase;
-        }
-
-        .sidebar-close-btn {
-            background: none;
-            border: none;
-            color: var(--dominant-color);
-            font-size: 1.8em;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .sidebar-nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .sidebar-nav ul li a {
-            display: block; /* Make entire list item clickable */
-            padding: 15px 20px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1em;
-            border-left: 4px solid transparent; /* For active/hover indicator */
-            transition: background-color 0.3s ease, color 0.3s ease, border-left-color 0.3s ease;
-        }
-
-        .sidebar-nav ul li a:hover,
-        .sidebar-nav ul li a.active {
-            background-color: rgba(var(--accent-color-rgb), 0.1); /* Subtle accent background on hover */
-            color: var(--accent-color);
-            border-left-color: var(--accent-color);
-        }
-
-        /* Helper for RGB conversion for accent-color */
-        :root {
-            --accent-color-rgb: 255, 195, 0;
-        }
-
-        /* --- Overlay for dimmed background --- */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-            z-index: 1001; /* Between content and sidebar */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* --- Main Content Styling (Adjusted for sidebar push) --- */
-        main {
-            transition: margin-left 0.3s ease;
-        }
-
-        .hero-section {
-            background-color: rgba(var(--layer-color-rgb), 0.95);
-            padding: 6rem 0;
-            text-align: center;
-            margin: 4rem auto; /* Adjusted for centered main content */
-            border-radius: 12px;
-            box-shadow: 0 8px 20px var(--shadow-medium);
+        /* Header */
+        header {
+            background-color: var(--primary-blue);
+            color: var(--light-text);
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             position: relative;
-            overflow: hidden;
-            max-width: 1200px; /* Ensure sections don't go full width if body is pushed */
-            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--light-text);
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            height: 85px; 
+            width: 85px;  
+            margin-right: 10px;
+            border-radius: 50%; 
+            object-fit: cover; 
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--tertiary-green);
         }
         
-        .hero-section h2 {
-            color: var(--secondary-color);
-            font-size: 3.5em;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
+        nav ul li a.active::after,
+        nav ul li a:hover::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 2px;
+            background-color: var(--tertiary-green);
         }
 
-        .hero-section p {
-            font-size: 1.3em;
-            line-height: 1.8;
-            color: #424242;
-            max-width: 800px;
-            margin: 0 auto 2.5rem auto;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: var(--secondary-color);
-            padding: 15px 35px;
+        .btn-enroll {
+            background-color: var(--tertiary-green);
+            color: var(--light-text);
+            padding: 10px 20px;
+            border-radius: 5px;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 1.1em;
-            letter-spacing: 0.5px;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 10px var(--shadow-light);
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-left: 30px;
         }
 
-        .cta-button:hover {
-            background-color: #e6b100;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px var(--shadow-medium);
+        .btn-enroll:hover {
+            background-color: #24b860;
         }
 
-        /* --- Features Section --- */
-        .features-section {
-            padding: 4rem 0;
-            margin-bottom: 4rem;
-            background-color: rgba(var(--layer-color-rgb), 0.95);
-            border-radius: 12px;
-            box-shadow: 0 8px 20px var(--shadow-medium);
-            max-width: 1200px;
-            margin: 0 auto 4rem auto; /* Centered main content */
-            box-sizing: border-box;
+        /* Mobile Menu Styles */
+        .nav-toggler {
+            display: none; 
         }
 
-        .features-section h2 {
-            text-align: center;
-            color: var(--secondary-color);
-            font-size: 2.8em;
-            font-weight: 700;
-            margin-bottom: 3rem;
+        .hamburger-menu {
+            display: none; 
+            cursor: pointer;
+            z-index: 1001; 
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            padding: 0 20px;
+        .hamburger-menu .line {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--light-text);
+            margin: 5px 0;
+            transition: all 0.3s ease-in-out;
         }
 
-        .feature-card {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px var(--shadow-light);
-            padding: 2rem;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px var(--shadow-medium);
-        }
-
-        .feature-card h3 {
-            color: var(--secondary-color);
-            font-size: 1.6em;
-            font-weight: 500;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            color: #555;
-            font-size: 1em;
-            line-height: 1.7;
-        }
-
-        /* --- Footer Styling --- */
+        /* Footer */
         footer {
-            background-color: rgba(var(--secondary-color-rgb), 0.95);
-            color: var(--text-light);
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-            font-size: 0.9em;
-            box-shadow: 0 -2px 5px var(--shadow-medium);
-            transition: transform 0.3s ease;
+            background-color: var(--primary-blue);
+            color: var(--light-text);
+            padding: 30px 0;
+            margin-top: 50px;
         }
 
-        footer p {
-            margin: 0.5rem 0;
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        footer a {
-            color: var(--accent-color);
+        .footer-logo {
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .footer-logo img {
+            height: 85px; 
+            width: 85px;
+            margin-right: 10px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .footer-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav ul li {
+            margin-right: 25px;
+        }
+
+        .footer-nav ul li a {
+            color: var(--light-text);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        footer a:hover {
-            color: var(--dominant-color);
-            text-decoration: underline;
+        .footer-nav ul li a:hover {
+            color: var(--tertiary-green);
         }
 
-        /* --- Icon Styling --- */
-        .icon {
-            font-size: 3em;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
+        .social-icons a {
+            color: var(--light-text);
+            font-size: 20px;
+            margin-left: 15px;
+            text-decoration: none;
+            transition: color 0.3s ease;
         }
+
+        .social-icons a:hover {
+            color: var(--tertiary-green);
+        }
+
+        .copyright {
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* === USER'S RESPONSIVE STYLES === */
+        @media (max-width: 992px) {
+            .hamburger-menu {
+                display: block; 
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 0;  
+                left: 0;
+                width: 100%;
+                height: 100vh; 
+                background-color: var(--primary-blue);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul li {
+                margin: 20px 0;
+            }
+            
+            nav ul li a {
+                font-size: 24px; 
+            }
+
+            .btn-enroll {
+                margin-left: 0;
+                margin-top: 30px;
+                font-size: 20px;
+                padding: 12px 24px;
+            }
+
+            .nav-toggler:checked ~ .nav-menu {
+                transform: translateX(0); 
+            }
+            
+            .nav-toggler:checked ~ .hamburger-menu .line1 {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            .nav-toggler:checked ~ .hamburger-menu .line2 {
+                opacity: 0;
+            }
+            .nav-toggler:checked ~ .hamburger-menu .line3 {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            header .container {
+                flex-wrap: wrap;
+            }
+
+            footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-nav ul {
+                margin-top: 20px;
+                justify-content: center;
+            }
+            .social-icons {
+                margin-top: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+             nav ul li a {
+                font-size: 20px;
+            }
+            .nav-menu .btn-enroll {
+                font-size: 18px;
+            }
+        }
+        
+        /* === NEW STYLES FOR QUIZ === */
+        main {
+            padding: 40px 0;
+        }
+
+        .form-container, .quiz-container, .results-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: var(--light-text);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        .form-container h1, .quiz-container h1, .results-container h1 {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-top: 0;
+        }
+
+        .form-container h3 {
+            text-align: center;
+            font-weight: 500;
+            color: var(--dark-text);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+        }
+
+        .btn-start, .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-start {
+            background-color: var(--tertiary-green);
+            color: var(--light-text);
+        }
+        
+        .btn-start:hover {
+            background-color: #24b860;
+        }
+        
+        .btn-submit {
+            background-color: var(--primary-blue);
+            color: var(--light-text);
+            margin-top: 30px;
+        }
+        
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        /* Hide quiz and results by default */
+        .quiz-container, .results-container {
+            display: none;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-grey-bg);
+        }
+        
+        .quiz-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--dark-text);
+        }
+        
+        #question-counter {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        .question {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+        
+        .question ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .question li {
+            margin-bottom: 10px;
+        }
+        
+        .question label {
+            display: block;
+            padding: 12px 15px;
+            background-color: var(--secondary-offwhite);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        .question label:hover {
+            background-color: #e9ecef;
+        }
+        
+        .question input[type="radio"] {
+            margin-right: 10px;
+            /* Hiding the default radio button */
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        /* Custom radio button appearance */
+        .question label {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .question label::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            background: #fff;
+        }
+        
+        .question input[type="radio"]:checked + label::before {
+            border-color: var(--primary-blue);
+            background-color: var(--primary-blue);
+        }
+        
+        .question input[type="radio"]:checked + label::after {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%) scale(1);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .question input[type="radio"]:checked + label {
+            border-color: var(--primary-blue);
+            background-color: #e7f3ff;
+            font-weight: 600;
+        }
+
+        .results-container h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .results-container #score {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--tertiary-green);
+            margin-bottom: 30px;
+        }
+
+        #submission-status {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+        
+        .status-success {
+            color: var(--tertiary-green);
+        }
+        
+        .status-error {
+            color: var(--danger-red);
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="overlay" id="overlay"></div>
-
-    <div id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-logo">MED-MISSION</div>
-            <button class="sidebar-close-btn" id="sidebarCloseBtn">
-                <i class="fas fa-times"></i> </button>
-        </div>
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#" class="active">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Patient Info</a></li>
-            </ul>
-        </nav>
-    </div>
-
     <header>
-        <div class="header-content">
-            <button class="hamburger-menu" id="hamburgerMenu">
-                <i class="fas fa-bars"></i> </button>
-            <div class="logo">MED-MISSION</div>
-            <div></div> </div>
+        <div class="container">
+            <a href="/" class="logo">
+                <img src="/dani.png" alt="DANI MEDICO Logo"> DANI MEDICO
+            </a>
+            
+            <input type="checkbox" id="nav-toggler" class="nav-toggler">
+            <label for="nav-toggler" class="hamburger-menu">
+                <span class="line line1"></span>
+                <span class="line line2"></span>
+                <span class="line line3"></span>
+            </label>
+
+            <div class="nav-menu">
+                <nav>
+                    <ul>
+                        <li><a href="test1.html">Tests</a></li>
+                        <li><a href="common.html">Notes</a></li>
+                        <li><a href="common.html">Lectures</a></li>
+                        <li><a href="common.html">Past Papers</a></li>
+                    </ul>
+                </nav>
+                <a href="common.html" class="btn-enroll">Dashboard</a>
+            </div>
+        </div>
     </header>
 
     <main>
-        <section class="hero-section">
-            <div class="container">
-                <h2>Your Health, Our <span style="color:var(--accent-color);">Mission</span></h2>
-                <p>Providing compassionate and expert medical care with a focus on advanced technology and patient-centered approaches. Partner with us for your journey to lasting wellness.</p>
-                <a href="#" class="cta-button">Explore Services</a>
-            </div>
-        </section>
+        <div class="container">
+            <section class="form-container" id="user-form-section">
+                <h1>LUMHS MOCK TEST 1</h1>
+                <h3>Program: All Allied Health Sciences and Health Management</h3>
+                <p style="text-align: center; margin-bottom: 25px;">
+                    Please enter your details to start the test.<br>
+                    <b>Total Questions:</b> 100 | <b>Time Limit:</b> 90 Minutes
+                </p>
+                <form id="user-form">
+                    <div class="form-group">
+                        <label for="student-name">Full Name</label>
+                        <input type="text" id="student-name" name="student-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-city">City</label>
+                        <input type="text" id="student-city" name="student-city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="student-gmail">Gmail</label>
+                        <input type="email" id="student-gmail" name="student-gmail" required>
+                    </div>
+                    <button type="submit" class="btn-start">Start Test</button>
+                </form>
+            </section>
 
-        <section class="features-section">
-            <div class="container">
-                <h2>Why Choose MED-MISSION?</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <div class="icon">⚕️</div> <h3>Expert Doctors</h3>
-                        <p>Our team comprises highly qualified and experienced medical professionals dedicated to providing the best possible care.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon">🔬</div> <h3>Advanced Technology</h3>
-                        <p>We leverage cutting-edge medical equipment and innovative techniques for accurate diagnoses and effective treatments.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon">💖</div> <h3>Patient-Centered Care</h3>
-                        <p>Your comfort and well-being are our top priority. We tailor treatments to individual needs with empathy and respect.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon">⏱️</div> <h3>Efficient Services</h3>
-                        <p>Streamlined processes and effective scheduling ensure you receive timely and convenient medical attention.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon">🌱</div> <h3>Holistic Wellness</h3>
-                        <p>Beyond treatment, we promote overall well-being, offering advice and resources for a healthier lifestyle.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="icon">🤝</div> <h3>Community Trust</h3>
-                        <p>Built on a foundation of trust and reliable service, we are a valued part of the community's health network.</p>
-                    </div>
+            <section class="quiz-container" id="quiz-section">
+                <div class="quiz-header">
+                    <h2>LUMHS MOCK TEST 1</h2>
+                    <span id="question-counter">Question 1/100</span>
                 </div>
-            </div>
-        </section>
+                
+                <form id="quiz-form">
+                    <div id="quiz-questions"></div>
+                    
+                    <button type="submit" class="btn-submit" id="submit-btn">Submit Test</button>
+                </form>
+            </section>
+
+            <section class="results-container" id="results-section">
+                <h1>Test Complete!</h1>
+                <h2>Congratulations, <span id="result-name">Student</span>!</h2>
+                <p id="score">Your Score: 0/100</p>
+                <p id="submission-status">Submitting your results...</p>
+            </section>
+        </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2023 MED-MISSION. All rights reserved.</p>
-            <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Site Map</a></p>
+            <a href="/" class="footer-logo">
+                <img src="/dani.png" alt="DANI MEDICO Logo"> DANI MEDICO
+            </a>
+            <div class="footer-nav">
+                <ul>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#sitemap">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="social-icons">
+                <a href="https://whatsapp.com/channel/0029VadsNMoLikg6LUsxkF0u" target="_blank" aria-label="Whatsapp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/share/17jLb8e8Ns/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/missionmdcat_zone?igsh=MWFwdWcxZ2h2Yzg1Yg==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        <div class="copyright container">
+            &copy; 2025 DANI MEDICO. All rights reserved.
         </div>
     </footer>
 
     <script>
-        const hamburgerMenu = document.getElementById('hamburgerMenu');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
-        const overlay = document.getElementById('overlay');
-        const body = document.body;
+        // === 1. GOOGLE SCRIPT URL ===
+        // IMPORTANT: Replace this with your own Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBSKHVOKd5nrlyH2jlgFKH04hHohjXIlbKbwcEc8dRTVm2j2lhJqktAs0HcvHy0v_i/exec';
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-            body.classList.toggle('sidebar-open');
+        // === 2. QUIZ DATA ===
+// (Program: 40 Bio, 30 Chem, 20 Phys, 10 Eng)
+// All questions extracted from the NTS PDF or generated to fill image-based gaps.
+const quizData = [
+    // --- English (10 Questions from PDF) ---
+    {
+        subject: "English",
+        question: "Why is power being turned off?",
+        options: [
+            "To reduce total demand.",
+            "To save money.",
+            "To make it cooler.",
+            "To make the city pay its bill."
+        ],
+        correct: 0
+    },
+    {
+        subject: "English",
+        question: "How long will power be off?",
+        options: [
+            "Longer than two hours.",
+            "Less than two hours.",
+            "For one day.",
+            "Until the weather changes."
+        ],
+        correct: 1
+    },
+    {
+        subject: "English",
+        question: "There ______ many students waiting to hear the results of the test.",
+        options: [
+            "has",
+            "have",
+            "was",
+            "are"
+        ],
+        correct: 3
+    },
+    {
+        subject: "English",
+        question: "Some people ______ claim to be vegetarians actually allow themselves to eat fish and chicken.",
+        options: [
+            "which",
+            "whom",
+            "who",
+            "why"
+        ],
+        correct: 2
+    },
+    {
+        subject: "English",
+        question: "Identify the error: 'During the day, there is often two guards at the entrance.'",
+        options: [
+            "During the day",
+            "there is",
+            "two guards",
+            "at the entrance"
+        ],
+        correct: 1
+    },
+    {
+        subject: "English",
+        question: "Identify the error: 'Because of their identical appearance and dress, the twins were often mistaken for each other.'",
+        options: [
+            "Because of",
+            "identical appearance",
+            "mistaken for",
+            "No error"
+        ],
+        correct: 3
+    },
+    {
+        subject: "English",
+        question: "Choose the word most similar in meaning to 'PROVOKE':",
+        options: [
+            "deface",
+            "lionize",
+            "remove",
+            "punish",
+            "aggravate"
+        ],
+        correct: 4
+    },
+    {
+        subject: "English",
+        question: "Choose the word most similar in meaning to 'THREATENING':",
+        options: [
+            "flighty",
+            "aggressive",
+            "chaste",
+            "hallowed",
+            "global"
+        ],
+        correct: 1
+    },
+    {
+        subject: "English",
+        question: "Choose the word most nearly opposite to 'MANDATORY':",
+        options: [
+            "dispassionate",
+            "obligatory",
+            "voluntary",
+            "confirmed",
+            "unhappy"
+        ],
+        correct: 2
+    },
+    {
+        subject: "English",
+        question: "Choose the word most nearly opposite to 'HONESTY':",
+        options: [
+            "clever",
+            "dishonesty",
+            "resolution",
+            "failure"
+        ],
+        correct: 1
+    },
+
+    // --- Physics (20 Questions from PDF) ---
+    {
+        subject: "Physics",
+        question: "If 500 cm³ of gas, having a pressure of 760 mm of mercury, is compressed into a volume of 300 cm³, the temperature remaining constant, the pressure will be approximately:",
+        options: [
+            "500",
+            "900",
+            "1,100",
+            "1,270",
+            "1,500"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Physics",
+        question: "Two springs stretched by 5 cm and 10 cm, with masses 0.5 kg and 1 kg, will oscillate with time periods in the ratio:",
+        options: [
+            "1 : sqrt(2)",
+            "1 : 2",
+            "sqrt(2) : 1",
+            "2 : 1",
+            "2 : sqrt(2)"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Physics",
+        question: "A unit of ______ is said to exist at a point where the force per unit charge experienced by a positive test charge, moving with a velocity of 1 m/s... is 1 Newton.",
+        options: [
+            "Gravitational Field",
+            "Magnetic Field",
+            "Magnetic Flux",
+            "Flux density"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Physics",
+        question: "A ______ is a positively charged particle with properties similar to the alpha-particle. Its mass is one fourth and charge is one half of that of an alpha-particle.",
+        options: [
+            "Beta particle",
+            "Gamma ray",
+            "Neutron",
+            "Proton"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Physics",
+        question: "Which pair includes a vector quantity and a scalar quantity respectively?",
+        options: [
+            "Power, speed",
+            "Work, potential energy",
+            "Displacement, acceleration",
+            "Force, kinetic energy"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Physics",
+        question: "A ball falls and bounces. While in contact with the ground, which statement is correct?",
+        options: [
+            "The force the ball exerts on the ground is always equal to the weight of the ball.",
+            "The force the ball exerts on the ground is always equal in magnitude and opposite in direction to the force the ground exerts on the ball.",
+            "The force the ball exerts on the ground is always greater than the weight of the ball.",
+            "The weight of the ball is always equal and opposite to the force the ground exerts on the ball."
+        ],
+        correct: 1
+    },
+    {
+        subject: "Physics",
+        question: "A car passes one post at 10 m/s and the next 100 m post at 20 m/s. What is its uniform acceleration?",
+        options: [
+            "0.67 m/s²",
+            "1.5 m/s²",
+            "2.5 m/s²",
+            "6.0 m/s²"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Physics",
+        question: "A sample of an ideal gas expands (I) adiabatically, or (II) isothermally. The net flow of heat into the gas is:",
+        options: [
+            "positive in each case",
+            "negative for I and positive for II",
+            "positive for I and negative for II",
+            "zero in each case",
+            "zero in I and positive for II"
+        ],
+        correct: 4
+    },
+    {
+        subject: "Physics",
+        question: "In a change for which Boyle's law ($PV = \text{constant}$) is obeyed, which of the following would necessarily be zero?",
+        options: [
+            "ΔQ",
+            "Cv",
+            "ΔT",
+            "p",
+            "ΔV"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Physics",
+        question: "Four particles move at the same speed perpendicular to the same magnetic field. Which particle is deflected the most?",
+        options: [
+            "a copper ion",
+            "a helium nucleus",
+            "an electron",
+            "a proton"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Physics",
+        question: "A row of 25 series lights doesn't work. A voltmeter reads zero across the third bulb. Which cannot be the *only* fault?",
+        options: [
+            "The filament of one of the other bulbs has broken.",
+            "The filament of the third bulb has broken.",
+            "The fuse in the mains transformer has blown.",
+            "There is a break in the wire from the supply to the transformer."
+        ],
+        correct: 1
+    },
+    {
+        subject: "Physics",
+        question: "Charges +2µC and -2µC are at points P and Q. X is midway. What is the electric field and potential at X?",
+        options: [
+            "Field: Towards Q, Potential: zero",
+            "Field: Towards Q, Potential: negative",
+            "Field: Towards P, Potential: zero",
+            "Field: Towards P, Potential: positive"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Physics",
+        question: "A fixed mass of gas in a thermally insulated container is compressed. The temperature of the gas will have:",
+        options: [
+            "fallen, because molecules are moving slower",
+            "fallen, because of more collisions",
+            "remained constant if compression is slow",
+            "risen, since doing work on the gas increases the kinetic energy",
+            "risen, since more collisions produce heat"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Physics",
+        question: "A gas absorbs 1000 J of heat and expands under constant pressure of 20 kPa from 25x10⁻³ m³ to 50x10⁻³ m³. What is the change in internal energy?",
+        options: [
+            "-1000 J",
+            "-900 J",
+            "Zero",
+            "+500 J",
+            "+1000 J"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Physics",
+        question: "An object 25 cm from a convex lens forms a real image 4 times the size. The focal length is:",
+        options: [
+            "20 cm",
+            "25 cm",
+            "33 cm",
+            "50 cm",
+            "100 cm"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Physics",
+        question: "An object on a horizontal surface (coefficient of friction 0.2) has a horizontal force F applied. What can happen?",
+        options: [
+            "I, II and III only",
+            "I and III only",
+            "II and IV only",
+            "IV only",
+            "III only"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Physics",
+        question: "A 60 kg person pushes a 90 kg object 6 meters at a constant velocity in 3 seconds. The weight of this person is approximately:",
+        options: [
+            "40 N",
+            "90 N",
+            "200 N",
+            "400 N",
+            "600 N"
+        ],
+        correct: 4
+    },
+    {
+        subject: "Physics",
+        question: "Which unit expresses work per unit charge?",
+        options: [
+            "Hertz",
+            "Watt",
+            "Joule",
+            "Volt",
+            "Half-life"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Physics",
+        question: "The time of one vibration of a simple pendulum may be decreased by:",
+        options: [
+            "increasing the length",
+            "decreasing the length",
+            "using a heavier bob",
+            "using a lighter bob"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Physics",
+        question: "The sum of all forms of molecular energies in a thermodynamic system is known as:",
+        options: [
+            "Entropy",
+            "Enthalpy",
+            "Internal energy",
+            "Red shift"
+        ],
+        correct: 2
+    },
+    
+    // --- Chemistry (25 from PDF + 5 Generated) ---
+    {
+        subject: "Chemistry",
+        question: "Which of the following statements about H₂S is false?",
+        options: [
+            "It is a covalent compound",
+            "It is a gas with bad smell",
+            "It is a stronger reducing agent than H₂O",
+            "It is a weak base in water"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "What is the volume in cm³ of 3.01 x 10²³ molecules of O₂ gas at S.T.P.?",
+        options: [
+            "1000 cm³",
+            "11000 cm³",
+            "1120 cm³",
+            "11200 cm³"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "The amount of solute present in the given amount of solvent is called:",
+        options: [
+            "Molarity",
+            "Molality",
+            "Concentration",
+            "Solubility"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Chemistry",
+        question: "In the reaction $2Fe + Cl_2 \rightarrow 2FeCl_3$, which statement is correct?",
+        options: [
+            "Fe is reduced",
+            "Fe is oxidized",
+            "Cl₂ is oxidized",
+            "None of the above"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Chemistry",
+        question: "The process in which electric current is used to carry out a non-spontaneous redox reaction is called:",
+        options: [
+            "Electrolyte",
+            "Electrolysis",
+            "Metallic conductor",
+            "None of the above"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Chemistry",
+        question: "A correct formula must:",
+        options: [
+            "be balanced with proper coefficients",
+            "always have subscripts",
+            "always conform to the valency rules",
+            "always conform to the law of multiple proportions"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Chemistry",
+        question: "A compound was found to contain nitrogen and oxygen in the ratio 28 g: 80 g. The formula of the compound is:",
+        options: [
+            "NO",
+            "N₂O₃",
+            "N₂O₄",
+            "N₂O₅"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "When β-particles are sent through a thin metal foil, most of them go straight through the foil as:",
+        options: [
+            "β-particles are much heavier than electrons",
+            "β-particles are positively charged",
+            "Most part of the atom is empty space",
+            "β-particles move with high velocity"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Chemistry",
+        question: "Electronic Configuration of M²⁺ ion is 2, 8, 14 and its atomic weight is 56 amu. The number of neutrons in its nucleus are:",
+        options: [
+            "30",
+            "32",
+            "42",
+            "52"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Chemistry",
+        question: "The quantum numbers +1/2 and -1/2 for the electron spin represent:",
+        options: [
+            "Rotation of the electron in clockwise and anticlockwise direction respectively",
+            "Rotation of the electron in anticlockwise and clockwise direction respectively",
+            "Magnetic movement of the electron pointing up and down respectively",
+            "Two quantum mechanical spin states which have no classical analogue"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "1 liter of a gas weighs 2 g at 300 K and 1 atm. If the pressure is made 75 atm, at which temperature will 1 L of the same gas weigh 1 g?",
+        options: [
+            "450 K",
+            "600 K",
+            "800 K",
+            "900 K"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Chemistry",
+        question: "Which of the following pairs of gases has the same rate of diffusion?",
+        options: [
+            "CO₂ and N₂O",
+            "CO₂ and CO",
+            "NO₂ and CO₂",
+            "CO₂ and N₂O₄"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Chemistry",
+        question: "For the equilibrium reaction: $2NO_2 \rightleftharpoons N_2O_4(g) + 51kJ$, increase of temperature would:",
+        options: [
+            "Favour the formation of N₂O₄",
+            "Favour the decomposition of N₂O₄",
+            "No affect on equilibrium",
+            "Stop the reaction"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Chemistry",
+        question: "The value K for $H_2(g) + CO_2(g) \rightleftharpoons H_2O(g) + CO(g)$ is 1.80 at 1000°C. If 1.0 mole of each are placed in a 1L flask, the final equilibrium concentration of CO will be:",
+        options: [
+            "0.295 M",
+            "0.385 M",
+            "0.531 M",
+            "0.473 M"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Chemistry",
+        question: "[REPLACEMENT] The reaction of Toluene with Acyl Halide in the presence of AlCl₃ is an example of:",
+        options: [
+            "Nucleophilic substitution",
+            "Friedel-Crafts acylation",
+            "Grignard reaction",
+            "Polymerization"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Chemistry",
+        question: "[REPLACEMENT] The reaction between an aldehyde (Ethanal) and an alcohol (Propanol) in the presence of an acid catalyst forms a:",
+        options: [
+            "Hemiacetal",
+            "Ester",
+            "Ether",
+            "Ketone"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Chemistry",
+        question: "[REPLACEMENT] The reaction of Butanoic acid with Thionyl chloride (SOCl₂) primarily yields:",
+        options: [
+            "Butanoyl chloride",
+            "Chlorobutane",
+            "Butanal",
+            "Butene"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Chemistry",
+        question: "Which of the following values of heat of formation indicates that the product is least stable?",
+        options: [
+            "-94 kcal",
+            "-231 kcal",
+            "+21.4 kcal",
+            "+64.8 kcal"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "The enthalpy of a reaction at 273 K is -20.75 kJ. The enthalpy of the same reaction at 373 K (if heat capacities are same) will be:",
+        options: [
+            "-10.75 kJ",
+            "-2075 kJ",
+            "Zero",
+            "-20.75 x (373/273) kJ"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "Most abundant salt of sodium in nature is:",
+        options: [
+            "NaNO₃",
+            "Na₂SO₄",
+            "NaOH",
+            "NaCl"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "A gas that reacts with CaO and not with NaHCO₃ is:",
+        options: [
+            "CO₂",
+            "Cl₂",
+            "O₂",
+            "N₂"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Chemistry",
+        question: "Which of the following statements is correct?",
+        options: [
+            "H₃PO₃ is dibasic and reducing",
+            "H₃PO₃ is tribasic and reducing",
+            "H₃PO₄ is tribasic and non-reducing",
+            "H₃PO₄ is dibasic and non-reducing"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Chemistry",
+        question: "[REPLACEMENT] Which of the following is an isomer of butane?",
+        options: [
+            "Propane",
+            "2-methylpropane",
+            "Pentane",
+            "Ethene"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Chemistry",
+        question: "[REPLACEMENT] How would an ammonium group (-NH₃⁺) on a benzene ring affect subsequent reactions?",
+        options: [
+            "Deactivate the ring, meta directing",
+            "Activate the ring, ortho-para directing",
+            "Deactivate the ring, ortho-para directing",
+            "Activate the ring, meta directing"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Chemistry",
+        question: "Which of the following would be the best solvent for an SN2 reaction?",
+        options: [
+            "H₂O",
+            "CH₃CH₂OH",
+            "CH₃SOCH₃ (DMSO)",
+            "CH₃CH₂CH₂CH₂CH₃"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Chemistry",
+        question: "The formula of Plaster of Paris is:",
+        options: [
+            "(CaSO₄)·1/2H₂O",
+            "(CaSO₄)·5H₂O",
+            "(CaSO₄)·7H₂O",
+            "(CaSO₄)·9H₂O"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Chemistry",
+        question: "Ionic, covalent and co-ordinate covalent bonds are simultaneously present in the molecular geometry of:",
+        options: [
+            "Ammonia",
+            "Ammonium hydroxide",
+            "Hydrochloric acid",
+            "Water",
+            "Methane"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Chemistry",
+        question: "All amino acids contain the functional group(s):",
+        options: [
+            "NH₂",
+            "CO₂H",
+            "S²⁻",
+            "Both A and B"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "Alanine, lysine and tryptophan are:",
+        options: [
+            "Carbohydrates",
+            "Lipids",
+            "Enzymes",
+            "Amino acids"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Chemistry",
+        question: "What happens when one mole of ethane is mixed in the dark at room temp with six moles of chlorine?",
+        options: [
+            "There is no reaction",
+            "CH₃CH₂Cl and HCl are formed",
+            "CH₃CCl₃ and HCl are formed",
+            "CCl₃CCl₃ and HCl are formed"
+        ],
+        correct: 0
+    },
+
+    // --- Biology (18 from PDF + 22 Generated) ---
+    {
+        subject: "Biology",
+        question: "When the tuft of flagella are present at both ends in the structure of bacterial cell, then the condition is known as:",
+        options: [
+            "Atrichous",
+            "Lophotrichous",
+            "Peritrichous",
+            "Amphitrichous",
+            "Bitrichous"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Biology",
+        question: "Cystic fibrosis patients lack a gene that codes for a transmembrane carrier of:",
+        options: [
+            "Na⁺ ions",
+            "K⁺ ions",
+            "Cl⁻ ions",
+            "Ca²⁺ ions",
+            "Mg²⁺ ions"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "Platyhelminthes means:",
+        options: [
+            "Flat worms",
+            "Round worms",
+            "Segmented worms",
+            "None of the above"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Biology",
+        question: "All of the following are mammals EXCEPT the:",
+        options: [
+            "Porpoise",
+            "Shark",
+            "Whale",
+            "Walrus",
+            "Seal"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "Viruses resemble living things because they:",
+        options: [
+            "Circulate",
+            "Move",
+            "Reproduce",
+            "Are crystalline",
+            "Are able to respond to stimuli"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "A part of the digestive system that is not in contact with food is the:",
+        options: [
+            "Small intestine",
+            "Stomach",
+            "Liver",
+            "Large intestine",
+            "Trachea"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "All of the following protect the body against the entrance of germs except:",
+        options: [
+            "Tears",
+            "Mucous membranes",
+            "Ciliated cells",
+            "White blood cells",
+            "Red blood cells"
+        ],
+        correct: 4
+    },
+    {
+        subject: "Biology",
+        question: "The organism moves by means of:",
+        options: [
+            "Peristalsis",
+            "Pinocytosis",
+            "Porifera",
+            "Protozoa",
+            "Pseudopodia"
+        ],
+        correct: 4
+    },
+    {
+        subject: "Biology",
+        question: "In a pyramid of energy, which level represents the greatest amount of energy?",
+        options: [
+            "Producers",
+            "First-order consumers",
+            "Second-order consumers",
+            "Third-order consumers",
+            "Decomposers"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Biology",
+        question: "The phenomenon known as crossing-over occurs during:",
+        options: [
+            "Mitosis",
+            "Meiosis",
+            "Geographic distribution",
+            "Active transport"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "The following sequence of events occurs at the neuromuscular junction. (V=acetylcholine, W=end plate potential, X=calcium ions, Y=actomyosin). What is the correct sequence?",
+        options: [
+            "V -> W -> X -> Y",
+            "W -> X -> V -> Y",
+            "X -> Y -> V -> W",
+            "Y -> V -> W -> X"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Biology",
+        question: "Which group of organisms has the following features: I. three pairs of jointed legs, II. three-part segmented body, III. one pair of antennae?",
+        options: [
+            "arachnida",
+            "crustaceans",
+            "insects",
+            "myriapods"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "Which of the following is correctly matched?",
+        options: [
+            "Ribosomes: Detoxification",
+            "Lysosomes: Protein synthesis",
+            "Peroxisomes: Destroys foreign particles",
+            "Smooth ER: Converts cholesterol into Vitamin D",
+            "Centrioles: Formation of astral rays"
+        ],
+        correct: 4
+    },
+    {
+        subject: "Biology",
+        question: "Pyruvic acid is the end product of:",
+        options: [
+            "Glycolysis",
+            "Krebs cycle",
+            "Oxidation",
+            "Electron transport system"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Biology",
+        question: "Humoral immunity is carried by a special group of cells called:",
+        options: [
+            "B-cells",
+            "Killer cell",
+            "Helper cell",
+            "Null cells"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Biology",
+        question: "Identify the correctly matched pair:",
+        options: [
+            "Nitrogen cycle: Nitritapus",
+            "Nitrifying bacteria: change protein to ammonia",
+            "Biosphere: where life exists",
+            "Lithosphere: water, air and soil"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "Which of the following RNA sequences would be transcribed from the DNA sequence ATGCCTAGGAC?",
+        options: [
+            "TACGGATCCTG",
+            "UACGGAUCCUG",
+            "AUGCCUAGGAC",
+            "UAGGCUACCUG",
+            "GCAUUCGAGGU"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "Human cells maintain concentration gradients, such that there is a high sodium concentration outside and high potassium inside. Sodium 'leak' channels would allow sodium to:",
+        options: [
+            "move out of the cell by simple diffusion",
+            "move into the cell by simple diffusion",
+            "move out of the cell by facilitated diffusion",
+            "move into the cell by facilitated diffusion",
+            "move into the cell by active transport"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which enzyme is responsible for 'unzipping' the DNA double helix during replication?",
+        options: [
+            "DNA Polymerase",
+            "Ligase",
+            "Helicase",
+            "Primase"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] In the human heart, blood is pumped to the lungs from the:",
+        options: [
+            "Left Atrium",
+            "Left Ventricle",
+            "Right Atrium",
+            "Right Ventricle"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] What is the primary function of the Loop of Henle in the nephron?",
+        options: [
+            "Filtration of blood",
+            "Secretion of urea",
+            "Reabsorption of water and salts",
+            "Storage of urine"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] A father has blood type A and a mother has blood type B. They have a child with blood type O. What are the genotypes of the parents?",
+        options: [
+            "IAIA and IBIB",
+            "IAi and IBi",
+            "IAIA and IBi",
+            "IAi and IBIB"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which of the following is NOT part of the axial skeleton?",
+        options: [
+            "Skull",
+            "Rib cage",
+            "Vertebral column",
+            "Pelvis"
+        ],
+        correct: 3
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] What is the main function of the large intestine?",
+        options: [
+            "Absorption of nutrients",
+            "Production of bile",
+            "Absorption of water",
+            "Digestion of proteins"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which of the following is an example of a disaccharide?",
+        options: [
+            "Glucose",
+            "Fructose",
+            "Sucrose",
+            "Starch"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] The 'fight or flight' response is controlled by which part of the nervous system?",
+        options: [
+            "Somatic Nervous System",
+            "Parasympathetic Nervous System",
+            "Sympathetic Nervous System",
+            "Central Nervous System"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] In which phase of mitosis do the chromosomes align at the cell's equator?",
+        options: [
+            "Prophase",
+            "Metaphase",
+            "Anaphase",
+            "Telophase"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which hormone is primarily responsible for the development of male secondary sexual characteristics?",
+        options: [
+            "Estrogen",
+            "Progesterone",
+            "Testosterone",
+            "LH"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which of the following structures is found in plant cells but not in animal cells?",
+        options: [
+            "Mitochondria",
+            "Cell membrane",
+            "Cell wall",
+            "Ribosomes"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] What is the term for a relationship where one organism benefits and the other is harmed?",
+        options: [
+            "Mutualism",
+            "Commensalism",
+            "Parasitism",
+            "Predation"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] The functional unit of the kidney is the:",
+        options: [
+            "Neuron",
+            "Nephron",
+            "Alveolus",
+            "Villus"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] What is the term for the process of programmed cell death?",
+        options: [
+            "Necrosis",
+            "Apoptosis",
+            "Mitosis",
+            "Lysis"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which part of the brain is responsible for coordinating balance and movement?",
+        options: [
+            "Cerebrum",
+            "Cerebellum",
+            "Medulla oblongata",
+            "Hypothalamus"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Down's Syndrome is a genetic disorder caused by:",
+        options: [
+            "Trisomy 21",
+            "Monosomy X",
+            "Trisomy 18",
+            "A point mutation"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] The process of converting atmospheric nitrogen (N₂) into ammonia (NH₃) is called:",
+        options: [
+            "Nitrification",
+            "Denitrification",
+            "Nitrogen Fixation",
+            "Ammonification"
+        ],
+        correct: 2
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Enzymes increase the rate of a chemical reaction by:",
+        options: [
+            "Increasing the activation energy",
+            "Lowering the activation energy",
+            "Increasing the temperature",
+            "Decreasing the concentration of reactants"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which hormone is labeled X in the diagram (peaks before ovulation)?",
+        options: [
+            "Estrogen",
+            "Progesterone",
+            "FSH",
+            "LH"
+        ],
+        correct: 0
+    },
+    {
+        subject: "Biology",
+        question: "[REPLACEMENT] Which hormone is labeled Y in the diagram (peaks after ovulation)?",
+        options: [
+            "Estrogen",
+            "Progesterone",
+            "FSH",
+            "LH"
+        ],
+        correct: 1
+    },
+    {
+        subject: "Biology",
+        question: "Which organelle is responsible for producing ATP during cellular respiration?",
+        options: [
+            "Ribosome",
+            "Nucleus",
+            "Mitochondrion",
+            "Golgi apparatus"
+        ],
+        correct: 2
+  },
+  {
+        subject: "Biology",
+        question: "Which factor does NOT affect the rate of enzyme activity?",
+        options: [
+            "Temperature",
+            "pH",
+            "Light intensity",
+            "Substrate concentration"
+        ],
+        correct: 2
+}
+];
+
+        // === 3. DOM ELEMENT SELECTION ===
+        const userFormSection = document.getElementById('user-form-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultsSection = document.getElementById('results-section');
+        
+        const userForm = document.getElementById('user-form');
+        const quizForm = document.getElementById('quiz-form');
+        const quizQuestionsContainer = document.getElementById('quiz-questions');
+        const questionCounter = document.getElementById('question-counter');
+        
+        const resultName = document.getElementById('result-name');
+        const scoreDisplay = document.getElementById('score');
+        const submissionStatus = document.getElementById('submission-status');
+        
+        let studentData = {};
+        const totalQuestions = quizData.length; // This will be 100 when you add all questions
+
+        // === 4. FUNCTIONS ===
+
+        /**
+         * Loads all quiz questions into the DOM
+         */
+        function loadQuiz() {
+            let questionHTML = '';
+            quizData.forEach((q, index) => {
+                const questionId = `q${index}`;
+                
+                // Create options HTML
+                const optionsHTML = q.options.map((option, i) => `
+                    <li>
+                        <input type="radio" id="${questionId}_option${i}" name="${questionId}" value="${i}" required>
+                        <label for="${questionId}_option${i}">${option}</label>
+                    </li>
+                `).join('');
+                
+                // Create question block HTML
+                questionHTML += `
+                    <div class="question" data-subject="${q.subject}">
+                        <h3>${index + 1}. ${q.question}</h3>
+                        <ul>
+                            ${optionsHTML}
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            quizQuestionsContainer.innerHTML = questionHTML;
+            questionCounter.textContent = `Total Questions: ${totalQuestions}`;
         }
 
-        hamburgerMenu.addEventListener('click', toggleSidebar);
-        sidebarCloseBtn.addEventListener('click', toggleSidebar);
-        overlay.addEventListener('click', toggleSidebar); // Close sidebar when clicking overlay
+        /**
+         * Calculates the final score
+         */
+        function calculateScore() {
+            let score = 0;
+            const formData = new FormData(quizForm);
+            
+            quizData.forEach((q, index) => {
+                const questionId = `q${index}`;
+                const userAnswer = formData.get(questionId); // This will be the value (index)
+                
+                if (userAnswer !== null && parseInt(userAnswer) === q.correct) {
+                    score++;
+                }
+            });
+            return score;
+        }
+
+        /**
+         * Sends data to Google Sheets via Apps Script
+         */
+        async function sendDataToGoogleSheet(score) {
+            const dataToSend = {
+                ...studentData,
+                score: `${score}/${totalQuestions}`
+            };
+
+            try {
+                submissionStatus.textContent = 'Submitting your results...';
+                submissionStatus.className = '';
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors', // Required for cross-origin requests
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(dataToSend),
+                });
+                
+                const result = await response.json();
+                
+                if (result.result === 'success') {
+                    submissionStatus.textContent = 'Your results have been saved successfully!';
+                    submissionStatus.className = 'status-success';
+                } else {
+                    throw new Error('Submission failed.');
+                }
+
+            } catch (error) {
+                console.error('Error submitting to Google Sheet:', error);
+                submissionStatus.textContent = 'Could not save results. Please screenshot your score.';
+                submissionStatus.className = 'status-error';
+            }
+        }
+
+        // === 5. EVENT LISTENERS ===
+        
+        /**
+         * Handle User Form Submission (Start Test)
+         */
+        userForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // 1. Get user data
+            studentData = {
+                name: document.getElementById('student-name').value,
+                city: document.getElementById('student-city').value,
+                gmail: document.getElementById('student-gmail').value
+            };
+            
+            // 2. Load the quiz questions
+            loadQuiz();
+            
+            // 3. Show/Hide sections
+            userFormSection.style.display = 'none';
+            quizSection.style.display = 'block';
+        });
+
+        /**
+         * Handle Quiz Form Submission (Submit Test)
+         */
+        quizForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // 1. Calculate score
+            const finalScore = calculateScore();
+            
+            // 2. Display results
+            resultName.textContent = studentData.name;
+            scoreDisplay.textContent = `Your Score: ${finalScore}/${totalQuestions}`;
+            
+            // 3. Show/Hide sections
+            quizSection.style.display = 'none';
+            resultsSection.style.display = 'block';
+            
+            // 4. Send data to Google Sheet
+            sendDataToGoogleSheet(finalScore);
+        });
+
     </script>
 
 </body>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masjid Quran Assignment</title>
+
+<!-- Urdu Font -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Noto Naskh Arabic', Arial, sans-serif;
+        direction: rtl;
+        padding: 20px;
+        background: #f9f9f9;
+        font-size: 16px;
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 16px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background: #4CAF50;
+        color: white;
+    }
+    button {
+        padding: 10px 15px;
+        margin: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .attendance {
+        margin-top: 15px;
+    }
+    .attendance label {
+        margin-right: 10px;
+        display: inline-block;
+        font-size: 15px;
+    }
+</style>
+</head>
+<body>
+
+<h1>مسجد قرآن الاٹمنٹ سسٹم</h1>
+
+<div class="attendance">
+    <h3>حاضری منتخب کریں:</h3>
+    <div id="attendanceList"></div>
+</div>
+
+<button onclick="assignParts()">پارے الاٹ کریں</button>
+<button onclick="exportCSV()">CSV ایکسپورٹ</button>
+<button onclick="exportPDF()">PDF ایکسپورٹ</button>
+
+<table id="assignmentTable">
+    <thead>
+        <tr>
+            <th>طالب علم</th>
+            <th>پارہ 1</th>
+            <th>پارہ 2</th>
+            <th>پارہ 3</th>
+            <th>چکر</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script>
+const students = ["احمد","عائشہ","بلال","فاطمہ","حسن","حنا","ابراہیم","خدیجہ","کمال","لبنا","منصور","مریم","اویس","سادیہ","زینب"];
+const totalParts = Array.from({length:30}, (_,i)=>i+1);
+const partsPerStudent = 3;
+
+// Student data with used parts and cycle
+const studentData = {};
+students.forEach(s => studentData[s] = {used: [], cycle: 1});
+
+// Attendance checkboxes
+const attendanceDiv = document.getElementById("attendanceList");
+students.forEach(s => {
+    const lbl = document.createElement("label");
+    lbl.innerHTML = `<input type="checkbox" class="att" checked value="${s}"> ${s}`;
+    attendanceDiv.appendChild(lbl);
+});
+
+function assignParts() {
+    const tbody = document.querySelector("#assignmentTable tbody");
+    tbody.innerHTML = "";
+
+    const present = Array.from(document.querySelectorAll(".att:checked")).map(c => c.value);
+
+    present.forEach(s => {
+        let data = studentData[s];
+
+        if(data.used.length >= 30) {
+            data.used = [];
+            data.cycle += 1;
+        }
+
+        const unused = totalParts.filter(p => !data.used.includes(p));
+        const shuffled = unused.sort(()=>Math.random()-0.5);
+        const assigned = shuffled.slice(0, partsPerStudent);
+        data.used.push(...assigned);
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${s}</td><td>${assigned[0]}</td><td>${assigned[1]}</td><td>${assigned[2]}</td><td>${data.cycle}</td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+function exportCSV() {
+    let csv = "Student,Part1,Part2,Part3,Cycle\\n";
+    students.forEach(s => {
+        const d = studentData[s];
+        if(d.used.length >= 3){
+            const last3 = d.used.slice(-3);
+            csv += `${s},${last3[0]},${last3[1]},${last3[2]},${d.cycle}\\n`;
+        }
+    });
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Masjid_Quran_Assignment.csv";
+    link.click();
+}
+
+function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({orientation:"landscape"});
+    doc.setFont("Noto Naskh Arabic");
+    doc.setFontSize(14);
+    doc.text("مسجد قرآن الاٹمنٹ", 105, 10, {align:"center"});
+
+    const rows = [];
+    const present = Array.from(document.querySelectorAll(".att:checked")).map(c => c.value);
+    present.forEach(s => {
+        const d = studentData[s];
+        if(d.used.length >= 3){
+            const last3 = d.used.slice(-3);
+            rows.push([s, last3[0], last3[1], last3[2], d.cycle]);
+        }
+    });
+
+    doc.autoTable({
+        head: [['طالب علم', 'پارہ 1', 'پارہ 2', 'پارہ 3', 'چکر']],
+        body: rows,
+        startY: 20,
+        styles: { halign: 'center', font: 'Noto Naskh Arabic' }
+    });
+
+    doc.save("Masjid_Quran_Assignment.pdf");
+}
+</script>
+</body>
+</html>

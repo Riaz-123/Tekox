@@ -80,14 +80,17 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-<script>
+    <script>
 const students = ["مجاہد","مشاہد","شھناز","سویرہ","راشد","زہرہ","محسن","زینت","صغیر"];
 const totalParts = Array.from({length:30}, (_,i)=>i+1);
 const partsPerStudent = 3;
 
-// Student data with used parts and cycle
+// Student data
 const studentData = {};
-students.forEach(s => studentData[s] = {used: [], cycle: 1});
+students.forEach(s => studentData[s] = {
+    used: [],
+    cycle: 1
+});
 
 // Attendance checkboxes
 const attendanceDiv = document.getElementById("attendanceList");
@@ -97,73 +100,117 @@ students.forEach(s => {
     attendanceDiv.appendChild(lbl);
 });
 
+
 function assignParts() {
+
     const tbody = document.querySelector("#assignmentTable tbody");
     tbody.innerHTML = "";
 
     const present = Array.from(document.querySelectorAll(".att:checked")).map(c => c.value);
 
     present.forEach(s => {
+
         let data = studentData[s];
 
-        if(data.used.length >= 30) {
+        // ✅ COMPLETE 30 = NEW CYCLE START
+        if(data.used.length >= 30){
             data.used = [];
-            data.cycle += 1;
+            data.cycle++;
         }
 
-        const unused = totalParts.filter(p => !data.used.includes(p));
-        const shuffled = unused.sort(()=>Math.random()-0.5);
-        const assigned = shuffled.slice(0, partsPerStudent);
+        // ✅ Remaining unused parts
+        let unused = totalParts.filter(p => !data.used.includes(p));
+
+        // ✅ IF less than 3 remain, fill current cycle then auto start next
+        let assigned = [];
+
+        if(unused.length >= partsPerStudent){
+            assigned = unused.slice(0, partsPerStudent);
+        }
+        else{
+            assigned = unused;
+            data.used.push(...assigned);
+
+            // New Cycle Start
+            data.used = [];
+            data.cycle++;
+
+            // Take remaining parts from new cycle
+            let needed = partsPerStudent - assigned.length;
+            assigned = assigned.concat(totalParts.slice(0, needed));
+        }
+
+        // ✅ Save assigned parts
         data.used.push(...assigned);
 
+        // ✅ Show in table
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${s}</td><td>${assigned[0]}</td><td>${assigned[1]}</td><td>${assigned[2]}</td><td>${data.cycle}</td>`;
+        tr.innerHTML = `
+            <td>${s}</td>
+            <td>${assigned[0] ?? ""}</td>
+            <td>${assigned[1] ?? ""}</td>
+            <td>${assigned[2] ?? ""}</td>
+            <td>${data.cycle}</td>
+        `;
         tbody.appendChild(tr);
+
     });
 }
 
+
+// ===================== EXPORTS ======================
+
 function exportCSV() {
-    let csv = "Student,Part1,Part2,Part3,Cycle\\n";
+    let csv = "Student,Part1,Part2,Part3,Cycle\n";
+
     students.forEach(s => {
         const d = studentData[s];
-        if(d.used.length >= 3){
-            const last3 = d.used.slice(-3);
-            csv += `${s},${last3[0]},${last3[1]},${last3[2]},${d.cycle}\\n`;
-        }
+        const parts = d.used.slice(-3);
+
+        csv += `${s},${parts[0] ?? ""},${parts[1] ?? ""},${parts[2] ?? ""},${d.cycle}\n`;
     });
-    const blob = new Blob([csv], {type: 'text/csv'});
+
+    const blob = new Blob([csv], {type:"text/csv"});
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = "Masjid_Quran_Assignment.csv";
     link.click();
 }
 
+
 function exportPDF() {
+
     const { jsPDF } = window.jspdf;
+
     const doc = new jsPDF({orientation:"landscape"});
-    doc.setFont("Noto Naskh Arabic");
+
     doc.setFontSize(14);
     doc.text("مسجد قرآن الاٹمنٹ", 105, 10, {align:"center"});
 
     const rows = [];
-    const present = Array.from(document.querySelectorAll(".att:checked")).map(c => c.value);
-    present.forEach(s => {
+
+    students.forEach(s => {
         const d = studentData[s];
-        if(d.used.length >= 3){
-            const last3 = d.used.slice(-3);
-            rows.push([s, last3[0], last3[1], last3[2], d.cycle]);
-        }
+        const parts = d.used.slice(-3);
+
+        rows.push([
+            s,
+            parts[0] ?? "",
+            parts[1] ?? "",
+            parts[2] ?? "",
+            d.cycle
+        ]);
     });
 
     doc.autoTable({
         head: [['طالب علم', 'پارہ 1', 'پارہ 2', 'پارہ 3', 'چکر']],
         body: rows,
         startY: 20,
-        styles: { halign: 'center', font: 'Noto Naskh Arabic' }
+        styles: { halign: 'center' }
     });
 
     doc.save("Masjid_Quran_Assignment.pdf");
 }
-</script>
+            </script>
 </body>
 </html>

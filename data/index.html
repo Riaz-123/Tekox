@@ -3,346 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Number LOOKUP</title>
+    <title>Professional Data Lookup Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         /* --- Root Variables for Easy Customization --- */
         :root {
-            --primary-color: #00ff41; /* Bright Green */
-            --secondary-color: #00ffff; /* Cyan */
-            --background-color: #0a0a0a; /* Near Black */
-            --dark-color: #0d0208;
-            --danger-color: #ff005d; /* Bright Red/Pink */
-            --glow-color: rgba(0, 255, 65, 0.75);
-            --secondary-glow: rgba(0, 255, 255, 0.75);
-            --danger-glow: rgba(255, 0, 93, 0.75);
+            --primary-color: #007bff; /* Professional Blue */
+            --secondary-color: #28a745; /* Success Green */
+            --background-color: #1a1a2e; /* Deep Navy/Dark Purple */
+            --card-bg-color: #252542;
+            --text-color: #f8f9fa; /* Light Text */
+            --danger-color: #dc3545; /* Standard Red */
+            --border-color: #4a4e69;
+            --box-shadow: rgba(0, 0, 0, 0.2);
         }
 
         /* --- Keyframe Animations --- */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes textBlink {
-            0%, 100% { border-color: transparent; }
-            50% { border-color: var(--primary-color); }
-        }
-
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
         }
         
         @keyframes cardSlideIn {
-            from { opacity: 0; transform: translateX(-50px); }
+            from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
         /* --- General Body and Background Styling --- */
         body {
-            font-family: 'VT323', monospace;
-            background: var(--background-color) radial-gradient(circle at center, var(--dark-color) 0%, var(--background-color) 100%);
-            color: var(--primary-color);
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
             padding: 20px;
             overflow-x: hidden;
-            text-shadow: 0 0 5px var(--glow-color);
+            line-height: 1.6;
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 200%; /* Cover the screen for animation */
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0) 0,
-                rgba(0, 0, 0, 0) 1px,
-                rgba(255, 255, 255, 0.05) 2px,
-                rgba(255, 255, 255, 0.05) 3px
-            );
-            animation: scanline 10s linear infinite;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-        
         /* --- Main Container --- */
         .container {
-            max-width: 800px;
-            margin: 20px auto;
-            border: 1px solid var(--primary-color);
-            padding: 25px;
-            box-shadow: 0 0 25px var(--glow-color), inset 0 0 15px var(--glow-color);
-            position: relative;
-            background: rgba(13, 2, 8, 0.8); /* Semi-transparent background */
-            animation: fadeIn 1.5s ease-out;
-            backdrop-filter: blur(2px);
+            max-width: 900px;
+            margin: 30px auto;
+            border-radius: 12px;
+            padding: 30px;
+            background: var(--card-bg-color);
+            box-shadow: 0 10px 30px var(--box-shadow);
+            animation: fadeIn 0.8s ease-out;
         }
 
         /* --- UI Elements Styling --- */
         h2 {
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 3px solid var(--primary-color);
-            font-size: 2.5em;
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--primary-color);
             margin-bottom: 25px;
-            animation: textBlink 1s step-end infinite;
-            color: var(--secondary-color);
-            text-shadow: 0 0 10px var(--secondary-glow);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
         }
 
         .input-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 30px;
         }
 
         input, button, a.btn {
-            background: transparent;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            padding: 12px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             font-family: inherit;
-            font-size: 1.2em;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
+            font-size: 1.1em;
             transition: all 0.3s ease;
-            box-shadow: 0 0 10px var(--glow-color);
         }
 
         input {
             flex-grow: 1;
+            padding: 12px 15px;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
         
         input:focus {
             outline: none;
-            box-shadow: 0 0 15px var(--secondary-glow);
-            border-color: var(--secondary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
         }
 
         input::placeholder {
-            color: var(--primary-color);
-            opacity: 0.6;
+            color: rgba(255, 255, 255, 0.5);
         }
 
-        button:hover, a.btn:hover {
+        button {
             background-color: var(--primary-color);
-            color: var(--dark-color);
-            text-shadow: none;
-            box-shadow: 0 0 20px var(--glow-color);
-            transform: translateY(-2px);
+            color: #ffffff;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker Blue */
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .api-key-input {
+            width: 100%;
+            margin-bottom: 15px;
         }
 
         /* --- Results and Card Styling --- */
         .card {
-            background: rgba(0, 255, 65, 0.05);
+            background: var(--background-color);
             border: 1px solid var(--primary-color);
+            border-radius: 8px;
             padding: 20px;
             margin: 20px 0;
-            box-shadow: inset 0 0 8px rgba(0, 255, 65, 0.4);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             animation: cardSlideIn 0.5s ease-out forwards;
             opacity: 0; /* Initially hidden for animation */
         }
         
         .card-header {
-            font-size: 1.2em;
+            font-size: 1.3em;
             color: var(--secondary-color);
-            text-shadow: 0 0 5px var(--secondary-glow);
-            margin-bottom: 10px;
-            border-bottom: 1px dashed var(--secondary-color);
-            padding-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
         }
 
         .head {
-            color: #fff;
-            text-shadow: 0 0 3px #fff;
-            font-weight: bold;
+            color: var(--primary-color);
+            font-weight: 700;
+            display: inline-block;
+            min-width: 120px; /* Align the data */
         }
 
         #results p {
-            margin: 8px 0;
-            word-wrap: break-word; /* Prevents overflow */
+            margin: 10px 0;
+            word-wrap: break-word;
+            padding-left: 10px;
+            border-left: 3px solid rgba(128, 128, 128, 0.3);
         }
 
         .error-msg {
             color: var(--danger-color);
-            text-shadow: 0 0 8px var(--danger-glow);
-            font-weight: bold;
-            font-size: 1.2em;
+            font-weight: 700;
+            padding: 15px;
+            border: 1px solid var(--danger-color);
+            border-radius: 6px;
+            background-color: rgba(220, 53, 69, 0.1);
         }
         
         /* --- Loader Styling --- */
         .loader {
             width: 100%;
-            height: 20px;
-            border: 1px solid var(--primary-color);
-            padding: 4px;
+            height: 10px;
+            border: 1px solid var(--border-color);
+            background-color: #333;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
         }
         .loader-bar {
             width: 0%;
             height: 100%;
-            background-color: var(--primary-color);
-            box-shadow: 0 0 10px var(--glow-color);
+            background-color: var(--secondary-color);
             animation: load 2s linear forwards;
+            transition: width 0.1s linear;
         }
         @keyframes load {
-            to { width: 100%; }
+            0% { width: 0%; }
+            100% { width: 100%; }
         }
 
     </style>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LW7TYK6KYF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-LW7TYK6KYF');
-</script>
-</head>
+    </head>
 <body>
     <div class="container">
-        <h2><span style="font-size: 1em;">></span> Live SIM DATA</h2>
+        <h2>Data Integrity Lookup</h2>
+        
+        <input type="password" id="apiKey" class="api-key-input" placeholder="Enter API Key (Required)">
+
         <div class="input-group">
-            <input type="text" id="phone" placeholder="Enter number">
-            <button onclick="searchNumber()">SEARCH</button>
-            <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="btn">[FOR MORE UPDATES]</a>
+            <input type="text" id="phone" placeholder="Enter Phone Number (e.g., 923001234567)">
+            <button onclick="searchNumber()">LOOKUP DATA</button>
         </div>
-        <div id="results"></div>
+        
+        <div id="results">
+            <p>Enter the API Key and a phone number to retrieve SIM data records.</p>
+        </div>
     </div>
 
     <script>
-        let loadingInterval;
+        // Set the base API URL
+        const BASE_API_URL = "https://legendxdata.site/Api/simdata.php"; 
 
         function showLoader(element) {
+            // Update the loader to be more professional
             element.innerHTML = `
-                <p>Establishing connection...</p>
+                <p style="color: var(--secondary-color);">Processing Request...</p>
                 <div class="loader"><div class="loader-bar"></div></div>
-                <p>Accessing data streams... Please stand by.</p>
+                <p style="font-size: 0.9em; margin-top: 10px;">Connecting to secure data endpoint. Please wait.</p>
             `;
         }
 
         async function searchNumber() {
             const num = document.getElementById("phone").value.trim();
+            const apiKey = document.getElementById("apiKey").value.trim(); // Get the API Key
             const resultsDiv = document.getElementById("results");
             resultsDiv.innerHTML = ""; // Clear previous results immediately
 
-            if (!num) {
-                resultsDiv.innerHTML = `<p class="error-msg">[!] COMMAND REJECTED: No target specified. Input required.</p>`;
+            if (!apiKey) {
+                resultsDiv.innerHTML = `<p class="error-msg">❌ ACCESS DENIED: API Key is required for connection.</p>`;
                 return;
+            }
+            
+            if (!num) {
+                resultsDiv.innerHTML = `<p class="error-msg">⚠️ INPUT REQUIRED: Please enter a target phone number.</p>`;
+                return;
+            }
+            
+            // Basic number validation
+            if (num.length < 10 || !/^\d+$/.test(num)) {
+                 resultsDiv.innerHTML = `<p class="error-msg">⚠️ INVALID FORMAT: Phone number must be at least 10 digits and contain only numbers.</p>`;
+                 return;
             }
 
             showLoader(resultsDiv);
-<script>
-        let loadingInterval;
 
-        function showLoader(element) {
-            element.innerHTML = `
-                <p>Establishing connection...</p>
-                <div class="loader"><div class="loader-bar"></div></div>
-                <p>Accessing data streams... Please stand by.</p>
-            `;
-        }
-
-        async function searchNumber() {
-            const num = document.getElementById("phone").value.trim();
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = ""; // Clear previous results immediately
-
-            if (!num) {
-                resultsDiv.innerHTML = `<p class="error-msg">[!] COMMAND REJECTED: No target specified. Input required.</p>`;
-                return;
-            }
-
-            showLoader(resultsDiv);
-// THIS IS THE SYNTACTICALLY CORRECTED CODE
-// IT WILL STILL FAIL BECAUSE THE API IS NOT REAL.
-// DO NOT USE THIS. SEE THE "WORKING MOCK" VERSION BELOW.
-
-async function searchNumber() {
-    // ... (your existing code to get num and clear results) ...
-    showLoader(resultsDiv);
-
-    try {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        let url = `https://kami-database.vercel.app/api/search?phone=${(phone)}`;
-        
-        // 1. Await the fetch call
-        const response = await fetch(url);
-
-        if (data.status !== "success") {
-            resultsDiv.innerHTML = `<p class="error-msg">[!] API ERROR: ${data.message}</p>`;
-            return;
-        }
-
-        // ... (rest of your logic to display data) ...
-
-    } catch (error) {
-        // This will catch network failures, CORS errors, or the error we threw above
-        resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${error.message}</p>`;
-    }
-}
-                // Now we check the status from our FAKE data
-                if (mockData.status !== "success") {
-                    resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${mockData.message}</p>`;
-                    return;
+            try {
+                // Construct the full URL including the API key (if required by the API)
+                // Note: The provided URL structure only uses `phone`. I will assume the key is passed as a standard parameter.
+                // If the API requires the key in a header, this part will need adjustment.
+                const url = `${BASE_API_URL}?phone=${encodeURIComponent(num)}&key=${encodeURIComponent(apiKey)}`;
+                
+                // 1. Await the fetch call
+                const response = await fetch(url);
+                
+                // Check for HTTP error status (e.g., 404, 500)
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP Error ${response.status}: ${errorText.substring(0, 100)}...`);
                 }
 
-                resultsDiv.innerHTML = `<h3>[+] ${mockData.data.length} Data Packet(s) Intercepted (Simulated):</h3>`;
+                // 2. Parse the JSON response
+                const data = await response.json();
                 
-                // Display cards one by one
-                mockData.data.forEach((record, index) => {
-                    setTimeout(() => {
-                        let card = `<div class="card" style="animation-delay: ${index * 0.2}s">`;
-                        card += `<div class="card-header">Record #${record.id || (index + 1)} (Simulated)</div>`;
-                        for (let key in record) {
-                            // This logic is good!
-                            let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
-                            card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
-                        }
-                        card += `</div>`;
-                        resultsDiv.innerHTML += card;
-                    }, index * 200); // Staggered appearance
-                });
-
-            } catch (error) {
-                // This catch block will now only report errors in your *display* logic
-                resultsDiv.innerHTML = `<p class="error-msg">[!] UI RENDER FAILED: ${error.message}</p>`;
-            }
-        }
-    </script>
-                if (data.status !== "success") {
-                    resultsDiv.innerHTML = `<p class="error-msg">[!] CONNECTION FAILED: ${data.message}</p>`;
+                // 3. Check the internal API status/message
+                if (data.status === "error" || data.error) {
+                    resultsDiv.innerHTML = `<p class="error-msg">❌ API RESPONSE ERROR: ${data.message || data.error || 'Unknown error'}</p>`;
                     return;
                 }
+                
+                // Assuming success structure: data.data is the array of records
+                const records = data.data || [data]; // Handle case where it might be a single object
+                
+                if (records.length === 0) {
+                     resultsDiv.innerHTML = `<p class="error-msg">🔍 NO RECORDS FOUND: The search returned zero data packets for the given number.</p>`;
+                     return;
+                }
 
-                resultsDiv.innerHTML = `<h3>[+] ${data.data.length} Data Packet(s) Intercepted:</h3>`;
+
+                resultsDiv.innerHTML = `<h3 style="color: var(--text-color); margin-bottom: 20px; font-weight: 400;">✅ ${records.length} Data Record(s) Retrieved:</h3>`;
                 
                 // Display cards one by one
-                data.data.forEach((record, index) => {
+                records.forEach((record, index) => {
+                    // Use a delay for professional staggered appearance
                     setTimeout(() => {
-                        let card = `<div class="card" style="animation-delay: ${index * 0.2}s">`;
+                        let card = `<div class="card" style="animation-delay: ${index * 0.15}s">`;
                         card += `<div class="card-header">Record #${record.id || (index + 1)}</div>`;
+                        
+                        // Loop through record properties
                         for (let key in record) {
-                            let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
-                            card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
+                            if (record.hasOwnProperty(key) && record[key] !== null && record[key] !== "") {
+                                // Format key: Capitalize first letter and replace underscores with spaces
+                                let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
+                                card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
+                            }
                         }
                         card += `</div>`;
                         resultsDiv.innerHTML += card;
-                    }, index * 200); // Staggered appearance
+                    }, index * 150); // Staggered appearance
                 });
 
             } catch (error) {
-                resultsDiv.innerHTML = `<p class="error-msg">[!] DATABASE CRASHED ! We Will FIX it soon INSHALLAH. ${error.message}</p>`;
+                // This catch block handles network errors and unexpected API responses
+                resultsDiv.innerHTML = `<p class="error-msg">🛑 CONNECTION FAILED / CRITICAL ERROR: ${error.message}</p>`;
             }
         }
     </script>
 </body>
-</html>
+    </html>
+    

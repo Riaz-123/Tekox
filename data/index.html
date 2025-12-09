@@ -1,300 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Data Lookup Tool</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        /* --- Root Variables for Easy Customization --- */
-        :root {
-            --primary-color: #007bff; /* Professional Blue */
-            --secondary-color: #28a745; /* Success Green */
-            --background-color: #1a1a2e; /* Deep Navy/Dark Purple */
-            --card-bg-color: #252542;
-            --text-color: #f8f9fa; /* Light Text */
-            --danger-color: #dc3545; /* Standard Red */
-            --border-color: #4a4e69;
-            --box-shadow: rgba(0, 0, 0, 0.2);
-        }
+<meta charset="UTF-8">
+<title>SIM Data Lookup</title>
 
-        /* --- Keyframe Animations --- */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes cardSlideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#111;
+    color:#fff;
+    text-align:center;
+}
 
-        /* --- General Body and Background Styling --- */
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            padding: 20px;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+.box{
+    max-width:400px;
+    margin:60px auto;
+    padding:20px;
+    background:#1c1c1c;
+    border-radius:10px;
+}
 
-        /* --- Main Container --- */
-        .container {
-            max-width: 900px;
-            margin: 30px auto;
-            border-radius: 12px;
-            padding: 30px;
-            background: var(--card-bg-color);
-            box-shadow: 0 10px 30px var(--box-shadow);
-            animation: fadeIn 0.8s ease-out;
-        }
+input{
+    width:90%;
+    padding:12px;
+    font-size:16px;
+    margin:10px 0;
+    border-radius:6px;
+    border:none;
+}
 
-        /* --- UI Elements Styling --- */
-        h2 {
-            font-size: 2.2em;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            border-bottom: 3px solid var(--primary-color);
-            padding-bottom: 10px;
-        }
+button{
+    width:90%;
+    padding:12px;
+    font-size:16px;
+    background:#00ff99;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
 
-        .input-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+button:hover{
+    background:#00cc77;
+}
 
-        input, button, a.btn {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-        }
+#result{
+    margin-top:15px;
+    background:#000;
+    padding:10px;
+    border-radius:6px;
+    max-height:300px;
+    overflow:auto;
+    text-align:left;
+}
+</style>
+</head>
 
-        input {
-            flex-grow: 1;
-            padding: 12px 15px;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-        }
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        button {
-            background-color: var(--primary-color);
-            color: #ffffff;
-            padding: 12px 25px;
-            cursor: pointer;
-            font-weight: 700;
-        }
-
-        button:hover {
-            background-color: #0056b3; /* Darker Blue */
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-            transform: translateY(-1px);
-        }
-        
-        .api-key-input {
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        /* --- Results and Card Styling --- */
-        .card {
-            background: var(--background-color);
-            border: 1px solid var(--primary-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            animation: cardSlideIn 0.5s ease-out forwards;
-            opacity: 0; /* Initially hidden for animation */
-        }
-        
-        .card-header {
-            font-size: 1.3em;
-            color: var(--secondary-color);
-            font-weight: 700;
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-
-        .head {
-            color: var(--primary-color);
-            font-weight: 700;
-            display: inline-block;
-            min-width: 120px; /* Align the data */
-        }
-
-        #results p {
-            margin: 10px 0;
-            word-wrap: break-word;
-            padding-left: 10px;
-            border-left: 3px solid rgba(128, 128, 128, 0.3);
-        }
-
-        .error-msg {
-            color: var(--danger-color);
-            font-weight: 700;
-            padding: 15px;
-            border: 1px solid var(--danger-color);
-            border-radius: 6px;
-            background-color: rgba(220, 53, 69, 0.1);
-        }
-        
-        /* --- Loader Styling --- */
-        .loader {
-            width: 100%;
-            height: 10px;
-            border: 1px solid var(--border-color);
-            background-color: #333;
-            border-radius: 5px;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        .loader-bar {
-            width: 0%;
-            height: 100%;
-            background-color: var(--secondary-color);
-            animation: load 2s linear forwards;
-            transition: width 0.1s linear;
-        }
-        @keyframes load {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-    </style>
-    </head>
 <body>
-    <div class="container">
-        <h2>Data Integrity Lookup</h2>
-        
-        <input type="password" id="apiKey" class="api-key-input" placeholder="Enter API Key (Required)">
 
-        <div class="input-group">
-            <input type="text" id="phone" placeholder="Enter Phone Number (e.g., 923001234567)">
-            <button onclick="searchNumber()">LOOKUP DATA</button>
-        </div>
-        
-        <div id="results">
-            <p>Enter the API Key and a phone number to retrieve SIM data records.</p>
-        </div>
-    </div>
+<div class="box">
+    <h2>SIM Data Lookup</h2>
 
-    <script>
-        // Set the base API URL
-        const BASE_API_URL = "https://legendxdata.site/Api/simdata.php"; 
+    <input type="text" id="phone" maxlength="11" placeholder="Enter 11 Digit Phone No">
 
-        function showLoader(element) {
-            // Update the loader to be more professional
-            element.innerHTML = `
-                <p style="color: var(--secondary-color);">Processing Request...</p>
-                <div class="loader"><div class="loader-bar"></div></div>
-                <p style="font-size: 0.9em; margin-top: 10px;">Connecting to secure data endpoint. Please wait.</p>
-            `;
-        }
+    <button onclick="lookup()">Search</button>
 
-        async function searchNumber() {
-            const num = document.getElementById("phone").value.trim();
-            const apiKey = document.getElementById("apiKey").value.trim(); // Get the API Key
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = ""; // Clear previous results immediately
+    <div id="result"></div>
+</div>
 
-            if (!apiKey) {
-                resultsDiv.innerHTML = `<p class="error-msg">❌ ACCESS DENIED: API Key is required for connection.</p>`;
-                return;
-            }
-            
-            if (!num) {
-                resultsDiv.innerHTML = `<p class="error-msg">⚠️ INPUT REQUIRED: Please enter a target phone number.</p>`;
-                return;
-            }
-            
-            // Basic number validation
-            if (num.length < 10 || !/^\d+$/.test(num)) {
-                 resultsDiv.innerHTML = `<p class="error-msg">⚠️ INVALID FORMAT: Phone number must be at least 10 digits and contain only numbers.</p>`;
-                 return;
-            }
+<script>
+function lookup(){
 
-            showLoader(resultsDiv);
+    let phone = document.getElementById("phone").value.trim();
 
-            try {
-                // Construct the full URL including the API key (if required by the API)
-                // Note: The provided URL structure only uses `phone`. I will assume the key is passed as a standard parameter.
-                // If the API requires the key in a header, this part will need adjustment.
-                const url = `${BASE_API_URL}?phone=${encodeURIComponent(num)}&key=${encodeURIComponent(apiKey)}`;
-                
-                // 1. Await the fetch call
-                const response = await fetch(url);
-                
-                // Check for HTTP error status (e.g., 404, 500)
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`HTTP Error ${response.status}: ${errorText.substring(0, 100)}...`);
-                }
+    if(phone.length !== 11 || isNaN(phone)){
+        alert("Please enter a valid 11 digit phone number!");
+        return;
+    }
 
-                // 2. Parse the JSON response
-                const data = await response.json();
-                
-                // 3. Check the internal API status/message
-                if (data.status === "error" || data.error) {
-                    resultsDiv.innerHTML = `<p class="error-msg">❌ API RESPONSE ERROR: ${data.message || data.error || 'Unknown error'}</p>`;
-                    return;
-                }
-                
-                // Assuming success structure: data.data is the array of records
-                const records = data.data || [data]; // Handle case where it might be a single object
-                
-                if (records.length === 0) {
-                     resultsDiv.innerHTML = `<p class="error-msg">🔍 NO RECORDS FOUND: The search returned zero data packets for the given number.</p>`;
-                     return;
-                }
+    document.getElementById("result").innerHTML = "Searching...";
 
+    fetch("https://legendxdata.site/Api/simdata.php?phone=" + phone)
+    .then(res => res.json())
+    .then(data => {
 
-                resultsDiv.innerHTML = `<h3 style="color: var(--text-color); margin-bottom: 20px; font-weight: 400;">✅ ${records.length} Data Record(s) Retrieved:</h3>`;
-                
-                // Display cards one by one
-                records.forEach((record, index) => {
-                    // Use a delay for professional staggered appearance
-                    setTimeout(() => {
-                        let card = `<div class="card" style="animation-delay: ${index * 0.15}s">`;
-                        card += `<div class="card-header">Record #${record.id || (index + 1)}</div>`;
-                        
-                        // Loop through record properties
-                        for (let key in record) {
-                            if (record.hasOwnProperty(key) && record[key] !== null && record[key] !== "") {
-                                // Format key: Capitalize first letter and replace underscores with spaces
-                                let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ');
-                                card += `<p><span class="head">${formattedKey}:</span> ${record[key]}</p>`;
-                            }
-                        }
-                        card += `</div>`;
-                        resultsDiv.innerHTML += card;
-                    }, index * 150); // Staggered appearance
-                });
+        let output = "<h3>Result</h3><pre>" + 
+                     JSON.stringify(data, null, 2) +
+                     "</pre>";
 
-            } catch (error) {
-                // This catch block handles network errors and unexpected API responses
-                resultsDiv.innerHTML = `<p class="error-msg">🛑 CONNECTION FAILED / CRITICAL ERROR: ${error.message}</p>`;
-            }
-        }
-    </script>
+        document.getElementById("result").innerHTML = output;
+
+    })
+    .catch(err=>{
+        document.getElementById("result").innerHTML = 
+            "❌ API Error: " + err;
+    });
+}
+</script>
+
 </body>
-    </html>
-    
+</html>

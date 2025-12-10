@@ -1,100 +1,151 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SIM Data Lookup</title>
-
-<style>
-body{
-    font-family: Arial, sans-serif;
-    background:#111;
-    color:#fff;
-    text-align:center;
-}
-
-.box{
-    max-width:400px;
-    margin:60px auto;
-    padding:20px;
-    background:#1c1c1c;
-    border-radius:10px;
-}
-
-input{
-    width:90%;
-    padding:12px;
-    font-size:16px;
-    margin:10px 0;
-    border-radius:6px;
-    border:none;
-}
-
-button{
-    width:90%;
-    padding:12px;
-    font-size:16px;
-    background:#00ff99;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#00cc77;
-}
-
-#result{
-    margin-top:15px;
-    background:#000;
-    padding:10px;
-    border-radius:6px;
-    max-height:300px;
-    overflow:auto;
-    text-align:left;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Lookup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="tel"] {
+            width: calc(100% - 22px); /* Full width minus padding/border */
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            white-space: pre-wrap; /* Preserve formatting and wrap */
+            word-wrap: break-word; /* Ensure long lines break */
+            overflow-x: auto;
+        }
+        #results h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        #loading {
+            color: #007bff;
+            font-style: italic;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="box">
-    <h2>SIM Data Lookup</h2>
+<div class="container">
+    <h2>Phone Number Lookup</h2>
+    <form id="lookupForm">
+        <label for="phoneNumber">Enter 11-Digit Phone Number:</label>
+        <input 
+            type="tel" 
+            id="phoneNumber" 
+            name="phoneNumber" 
+            placeholder="e.g., 03001234567" 
+            maxlength="11" 
+            pattern="\d{11}" 
+            required
+        >
+        <button type="submit">Get Data</button>
+    </form>
 
-    <input type="text" id="phone" maxlength="11" placeholder="Enter 11 Digit Phone No">
-
-    <button onclick="lookup()">Search</button>
-
-    <div id="result"></div>
+    <div id="results">
+        Data will appear here...
+    </div>
 </div>
 
 <script>
-function lookup(){
+    document.getElementById('lookupForm').addEventListener('submit', async function(e) {
+        // Prevent the default form submission (which reloads the page)
+        e.preventDefault(); 
 
-    let phone = document.getElementById("phone").value.trim();
+        const phoneNumberInput = document.getElementById('phoneNumber');
+        const phoneNumber = phoneNumberInput.value.trim();
+        const resultsDiv = document.getElementById('results');
+        
+        // Basic input validation
+        if (phoneNumber.length !== 11 || !/^\d+$/.test(phoneNumber)) {
+            resultsDiv.innerHTML = '<p class="error">Please enter a valid 11-digit phone number (digits only).</p>';
+            return;
+        }
 
-    if(phone.length !== 11 || isNaN(phone)){
-        alert("Please enter a valid 11 digit phone number!");
-        return;
-    }
+        // Show loading state
+        resultsDiv.innerHTML = '<p id="loading">Looking up data for ' + phoneNumber + '...</p>';
 
-    document.getElementById("result").innerHTML = "Searching...";
+        // Construct the full API URL
+        const apiUrl = `https://tekox.online/api/lookup?phone=${phoneNumber}`;
 
-    fetch("https://legendxdata.site/Api/simdata.php?phone=" + phone)
-    .then(res => res.json())
-    .then(data => {
+        try {
+            // Make the API request
+            const response = await fetch(apiUrl);
 
-        let output = "<h3>Result</h3><pre>" + 
-                     JSON.stringify(data, null, 2) +
-                     "</pre>";
+            // Check if the response status is OK (200-299)
+            if (!response.ok) {
+                throw new Error(`HTTP Error: Status ${response.status}`);
+            }
 
-        document.getElementById("result").innerHTML = output;
+            // Parse the JSON data
+            const data = await response.json();
+            
+            // Format and display the output
+            resultsDiv.innerHTML = `
+                <h3>API Data for ${phoneNumber}:</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
 
-    })
-    .catch(err=>{
-        document.getElementById("result").innerHTML = 
-            "❌ API Error: " + err;
+        } catch (error) {
+            // Handle network errors or non-OK HTTP status
+            resultsDiv.innerHTML = `<p class="error">Error fetching data: ${error.message}. Please check the phone number, the API status, or your network connection.</p>`;
+            console.error('Fetch error:', error);
+        }
     });
-}
 </script>
 
 </body>

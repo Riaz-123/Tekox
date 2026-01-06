@@ -111,13 +111,11 @@
 </div>
     
 <script>
-    // Toggle Resolution visibility based on format
     function toggleQuality() {
         const type = document.getElementById('formatType').value;
         document.getElementById('quality-wrapper').style.display = (type === 'video') ? 'block' : 'none';
     }
 
-    // Advanced Regex to extract Video ID
     function extractId(url) {
         const regex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
         const match = url.match(regex);
@@ -127,49 +125,60 @@
     async function startDownload() {
         const urlInput = document.getElementById('videoUrl').value.trim();
         const type = document.getElementById('formatType').value;
-        const itag = document.getElementById('videoQuality').value;
+        const itagInput = document.getElementById('videoQuality').value;
         const btn = document.getElementById('mainBtn');
         
         const videoId = extractId(urlInput);
-
         if (!videoId) {
             alert("⚠️ Please paste a valid YouTube URL!");
             return;
         }
 
-        // UI Feedback: Show user something is happening
-        btn.innerText = "Fetching Data...";
-        btn.style.opacity = "0.7";
+        // UI State: Processing
+        btn.innerText = "Fetching Link...";
         btn.disabled = true;
+        btn.style.opacity = "0.7";
 
         try {
-            // Construct the API URL based on your documentation
-            // Base URL: https://fam-official.serv00.net/api/ytapi.php
-            let apiUrl = `https://fam-official.serv00.net/api/ytapi.php?video=${videoId}&type=${type}&itag=${itag}`;
+            // 1. Fetch JSON data from the API
+            const apiUrl = `https://fam-official.serv00.net/api/ytapi.php?video=${videoId}`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
 
-            // We attempt a Direct Download trigger first. 
-            // If the API is configured to serve a file on these params, this will work.
-            const hiddenLink = document.createElement('a');
-            hiddenLink.href = apiUrl;
-            hiddenLink.target = '_blank'; 
-            
-            // Adding download attribute helps browser identify it as a file
-            hiddenLink.setAttribute('download', ''); 
-            
-            document.body.appendChild(hiddenLink);
-            hiddenLink.click();
-            document.body.removeChild(hiddenLink);
+            // 2. Check if API successfully returned data
+            if (data.success && data.formats && data.formats.length > 0) {
+                
+                // 3. Find the format that matches the user's selected itag
+                // If the user selected 'audio', we look for itag 140
+                const targetItag = (type === 'audio') ? "140" : itagInput;
+                
+                let selectedFormat = data.formats.find(f => f.itag == targetItag);
 
+                // Fallback: if specific itag isn't found, use the first available format
+                if (!selectedFormat) {
+                    selectedFormat = data.formats[0];
+                }
+
+                // 4. Trigger the actual file download using the 'url' field
+                const finalDownloadUrl = selectedFormat.url;
+                const hiddenLink = document.createElement('a');
+                hiddenLink.href = finalDownloadUrl;
+                hiddenLink.target = '_blank'; 
+                document.body.appendChild(hiddenLink);
+                hiddenLink.click();
+                document.body.removeChild(hiddenLink);
+
+            } else {
+                alert("❌ API Error: No download formats found for this video.");
+            }
         } catch (error) {
-            console.error("Download Trigger Error:", error);
-            alert("An error occurred while trying to download.");
+            console.error("Download Error:", error);
+            alert("⚠️ Connection Error: Could not reach the API.");
         } finally {
-            // Reset Button after a delay
-            setTimeout(() => {
-                btn.innerText = "🚀 Download Now";
-                btn.style.opacity = "1";
-                btn.disabled = false;
-            }, 3000);
+            // Reset Button
+            btn.innerText = "🚀 Download Now";
+            btn.disabled = false;
+            btn.style.opacity = "1";
         }
     }
 </script>

@@ -36,7 +36,7 @@
             border: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        h2 { color: var(--accent); margin: 0 0 10px 0; letter-spacing: 2px; font-size: 1.5rem; }
+        h2 { color: var(--accent); margin: 0 0 10px 0; letter-spacing: 2px; font-size: 2.5rem; }
 
         .input-group { margin-bottom: 1.5rem; text-align: left; }
 
@@ -119,7 +119,7 @@
 
         btn.disabled = true;
         btn.innerText = "Extracting...";
-        status.innerText = "Contacting FAM OFC API...";
+        status.innerText = "Contacting RIAZ API...";
 
         try {
             // Step 1: Fetch the JSON response
@@ -133,7 +133,7 @@
                 // Find the itag the user wants (default to 18 if not found)
                 let targetFormat = data.formats.find(f => f.itag == itagSelect) || data.formats[0];
 
-                status.innerText = "Link found! Starting download...";
+                status.innerText = "Starting download...";
                 
                 // Step 3: Use the real URL found in the JSON
                 const realFileUrl = targetFormat.url;

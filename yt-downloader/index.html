@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riaz Official - Direct Downloader</title>
+    <style>
+        :root {
+            --bg-dark: #0a192f;        /* Deep Navy Blue */
+            --card-bg: #112240;      /* Darker Blue */
+            --accent: #d4af37;       /* Metallic Gold */
+            --accent-hover: #b8860b; /* Darker Gold/Brown */
+            --text-main: #e6f1ff;
+            --text-dim: #8892b0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        h2 { 
+            color: var(--accent); 
+            margin: 0 0 10px 0;
+            letter-spacing: 2px;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-size: 0.75rem; 
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #233554;
+            border-radius: 10px;
+            background: #0a192f;
+            color: var(--text-main);
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .download-btn {
+            background-color: var(--accent);
+            color: #0a192f;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 800;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .download-btn:hover { 
+            background-color: var(--accent-hover);
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>RIAZ OFFICIAL</h2>
+    <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.9rem;">Instant YouTube Media Fetcher</p>
+
+    <div class="input-group">
+        <label>YouTube Video URL</label>
+        <input type="text" id="videoUrl" placeholder="Paste link here..." required>
+    </div>
+
+    <div class="input-group">
+        <label>Format</label>
+        <select id="formatType" onchange="toggleQuality()">
+            <option value="video">MP4 Video</option>
+            <option value="audio">MP3 Audio</option>
+        </select>
+    </div>
+
+    <div class="input-group" id="quality-wrapper">
+        <label>Quality / Resolution</label>
+        <select id="videoQuality">
+            <option value="137">1080p Full HD</option>
+            <option value="22">720p HD</option>
+            <option value="18">360p SD</option>
+        </select>
+    </div>
+
+    <button class="download-btn" onclick="startDownload()">🚀 Download Now</button>
+
+    <div class="footer">⚡ Powered by Riaz Hussain API</div>
+</div>
+
+<script>
+    // Toggle Resolution visibility
+    function toggleQuality() {
+        const type = document.getElementById('formatType').value;
+        document.getElementById('quality-wrapper').style.display = (type === 'video') ? 'block' : 'none';
+    }
+
+    function extractId(url) {
+        const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+        const match = url.match(regex);
+        return match ? match[1] : null;
+    }
+
+    function startDownload() {
+        const urlInput = document.getElementById('videoUrl').value;
+        const type = document.getElementById('formatType').value;
+        const itag = document.getElementById('videoQuality').value;
+        const videoId = extractId(urlInput);
+
+        if (!videoId) {
+            alert("⚠️ Please paste a valid YouTube URL first!");
+            return;
+        }
+
+        // Construct Direct API URL
+        let downloadLink = `https://fam-official.serv00.net/api/ytapi.php?video=${videoId}`;
+        
+        if (type === 'audio') {
+            downloadLink += `&type=audio&itag=140`;
+        } else {
+            downloadLink += `&type=video&itag=${itag}`;
+        }
+
+        // Redirect user directly to the API download stream
+        window.location.href = downloadLink;
+    }
+</script>
+
+</body>
+</html>

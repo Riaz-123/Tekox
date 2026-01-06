@@ -109,21 +109,22 @@
 
     <div class="footer">⚡ Powered by Riaz Hussain API</div>
 </div>
-
+    
 <script>
+    // Toggle Resolution visibility based on format
     function toggleQuality() {
         const type = document.getElementById('formatType').value;
         document.getElementById('quality-wrapper').style.display = (type === 'video') ? 'block' : 'none';
     }
 
+    // Advanced Regex to extract Video ID
     function extractId(url) {
-        // Updated regex to handle all YT variations
         const regex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
         const match = url.match(regex);
         return (match && match[1].length === 11) ? match[1] : null;
     }
 
-    function startDownload() {
+    async function startDownload() {
         const urlInput = document.getElementById('videoUrl').value.trim();
         const type = document.getElementById('formatType').value;
         const itag = document.getElementById('videoQuality').value;
@@ -136,33 +137,40 @@
             return;
         }
 
-        // Visual feedback
-        btn.innerText = "Processing...";
+        // UI Feedback: Show user something is happening
+        btn.innerText = "Fetching Data...";
         btn.style.opacity = "0.7";
+        btn.disabled = true;
 
-        // Build API Link
-        let downloadLink = `https://fam-official.serv00.net/api/ytapi.php?video=${videoId}`;
-        if (type === 'audio') {
-            downloadLink += `&type=audio&itag=140`;
-        } else {
-            downloadLink += `&type=video&itag=${itag}`;
+        try {
+            // Construct the API URL based on your documentation
+            // Base URL: https://fam-official.serv00.net/api/ytapi.php
+            let apiUrl = `https://fam-official.serv00.net/api/ytapi.php?video=${videoId}&type=${type}&itag=${itag}`;
+
+            // We attempt a Direct Download trigger first. 
+            // If the API is configured to serve a file on these params, this will work.
+            const hiddenLink = document.createElement('a');
+            hiddenLink.href = apiUrl;
+            hiddenLink.target = '_blank'; 
+            
+            // Adding download attribute helps browser identify it as a file
+            hiddenLink.setAttribute('download', ''); 
+            
+            document.body.appendChild(hiddenLink);
+            hiddenLink.click();
+            document.body.removeChild(hiddenLink);
+
+        } catch (error) {
+            console.error("Download Trigger Error:", error);
+            alert("An error occurred while trying to download.");
+        } finally {
+            // Reset Button after a delay
+            setTimeout(() => {
+                btn.innerText = "🚀 Download Now";
+                btn.style.opacity = "1";
+                btn.disabled = false;
+            }, 3000);
         }
-
-        // THE FIX: Creating a temporary virtual link to force download
-        const hiddenLink = document.createElement('a');
-        hiddenLink.href = downloadLink;
-        hiddenLink.target = '_blank'; // Opens in new tab to prevent page freeze
-        hiddenLink.download = `video_${videoId}.mp4`; // Suggests a filename
-        
-        document.body.appendChild(hiddenLink);
-        hiddenLink.click();
-        document.body.removeChild(hiddenLink);
-
-        // Reset button after 3 seconds
-        setTimeout(() => {
-            btn.innerText = "🚀 Download Now";
-            btn.style.opacity = "1";
-        }, 3000);
     }
 </script>
 

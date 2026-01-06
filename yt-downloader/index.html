@@ -51,8 +51,6 @@
             font-size: 1rem; box-sizing: border-box;
         }
 
-        input:focus { outline: none; border-color: var(--accent); }
-
         .download-btn {
             background-color: var(--accent);
             color: #0a192f;
@@ -65,57 +63,44 @@
             width: 100%;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 10px;
         }
 
-        .download-btn:hover { 
-            background-color: var(--accent-hover);
-            transform: scale(1.02);
-        }
-
-        .footer { margin-top: 25px; font-size: 0.7rem; color: var(--text-dim); }
+        .download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>RIAZ OFFICIAL</h2>
-    <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.9rem;">Instant YouTube Media Fetcher</p>
+    <p style="color: var(--text-dim); margin-bottom: 2rem; font-size: 0.9rem;">Instant YouTube Downloader</p>
 
     <div class="input-group">
-        <label>YouTube Video URL</label>
-        <input type="text" id="videoUrl" placeholder="Paste link here..." required>
+        <label>YouTube URL</label>
+        <input type="text" id="videoUrl" placeholder="Paste link here...">
     </div>
 
     <div class="input-group">
         <label>Format</label>
-        <select id="formatType" onchange="toggleQuality()">
+        <select id="formatType">
             <option value="video">MP4 Video</option>
             <option value="audio">MP3 Audio</option>
         </select>
     </div>
 
     <div class="input-group" id="quality-wrapper">
-        <label>Quality / Resolution</label>
+        <label>Quality</label>
         <select id="videoQuality">
-            <option value="22">720p HD</option>
-            <option value="18">360p SD</option>
-            <option value="137">1080p Full HD (No Audio)</option>
+            <option value="18">360p (Fastest)</option>
+            <option value="22">720p (HD)</option>
         </select>
     </div>
 
     <button class="download-btn" id="mainBtn" onclick="startDownload()">🚀 Download Now</button>
 
-    <div class="footer">⚡ Powered by Riaz Hussain API</div>
+    <div id="status" style="margin-top: 15px; font-size: 0.8rem; color: var(--accent);"></div>
 </div>
-    
-<script>
-    function toggleQuality() {
-        const type = document.getElementById('formatType').value;
-        document.getElementById('quality-wrapper').style.display = (type === 'video') ? 'block' : 'none';
-    }
 
+<script>
     function extractId(url) {
         const regex = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
         const match = url.match(regex);
@@ -125,60 +110,52 @@
     async function startDownload() {
         const urlInput = document.getElementById('videoUrl').value.trim();
         const type = document.getElementById('formatType').value;
-        const itagInput = document.getElementById('videoQuality').value;
+        const itagSelect = document.getElementById('videoQuality').value;
         const btn = document.getElementById('mainBtn');
+        const status = document.getElementById('status');
         
         const videoId = extractId(urlInput);
-        if (!videoId) {
-            alert("⚠️ Please paste a valid YouTube URL!");
-            return;
-        }
+        if (!videoId) { alert("Invalid URL"); return; }
 
-        // UI State: Processing
-        btn.innerText = "Fetching Link...";
         btn.disabled = true;
-        btn.style.opacity = "0.7";
+        btn.innerText = "Extracting...";
+        status.innerText = "Contacting FAM OFC API...";
 
         try {
-            // 1. Fetch JSON data from the API
+            // Step 1: Fetch the JSON response
             const apiUrl = `https://fam-official.serv00.net/api/ytapi.php?video=${videoId}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
 
-            // 2. Check if API successfully returned data
+            // Step 2: Validate the response
             if (data.success && data.formats && data.formats.length > 0) {
                 
-                // 3. Find the format that matches the user's selected itag
-                // If the user selected 'audio', we look for itag 140
-                const targetItag = (type === 'audio') ? "140" : itagInput;
+                // Find the itag the user wants (default to 18 if not found)
+                let targetFormat = data.formats.find(f => f.itag == itagSelect) || data.formats[0];
+
+                status.innerText = "Link found! Starting download...";
                 
-                let selectedFormat = data.formats.find(f => f.itag == targetItag);
-
-                // Fallback: if specific itag isn't found, use the first available format
-                if (!selectedFormat) {
-                    selectedFormat = data.formats[0];
-                }
-
-                // 4. Trigger the actual file download using the 'url' field
-                const finalDownloadUrl = selectedFormat.url;
-                const hiddenLink = document.createElement('a');
-                hiddenLink.href = finalDownloadUrl;
-                hiddenLink.target = '_blank'; 
-                document.body.appendChild(hiddenLink);
-                hiddenLink.click();
-                document.body.removeChild(hiddenLink);
+                // Step 3: Use the real URL found in the JSON
+                const realFileUrl = targetFormat.url;
+                
+                // Create a virtual link to trigger the browser download
+                const a = document.createElement('a');
+                a.href = realFileUrl;
+                a.setAttribute('download', 'video.mp4');
+                a.target = '_blank';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
 
             } else {
-                alert("❌ API Error: No download formats found for this video.");
+                status.innerText = "Error: No formats available for this video.";
             }
         } catch (error) {
-            console.error("Download Error:", error);
-            alert("⚠️ Connection Error: Could not reach the API.");
+            status.innerText = "Error fetching API data.";
+            console.error(error);
         } finally {
-            // Reset Button
-            btn.innerText = "🚀 Download Now";
             btn.disabled = false;
-            btn.style.opacity = "1";
+            btn.innerText = "🚀 Download Now";
         }
     }
 </script>

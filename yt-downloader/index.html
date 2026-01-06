@@ -110,51 +110,49 @@
     async function startDownload() {
         const urlInput = document.getElementById('videoUrl').value.trim();
         const type = document.getElementById('formatType').value;
-        const itagSelect = document.getElementById('videoQuality') ? document.getElementById('videoQuality').value : "18";
+        const itagSelect = document.getElementById('videoQuality').value;
         const btn = document.getElementById('mainBtn');
+        const status = document.getElementById('status');
         
         const videoId = extractId(urlInput);
-        if (!videoId) { alert("❌ Invalid YouTube URL"); return; }
+        if (!videoId) { alert("Invalid URL"); return; }
 
         btn.disabled = true;
-        btn.innerText = "Processing...";
+        btn.innerText = "Extracting...";
+        status.innerText = "Contacting FAM OFC API...";
 
         try {
-            // 1. Fetch the JSON data from your API
+            // Step 1: Fetch the JSON response
             const apiUrl = `https://fam-official.serv00.net/api/ytapi.php?video=${videoId}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
 
-            // 2. Extract the direct Google Video URL from the 'formats' array
+            // Step 2: Validate the response
             if (data.success && data.formats && data.formats.length > 0) {
                 
-                // Find matching itag or take the first available format
-                const targetFormat = data.formats.find(f => f.itag == itagSelect) || data.formats[0];
-                const directFileUrl = targetFormat.url;
+                // Find the itag the user wants (default to 18 if not found)
+                let targetFormat = data.formats.find(f => f.itag == itagSelect) || data.formats[0];
 
-                // 3. FORCE DOWNLOAD: Use a Blob fetch to bypass the browser player
-                btn.innerText = "Downloading...";
+                status.innerText = "Link found! Starting download...";
                 
-                const fileResponse = await fetch(directFileUrl);
-                const fileBlob = await fileResponse.blob();
-                const downloadUrl = window.URL.createObjectURL(fileBlob);
+                // Step 3: Use the real URL found in the JSON
+                const realFileUrl = targetFormat.url;
                 
+                // Create a virtual link to trigger the browser download
                 const a = document.createElement('a');
-                a.href = downloadUrl;
-                a.download = `${data.details.title || 'video'}.mp4`;
+                a.href = realFileUrl;
+                a.setAttribute('download', 'video.mp4');
+                a.target = '_blank';
                 document.body.appendChild(a);
                 a.click();
-                
-                // Cleanup
                 document.body.removeChild(a);
-                window.URL.revokeObjectURL(downloadUrl);
 
             } else {
-                alert("❌ API Error: No formats found in the response.");
+                status.innerText = "Error: No formats available for this video.";
             }
         } catch (error) {
+            status.innerText = "Error fetching API data.";
             console.error(error);
-            alert("⚠️ Failed to fetch download link. The API might be rate-limited.");
         } finally {
             btn.disabled = false;
             btn.innerText = "🚀 Download Now";

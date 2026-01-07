@@ -133,7 +133,7 @@
                 // Find the itag the user wants (default to 18 if not found)
                 let targetFormat = data.formats.find(f => f.itag == itagSelect) || data.formats[0];
 
-                status.innerText = "Starting download...";
+                status.innerText = "Started download...";
                 
                 // Step 3: Use the real URL found in the JSON
                 const realFileUrl = targetFormat.url;

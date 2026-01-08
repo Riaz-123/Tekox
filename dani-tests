@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dani Medico - Test Creator Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #007BFF;
+            --secondary: #28A745;
+            --bg: #f4f7f6;
+            --card: #ffffff;
+        }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: var(--primary); text-align: center; margin-bottom: 20px; }
+        .form-section { margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .mcq-card { background: #f9f9f9; padding: 15px; border-left: 5px solid var(--primary); margin-bottom: 15px; position: relative; }
+        .btn { padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .btn-add { background: var(--secondary); color: white; width: 100%; margin-top: 10px; }
+        .btn-gen { background: var(--primary); color: white; width: 100%; margin-top: 20px; font-size: 1.1rem; }
+        #output-area { margin-top: 30px; display: none; }
+        #code-box { background: #2d2d2d; color: #f8f8f2; font-family: monospace; height: 300px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2><i class="fas fa-tools"></i> Test Data Generator</h2>
+    
+    <div class="form-section">
+        <label>Test Title</label>
+        <input type="text" id="test-title" placeholder="e.g. BIOLOGY MDCAT">
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="test-subject" placeholder="Subject (Biology)">
+            <input type="text" id="test-exam" placeholder="Exam (MDCAT)">
+        </div>
+        <input type="text" id="test-chapter" placeholder="Chapter (1. ACELLULAR LIFE)">
+    </div>
+
+    <div id="questions-container">
+        </div>
+
+    <button class="btn btn-add" onclick="addQuestion()"><i class="fas fa-plus"></i> Add New Question</button>
+    <button class="btn btn-gen" onclick="generateCode()"><i class="fas fa-code"></i> Generate JavaScript Template</button>
+
+    <div id="output-area">
+        <h3>Generated Code:</h3>
+        <p style="font-size: 0.8rem; color: #666;">Copy this block and paste it inside the <code>testsData</code> array in tests.html</p>
+        <textarea id="code-box" readonly></textarea>
+        <button class="btn btn-add" style="background:#444;" onclick="copyCode()">Copy to Clipboard</button>
+    </div>
+</div>
+
+<script>
+    let qCount = 0;
+
+    function addQuestion() {
+        qCount++;
+        const container = document.getElementById('questions-container');
+        const html = `
+            <div class="mcq-card" id="q-row-${qCount}">
+                <strong>Question ${qCount}</strong>
+                <input type="text" class="q-text" placeholder="Enter question text" required>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="text" class="opt" placeholder="Option 0" required>
+                    <input type="text" class="opt" placeholder="Option 1" required>
+                    <input type="text" class="opt" placeholder="Option 2" required>
+                    <input type="text" class="opt" placeholder="Option 3" required>
+                </div>
+                <select class="ans-idx">
+                    <option value="0">Correct: Option 0</option>
+                    <option value="1">Correct: Option 1</option>
+                    <option value="2">Correct: Option 2</option>
+                    <option value="3">Correct: Option 3</option>
+                </select>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    }
+
+    function generateCode() {
+        const mcqs = [];
+        const rows = document.querySelectorAll('.mcq-card');
+        
+        rows.forEach(row => {
+            const options = Array.from(row.querySelectorAll('.opt')).map(i => i.value);
+            mcqs.push({
+                q: row.querySelector('.q-text').value,
+                options: options,
+                answer: parseInt(row.querySelector('.ans-idx').value)
+            });
+        });
+
+        const testObject = {
+            id: 'T' + Date.now(), // Unique Timestamp ID
+            title: document.getElementById('test-title').value,
+            subject: document.getElementById('test-subject').value,
+            chapter: document.getElementById('test-chapter').value,
+            exam: document.getElementById('test-exam').value,
+            province: 'All Provinces',
+            mcqs: mcqs
+        };
+
+        const outputArea = document.getElementById('output-area');
+        const codeBox = document.getElementById('code-box');
+        
+        // Formats as a clean JS object string
+        codeBox.value = JSON.stringify(testObject, null, 4) + ",";
+        outputArea.style.display = 'block';
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function copyCode() {
+        const box = document.getElementById('code-box');
+        box.select();
+        document.execCommand('copy');
+        alert("Code copied! Now paste it into tests.html inside the testsData array.");
+    }
+</script>
+
+</body>
+</html>

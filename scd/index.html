@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DANI MEDICO - MDCAT 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #003049;
+            --primary-green: #386641;
+            /* Subject Theme Colors */
+            --bio-bg: #f1faee; --bio-text: #1b4332; --bio-border: #52b788;
+            --chem-bg: #e0f2fe; --chem-text: #075985; --chem-border: #0ea5e9;
+            --phys-bg: #f5f3ff; --phys-text: #5b21b6; --phys-border: #8b5cf6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0; background: #f1f5f9;
+        }
+
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 10mm;
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            border-top: 8px solid var(--primary-blue);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo { width: 80px; filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); }
+        h1 { color: var(--primary-blue); margin: 5px 0 0 0; font-size: 32px; font-weight: 900; letter-spacing: 2px; }
+        h2 { color: var(--primary-green); margin: 0; font-size: 16px; font-weight: 600; letter-spacing: 4px; }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
+        th {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 12px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+        }
+
+        td { padding: 10px; font-size: 12px; border: none; }
+        
+        /* Attractive Subject Row Styling */
+        .bio-row td { background-color: var(--bio-bg); color: var(--bio-text); border-left: 5px solid var(--bio-border); font-weight: 600; }
+        .bio-row i { color: var(--bio-border); margin-right: 8px; }
+
+        .chem-row td { background-color: var(--chem-bg); color: var(--chem-text); border-left: 5px solid var(--chem-border); font-weight: 600; }
+        .chem-row i { color: var(--chem-border); margin-right: 8px; }
+
+        .phys-row td { background-color: var(--phys-bg); color: var(--phys-text); border-left: 5px solid var(--phys-border); font-weight: 600; }
+        .phys-row i { color: var(--phys-border); margin-right: 8px; }
+        
+        .sunday-row td {
+            background: #f8fafc;
+            color: #64748b;
+            text-align: center;
+            font-weight: bold;
+            border-left: 5px solid #cbd5e1;
+            font-style: italic;
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .social-item {
+            font-size: 14px;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .social-item i { color: var(--primary-blue); font-size: 14px; }
+
+        @media print {
+            body { background: none; }
+            .a4-page { margin: 0; box-shadow: none; width: 100%; }
+            @page { size: A4; margin: 5mm; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="a4-page">
+    <header>
+        <img src="logo.png" class="logo" alt="LOGO">
+        <h1>DANI MEDICO</h1>
+        <h2>MDCAT 2026 FREE TEST SERIES</h2>
+    </header>
+
+    <table>
+        <thead>
+            <tr>
+                <th width="20%">Date</th>
+                <th width="15%">Day</th>
+                <th width="20%">Subject</th>
+                <th width="40%">Topic</th>
+            </tr>
+        </thead>
+        <tbody id="schedule-body"></tbody>
+    </table>
+
+    <footer>
+        <div class="social-grid">
+            <span class="social-item"><i class="fas fa-globe"></i> danimedico.com</span>
+            <span class="social-item"><i class="fab fa-facebook"></i> /Danimedicoo</span>
+            <span class="social-item"><i class="fab fa-whatsapp"></i> +92 331 3067328</span>
+            <span class="social-item"><i class="fab fa-instagram"></i> @dani_medicoo</span>
+            <span class="social-item"><i class="fab fa-youtube"></i> @danimedicoo</span>
+            <span class="social-item"><i class="fas fa-envelope"></i> info@danimedico.com</span>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // List your chapters here
+    const bioChapters = ["1. ACELLULAR LIFE", "2. BIOENERGETICS", "3. BIOLOGICAL MOLECULES", "4. CELL STRUCTURE & FUNCTION", "5. COORDINATION & CONTROL", "6. ENZYMES", "7. EVOLUTION", "8. REPRODUCTION", "9. SUPPORT & MOVEMENT", "10. INHERITENCE", "11. CIRCULATION", "12. IMMUNITY", "13. RESPIRATION", "14. DIGESTION", "15. HOMEOSTASIS", "16. BIOTECHNOLOGY"];
+    const chemChapters = ["1. INTRO TO FUNDAMENTAL CONCEPTS OF CHEMISTRY", "2. ATOMIC STRUCTURE", "3. GASES", "4. LIQUIDS", "5. SOLIDS", "6. CHEMICAL EQUILIBRIUM", "7. REACTION KINETICS", "8. THERMO-CHEMISTRY & ENERGETICS OF CHEMICAL REACTIONS", "9. ELECTROCHEMISTRY", "10. CHEMICAL BONDING", "11.S & P Block Elements", "12.TRANSITION ELEMENTS", "13.FUNDAMENTAL PRINCIPLES OF ORGANIC CHEMISTRY", "14.CHEMISTRY OF HYDROCARBONS", "15.ALKYL HALIDES", "16.ALCOHOLS & PHENOLS", "17.ALDEHYDES & KETONES", "18. CARBOXYLIC ACIDS", "19. MACROMOLECULES", "20. INDUSTRIAL CHEMISTRY"];
+    const physChapters = ["1.VECTORS & EQUILIBRIUM", "2.FORCE & MOTION", "3.WORK & ENERGY", "4.ROTATIONAL & CIRCULAR MOTION", "5.FLUID DYNAMICS", "6.WAVES", "7.THERMODYNAMICS", "8.ELECTROSTATICS", "9.CURRENT ELECTRICITY", "10.ELECTROMAGNETISM", "11.ELECTROMAGNETIC INDUCTION", "12.ALTERNATING CURRENT", "13.ELECTRONICS", "14.DAWN OF MODERN PHYSICS", "15.ATOMIC SPECTRA", "16.NUCLEAR PHYSICS"];
+
+    const scheduleBody = document.getElementById('schedule-body');
+    let currentDate = new Date(2026, 0, 19); 
+    let bIdx = 0, cIdx = 0, pIdx = 0;
+    let turn = 0; 
+
+    while (bIdx < bioChapters.length || cIdx < chemChapters.length || pIdx < physChapters.length) {
+        let dayName = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+        let dateStr = currentDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        let tr = document.createElement('tr');
+
+        if (dayName === 'Sunday') {
+            tr.className = "sunday-row";
+            tr.innerHTML = `<td>${dateStr}</td><td>${dayName}</td><td colspan="2"><i class="fas fa-mug-hot"></i> REVISION & REST DAY</td>`;
+        } else {
+            let sub, topic, cls, icon;
+            if (turn === 0 && bIdx < bioChapters.length) {
+                sub = "Biology"; topic = bioChapters[bIdx++]; cls = "bio-row"; icon = "fa-dna";
+            } else if (turn === 1 && cIdx < chemChapters.length) {
+                sub = "Chemistry"; topic = chemChapters[cIdx++]; cls = "chem-row"; icon = "fa-vial";
+            } else if (turn === 2 && pIdx < physChapters.length) {
+                sub = "Physics"; topic = physChapters[pIdx++]; cls = "phys-row"; icon = "fa-bolt";
+            } else {
+                turn = (turn + 1) % 3; continue; 
+            }
+            tr.className = cls;
+            tr.innerHTML = `<td>${dateStr}</td><td>${dayName}</td><td><i class="fas ${icon}"></i> ${sub}</td><td>${topic}</td>`;
+            turn = (turn + 1) % 3;
+        }
+        scheduleBody.appendChild(tr);
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+</script>
+</body>
+</html>

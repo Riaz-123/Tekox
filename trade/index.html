@@ -3,34 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance Futures Precision Calc</title>
+    <title>Binance Futures Setup Tool</title>
     <style>
-        :root { --bg: #0b0e11; --card: #1e2329; --text: #eaecef; --primary: #fcd535; --long: #0ecb81; --short: #f6465d; --warn: #f0b90b; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; }
-        .calc-card { background: var(--card); padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid #333; }
-        h2 { color: var(--primary); text-align: center; margin-top: 0; font-size: 1.4rem; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-size: 0.85rem; color: #848e9c; }
-        input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #474d57; background: #2b3139; color: #fff; box-sizing: border-box; }
-        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-        button { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        :root { --bg: #0b0e11; --card: #1e2329; --text: #eaecef; --primary: #fcd535; --long: #0ecb81; --short: #f6465d; --border: #474d57; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 20px; }
+        .calc-card { background: var(--card); padding: 20px; border-radius: 12px; width: 100%; max-width: 400px; border: 1px solid #333; }
+        h3 { color: var(--primary); text-align: center; margin-bottom: 20px; }
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-size: 0.8rem; color: #848e9c; margin-bottom: 4px; }
+        input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border); background: #2b3139; color: #fff; box-sizing: border-box; font-size: 1rem; }
+        .btn-group { display: flex; gap: 10px; margin: 20px 0; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-long { background: var(--long); color: #000; }
         .btn-short { background: var(--short); color: #fff; }
-        .results { margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; display: none; }
-        .res-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; padding: 8px; background: #161a1e; border-radius: 4px; }
-        .liq-warn { color: var(--warn); font-weight: bold; border: 1px solid var(--warn); }
+        .results { border-top: 1px solid #333; padding-top: 15px; display: none; }
+        .res-item { display: flex; justify-content: space-between; margin-bottom: 8px; padding: 10px; background: #161a1e; border-radius: 6px; font-size: 0.9rem; }
         .val { font-weight: bold; }
         .up { color: var(--long); }
         .down { color: var(--short); }
+        .liq { color: #f0b90b; border: 1px solid #f0b90b; }
     </style>
 </head>
 <body>
 
 <div class="calc-card">
-    <h2>Binance Futures Setup</h2>
+    <h3>Trade Setup</h3>
     
     <div class="input-group">
-        <label>Margin (Your Capital $)</label>
+        <label>Investment Amount (Margin $)</label>
         <input type="number" id="margin" value="100">
     </div>
 
@@ -39,78 +39,87 @@
         <select id="leverage">
             <option value="20">20x</option>
             <option value="50" selected>50x</option>
-            <option value="75">75x</option>
             <option value="100">100x</option>
         </select>
     </div>
 
     <div class="input-group">
         <label>Entry Price ($)</label>
-        <input type="number" id="entry" placeholder="60000.00" step="0.01">
+        <input type="number" id="entry" placeholder="Example: 65000">
     </div>
 
     <div style="display: flex; gap: 10px;">
         <div class="input-group" style="flex: 1;">
-            <label>TP % (on Margin)</label>
+            <label>TP % (Target)</label>
             <input type="number" id="tp_pct" value="50">
         </div>
         <div class="input-group" style="flex: 1;">
-            <label>SL % (on Margin)</label>
+            <label>SL % (Max Loss)</label>
             <input type="number" id="sl_pct" value="20">
         </div>
     </div>
 
     <div class="btn-group">
-        <button class="btn-long" onclick="calc('long')">LONG</button>
-        <button class="btn-short" onclick="calc('short')">SHORT</button>
+        <button class="btn-long" onclick="runCalc('long')">LONG (Buy)</button>
+        <button class="btn-short" onclick="runCalc('short')">SHORT (Sell)</button>
     </div>
 
     <div class="results" id="results">
-        <div class="res-item"><span>Position Value:</span> <span class="val" id="res-pos"></span></div>
-        <div class="res-item liq-warn"><span>Est. Liquidation:</span> <span id="res-liq"></span></div>
-        <div class="res-item"><span>TP Price:</span> <span class="val up" id="res-tp-price"></span></div>
-        <div class="res-item"><span>SL Price:</span> <span class="val down" id="res-sl-price"></span></div>
-        <div class="res-item"><span>Profit at TP:</span> <span class="val up" id="res-tp-usd"></span></div>
-        <div class="res-item"><span>Loss at SL:</span> <span class="val down" id="res-sl-usd"></span></div>
+        <div class="res-item"><span>Position Size:</span> <span class="val" id="res-size"></span></div>
+        <div class="res-item liq"><span>Est. Liquidation:</span> <span class="val" id="res-liq"></span></div>
+        <div class="res-item"><span>Take Profit Price:</span> <span class="val up" id="res-tp-p"></span></div>
+        <div class="res-item"><span>Stop Loss Price:</span> <span class="val down" id="res-sl-p"></span></div>
+        <div class="res-item"><span>Net Profit at TP:</span> <span class="val up" id="res-tp-usd"></span></div>
+        <div class="res-item"><span>Net Loss at SL:</span> <span class="val down" id="res-sl-usd"></span></div>
     </div>
 </div>
 
 <script>
-function calc(side) {
-    const margin = parseFloat(document.getElementById('margin').value);
-    const leverage = parseInt(document.getElementById('leverage').value);
-    const entry = parseFloat(document.getElementById('entry').value);
-    const tpP = parseFloat(document.getElementById('tp_pct').value) / 100;
-    const slP = parseFloat(document.getElementById('sl_pct').value) / 100;
+function runCalc(side) {
+    // 1. Get Inputs
+    const m = parseFloat(document.getElementById('margin').value);
+    const lev = parseInt(document.getElementById('leverage').value);
+    const ent = parseFloat(document.getElementById('entry').value);
+    const tp_p = parseFloat(document.getElementById('tp_pct').value) / 100;
+    const sl_p = parseFloat(document.getElementById('sl_pct').value) / 100;
 
-    if (!entry || !margin) return alert("Please enter Entry and Margin");
+    // 2. Validation
+    if (!ent || ent <= 0) { alert("Please enter a valid Entry Price"); return; }
 
-    const posSize = margin * leverage;
-    const mmr = 0.004; // Maintenance Margin Rate (approx 0.4% for major pairs)
-    
-    let tp, sl, liq;
+    // 3. Math Constants
+    const mmr = 0.004; // Maintenance Margin Rate (Binance Tier 1)
+    const positionSize = m * lev;
+
+    // 4. Core Calculations
+    let liq, tpPrice, slPrice;
 
     if (side === 'long') {
-        // Price required for target % = (Target% / Leverage) * Entry
-        tp = entry * (1 + (tpP / leverage));
-        sl = entry * (1 - (slP / leverage));
-        // Liq Price = Entry * (1 - (1/Lev) + MMR)
-        liq = entry * (1 - (1 / leverage) + mmr);
+        // LIQ = Entry * (1 - (1/Lev) + MMR)
+        liq = ent * (1 - (1 / lev) + mmr);
+        // TP = Entry * (1 + (Target%/Lev))
+        tpPrice = ent * (1 + (tp_p / lev));
+        // SL = Entry * (1 - (Stop%/Lev))
+        slPrice = ent * (1 - (sl_p / lev));
     } else {
-        tp = entry * (1 - (tpP / leverage));
-        sl = entry * (1 + (slP / leverage));
-        // Liq Price = Entry * (1 + (1/Lev) - MMR)
-        liq = entry * (1 + (1 / leverage) - mmr);
+        // LIQ = Entry * (1 + (1/Lev) - MMR)
+        liq = ent * (1 + (1 / lev) - mmr);
+        // TP = Entry * (1 - (Target%/Lev))
+        tpPrice = ent * (1 - (tp_p / lev));
+        // SL = Entry * (1 + (Stop%/Lev))
+        slPrice = ent * (1 + (sl_p / lev));
     }
 
-    document.getElementById('res-pos').innerText = `$${posSize.toFixed(2)}`;
-    document.getElementById('res-liq').innerText = `$${liq.toFixed(2)}`;
-    document.getElementById('res-tp-price').innerText = `$${tp.toFixed(2)}`;
-    document.getElementById('res-sl-price').innerText = `$${sl.toFixed(2)}`;
-    document.getElementById('res-tp-usd').innerText = `+$${(margin * tpP).toFixed(2)}`;
-    document.getElementById('res-sl-usd').innerText = `-$${(margin * slP).toFixed(2)}`;
+    // 5. Update UI
+    document.getElementById('res-size').innerText = "$" + positionSize.toFixed(2);
+    document.getElementById('res-liq').innerText = "$" + liq.toFixed(2);
+    document.getElementById('res-tp-p').innerText = "$" + tpPrice.toFixed(2);
+    document.getElementById('res-sl-p').innerText = "$" + slPrice.toFixed(2);
+    document.getElementById('res-tp-usd').innerText = "+$" + (m * tp_p).toFixed(2);
+    document.getElementById('res-sl-usd').innerText = "-$" + (m * sl_p).toFixed(2);
+    
     document.getElementById('results').style.display = 'block';
 }
 </script>
+
 </body>
 </html>

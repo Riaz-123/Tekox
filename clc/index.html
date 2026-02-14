@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Profit Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+            --danger-color: #dc2626;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+        }
+
+        /* Input Section */
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+        }
+
+        input {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+        }
+
+        button#add-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: auto;
+            height: 48px;
+        }
+
+        button#add-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Table Styling */
+        .table-container {
+            overflow-x: auto;
+            background: white; /* Ensure white bg for screenshot */
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        .profit-positive {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .profit-negative {
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        /* Summary Section */
+        .summary {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .summary-label {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 1.5rem;
+            text-align: right;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-download {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-download:hover {
+            background-color: #15803d;
+        }
+        
+        .btn-image {
+            background-color: #6366f1; /* Indigo */
+        }
+        
+        .btn-image:hover {
+             background-color: #4f46e5;
+        }
+        
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .delete-btn:hover {
+            color: var(--danger-color);
+        }
+        
+        /* Helper to hide column during screenshot if needed */
+        .hide-on-screenshot {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container" id="capture-area">
+    <h1>Crypto Profit Calculator</h1>
+
+    <div class="input-group" id="input-section">
+        <div class="input-wrapper">
+            <label>Coin Name</label>
+            <input type="text" id="coinName" placeholder="e.g. BTC">
+        </div>
+        <div class="input-wrapper">
+            <label>Investment ($)</label>
+            <input type="number" id="investment" placeholder="100">
+        </div>
+        <div class="input-wrapper">
+            <label>Buy Price ($)</label>
+            <input type="number" id="buyPrice" placeholder="50000">
+        </div>
+        <div class="input-wrapper">
+            <label>Current Price ($)</label>
+            <input type="number" id="currentPrice" placeholder="55000">
+        </div>
+        <button id="add-btn" onclick="addCoin()">Add Coin</button>
+    </div>
+
+    <div class="table-container">
+        <table id="portfolioTable">
+            <thead>
+                <tr>
+                    <th>Coin</th>
+                    <th>Inv. ($)</th>
+                    <th>Buy Price</th>
+                    <th>Curr. Price</th>
+                    <th>Current Value</th>
+                    <th>Profit ($)</th>
+                    <th class="action-col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+
+    <div class="summary">
+        <div class="summary-item">
+            <span class="summary-label">Total Investment</span>
+            <span class="summary-value" id="totalInvestment">$0.00</span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Total Current Value</span>
+            <span class="summary-value" id="totalValue">$0.00</span>
+        </div>
+        <div class="summary-item">
+            <span class="summary-label">Total Profit/Loss</span>
+            <span class="summary-value" id="totalProfit">$0.00</span>
+        </div>
+    </div>
+
+    <div class="controls" id="controls-section">
+        <button class="btn-download btn-image" onclick="downloadImage()">Download Image (.png)</button>
+        <button class="btn-download" onclick="downloadReport()">Download CSV (.csv)</button>
+    </div>
+</div>
+
+<script>
+    let portfolio = [];
+
+    function addCoin() {
+        const name = document.getElementById('coinName').value;
+        const investment = parseFloat(document.getElementById('investment').value);
+        const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+        const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+
+        if (!name || isNaN(investment) || isNaN(buyPrice) || isNaN(currentPrice)) {
+            alert("Please fill in all fields correctly.");
+            return;
+        }
+
+        const units = investment / buyPrice;
+        const currentValue = units * currentPrice;
+        const profit = currentValue - investment;
+
+        const coinData = {
+            id: Date.now(),
+            name: name.toUpperCase(),
+            investment: investment,
+            buyPrice: buyPrice,
+            currentPrice: currentPrice,
+            currentValue: currentValue,
+            profit: profit
+        };
+        
+        portfolio.push(coinData);
+        renderTable();
+        clearInputs();
+    }
+
+    function deleteCoin(id) {
+        portfolio = portfolio.filter(coin => coin.id !== id);
+        renderTable();
+    }
+
+    function renderTable() {
+        const tbody = document.querySelector('#portfolioTable tbody');
+        tbody.innerHTML = ''; 
+
+        let totalInv = 0;
+        let totalVal = 0;
+        let totalProf = 0;
+
+        portfolio.forEach(coin => {
+            totalInv += coin.investment;
+            totalVal += coin.currentValue;
+            totalProf += coin.profit;
+
+            const row = document.createElement('tr');
+            const profitClass = coin.profit >= 0 ? 'profit-positive' : 'profit-negative';
+            const profitSign = coin.profit >= 0 ? '+' : '';
+
+            row.innerHTML = `
+                <td><strong>${coin.name}</strong></td>
+                <td>$${coin.investment.toFixed(2)}</td>
+                <td>$${coin.buyPrice.toLocaleString()}</td>
+                <td>$${coin.currentPrice.toLocaleString()}</td>
+                <td>$${coin.currentValue.toFixed(2)}</td>
+                <td class="${profitClass}">${profitSign}$${coin.profit.toFixed(2)}</td>
+                <td class="action-col"><button class="delete-btn" onclick="deleteCoin(${coin.id})">&times;</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        document.getElementById('totalInvestment').innerText = `$${totalInv.toFixed(2)}`;
+        document.getElementById('totalValue').innerText = `$${totalVal.toFixed(2)}`;
+        
+        const totalProfitElem = document.getElementById('totalProfit');
+        totalProfitElem.innerText = `${totalProf >= 0 ? '+' : ''}$${totalProf.toFixed(2)}`;
+        totalProfitElem.style.color = totalProf >= 0 ? 'var(--success-color)' : 'var(--danger-color)';
+    }
+
+    function clearInputs() {
+        document.getElementById('coinName').value = '';
+        document.getElementById('investment').value = '';
+        document.getElementById('buyPrice').value = '';
+        document.getElementById('currentPrice').value = '';
+        document.getElementById('coinName').focus();
+    }
+
+    function downloadReport() {
+        if (portfolio.length === 0) {
+            alert("No data to download!");
+            return;
+        }
+        let csvContent = "Coin Name,Investment,Buy Price,Current Price,Current Value,Profit\n";
+        portfolio.forEach(coin => {
+            const row = [
+                coin.name,
+                coin.investment.toFixed(2),
+                coin.buyPrice,
+                coin.currentPrice,
+                coin.currentValue.toFixed(2),
+                coin.profit.toFixed(2)
+            ];
+            csvContent += row.join(",") + "\n";
+        });
+        
+        const totalInv = document.getElementById('totalInvestment').innerText.replace('$','');
+        const totalVal = document.getElementById('totalValue').innerText.replace('$','');
+        const totalProf = document.getElementById('totalProfit').innerText.replace('+','').replace('$','');
+        
+        csvContent += `\nTOTAL,${totalInv},,,${totalVal},${totalProf}`;
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute("href", url);
+        link.setAttribute("download", "crypto_profit_report.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function downloadImage() {
+        if (portfolio.length === 0) {
+            alert("No data to screenshot!");
+            return;
+        }
+
+        // Hide controls and input for a cleaner screenshot
+        document.getElementById('input-section').style.display = 'none';
+        document.getElementById('controls-section').style.display = 'none';
+        
+        // Hide Delete buttons
+        const actionCols = document.querySelectorAll('.action-col');
+        actionCols.forEach(col => col.style.display = 'none');
+
+        const element = document.getElementById('capture-area');
+
+        html2canvas(element).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'crypto_portfolio.png';
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+
+            // Restore elements
+            document.getElementById('input-section').style.display = 'grid';
+            document.getElementById('controls-section').style.display = 'flex';
+            actionCols.forEach(col => col.style.display = '');
+        });
+    }
+</script>
+
+</body>
+</html>

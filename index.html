@@ -1,261 +1,351 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tekox - A Creative Tech World</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-        <link rel="icon" type="image/x-icon" href="tekox.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="tekox.png">
 
     <style>
         :root {
-            --primary: #38bdf8;
-            --secondary: #818cf8;
-            --accent: #c084fc;
-            --bg: #030712;
+            --bg-base: #020617; /* Deep Slate */
+            --primary: #0ea5e9; /* Cyan / Sky */
+            --secondary: #6366f1; /* Indigo */
+            --accent: #a855f7; /* Purple */
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg);
-            color: #f9fafb;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-base);
+            color: #f8fafc;
             overflow-x: hidden;
         }
 
-        /* Advanced Mesh Gradient Background */
+        h1, h2, h3, .brand-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Highly Dynamic Aurora Background */
         .mesh-bg {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
-            background: 
-                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(192, 132, 252, 0.05) 0%, transparent 50%);
-        }
-
-        /* Floating Animation */
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
-            100% { transform: translateY(0px) rotate(0deg); }
-        }
-
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* Tool Card Glassmorphism */
-        .tool-card {
-            background: rgba(17, 24, 39, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+            background-color: var(--bg-base);
             overflow: hidden;
         }
 
-        .tool-card::before {
-            content: '';
+        .mesh-blob {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(56, 189, 248, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: 0.6s;
+            filter: blur(90px);
+            opacity: 0.4;
+            border-radius: 50%;
+            animation: float-blob 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .tool-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            border-color: var(--primary);
-            box-shadow: 0 20px 40px -15px rgba(56, 189, 248, 0.3);
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: rgba(14, 165, 233, 0.3); animation-delay: 0s; }
+        .blob-2 { top: 40%; right: -20%; width: 60vw; height: 60vw; background: rgba(99, 102, 241, 0.2); animation-delay: -5s; }
+        .blob-3 { bottom: -20%; left: 20%; width: 55vw; height: 55vw; background: rgba(168, 85, 247, 0.2); animation-delay: -10s; }
+
+        @keyframes float-blob {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(5%, 10%) scale(1.1); }
+            66% { transform: translate(-5%, 5%) scale(0.9); }
+            100% { transform: translate(10%, -5%) scale(1.05); }
         }
 
-        .tool-card:hover::before {
-            transform: translateX(100%);
+        /* Micro-animations */
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
 
-        /* Glowing Text Effect */
-        .glow-text {
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
+        .glow-text { text-shadow: 0 0 40px rgba(14, 165, 233, 0.6); }
 
-        /* Premium CTA Button */
-        .cta-button {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        /* Premium Glassmorphism Cards */
+        .gradient-border-card {
             position: relative;
+            border-radius: 1.5rem;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            display: block; /* For standardizing anchor tags */
+        }
+
+        .gradient-border-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(14, 165, 233, 0.15), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
             z-index: 1;
         }
 
-        .cta-button::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            opacity: 0;
-            z-index: -1;
-            transition: opacity 0.4s;
-            border-radius: inherit;
+        .gradient-border-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(14, 165, 233, 0.3);
+            box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.2), inset 0 0 20px rgba(14, 165, 233, 0.05);
         }
 
-        .cta-button:hover::after {
-            opacity: 1;
+        .gradient-border-card:hover::before { opacity: 1; }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Icon Container Styling */
         .icon-box {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.1));
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            transition: 0.3s;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(99, 102, 241, 0.1));
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .tool-card:hover .icon-box {
-            transform: rotate(-5deg) scale(1.1);
-            background: rgba(56, 189, 248, 0.2);
+        .gradient-border-card:hover .icon-box {
+            transform: rotate(-10deg) scale(1.15);
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.2));
             border-color: var(--primary);
+            box-shadow: 0 0 25px rgba(14, 165, 233, 0.4);
+        }
+
+        .gradient-border-card:hover svg {
+            stroke: #fff;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8));
+        }
+
+        /* CTA Button */
+        .btn-glow {
+            background-size: 200% auto;
+            transition: 0.5s;
+            background-image: linear-gradient(to right, #0ea5e9 0%, #6366f1 50%, #0ea5e9 100%);
+        }
+        .btn-glow:hover {
+            background-position: right center;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
         }
     </style>
 </head>
-<body class="antialiased">
-    <div class="mesh-bg"></div>
+<body class="antialiased selection:bg-sky-500/30 selection:text-white">
 
-    <div class="container mx-auto px-6">
-        <header class="flex justify-between items-center py-8">
-            <div class="flex items-center gap-4 group cursor-pointer">
-                <div class="relative animate-float">
-                    <div class="absolute inset-0 bg-sky-400 blur-lg opacity-40 group-hover:opacity-100 transition-opacity"></div>
-                    <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="relative">
+    <div class="mesh-bg">
+        <div class="mesh-blob blob-1"></div>
+        <div class="mesh-blob blob-2"></div>
+        <div class="mesh-blob blob-3"></div>
+    </div>
+
+    <nav class="fixed w-full z-50 top-0 border-b border-white/5 bg-slate-950/60 backdrop-blur-2xl">
+        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3 group cursor-pointer">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-sky-500 blur-lg opacity-40 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="relative transform group-hover:scale-110 transition-transform duration-500">
                         <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="url(#logoGradient)" stroke="white" stroke-width="0.5"/>
-                        <path d="M2 7L12 12M22 7L12 12M12 22V12" stroke="white" stroke-width="2" stroke-linejoin="round" opacity="0.8"/>
+                        <path d="M2 7L12 12M22 7L12 12M12 22V12" stroke="white" stroke-width="2" stroke-linejoin="round" opacity="0.9"/>
                         <path d="M17 4.5L7 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <defs>
                             <linearGradient id="logoGradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#38BDF8"/>
-                                <stop offset="1" stop-color="#818CF8"/>
+                                <stop stop-color="#0EA5E9"/>
+                                <stop offset="1" stop-color="#6366F1"/>
                             </linearGradient>
                         </defs>
                     </svg>
                 </div>
-                <span class="text-3xl font-extrabold tracking-tighter text-white glow-text">TEKOX</span>
+                <span class="text-2xl font-extrabold tracking-tight text-white brand-font glow-text">TEKOX</span>
+            </a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#tools" class="text-sm font-semibold text-slate-300 hover:text-sky-400 transition-colors">Ecosystem</a>
+                <a href="#about" class="text-sm font-semibold text-slate-300 hover:text-sky-400 transition-colors">Developer</a>
+                <a href="https://wa.me/923181393964" class="px-6 py-2.5 text-sm font-bold bg-white/5 border border-white/10 rounded-full hover:bg-sky-500 hover:border-sky-500 hover:text-white transition-all duration-300 hover:shadow-[0_0_20px_rgba(14,165,233,0.4)]">Contact Us</a>
             </div>
-            <nav class="hidden md:flex items-center gap-8">
-                <a href="#tools" class="text-sm font-semibold hover:text-sky-400 transition-colors">Tools</a>
-                <a href="https://wa.me/923181393964" class="px-5 py-2.5 text-sm font-bold border border-white/10 rounded-full hover:bg-white/5 transition-all">Contact</a>
-            </nav>
-        </header>
+        </div>
+    </nav>
 
-        <main class="py-20 lg:py-32">
-            <section class="text-center max-w-4xl mx-auto">
-                <div class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest uppercase bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full">
-                    The Future of Tech Tools
-                </div>
-                <h1 class="text-5xl md:text-7xl font-black leading-tight text-white mb-8">
-                    A Creative <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-purple-400">Tech World</span>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-2xl mx-auto">
-                    Your central hub for high-performance tools. Quick, reliable, and easy-to-use solutions for your everyday tech needs.
-                </p>
-                <div class="flex flex-col sm:flex-row justify-center gap-4">
-                    <a href="#tools" class="cta-button px-8 py-4 rounded-full font-bold text-white shadow-xl shadow-sky-500/20 active:scale-95 transition-transform">Explore Tools</a>
-                </div>
-            </section>
-
-            <section id="tools" class="mt-32">
-                <div class="text-center mb-20">
-                    <h2 class="text-4xl font-bold text-white mb-4">Our Ecosystem</h2>
-                    <div class="h-1.5 w-20 bg-sky-500 mx-auto rounded-full"></div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <a href="https://tekox.online/data" target="_blank" class="tool-card p-8 rounded-3xl group">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 2H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/><path d="M5 5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H5Zm1 4h12M6 13h5"/></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">SIM DATABASE</h3>
-                        <p class="text-gray-400 text-sm">Access comprehensive SIM card ownership data instantly.</p>
-                    </a>
-
-                    <a href="https://tekox.online/result" target="_blank" class="tool-card p-8 rounded-3xl group">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M12 14h8"/><path d="M12 10h8"/></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">CNIC TO SIMS</h3>
-                        <p class="text-gray-400 text-sm">Check SIMs registered against any CNIC number effortlessly.</p>
-                    </a>
-
-                    <a href="https://tekox.online/info" target="_blank" class="tool-card p-8 rounded-3xl group">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">WEATHER INFO</h3>
-                        <p class="text-gray-400 text-sm">Get real-time weather updates for any location worldwide.</p>
-                    </a>
-
-                    <a href="https://tekox.online/tv" target="_blank" class="tool-card p-8 rounded-3xl group">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">LIVE TV</h3>
-                        <p class="text-gray-400 text-sm">Stream your favorite TV channels live in high definition.</p>
-                    </a>
-
-                    <a href="https://tekox.online/asia.cup" target="_blank" class="tool-card p-8 rounded-3xl group">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">T20 World CUP LIVE</h3>
-                        <p class="text-gray-400 text-sm">Watch the Asia Cup matches live without interruptions.</p>
-                    </a>
-
-                    <a href="https://tekox.online/yt-downloader" class="tool-card p-8 rounded-3xl group">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">YT Downloader</h3>
-                        <p class="text-gray-400 text-sm">Fast and reliable media extraction for your favorite videos.</p>
-                    </a>
-
-                    <a href="https://tekox.online/clouds-generator" class="tool-card p-8 rounded-3xl group opacity-80">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"  fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5 0-3-3-3.5-3-3.5A6 6 0 0 0 7.5 7s-1.5 0-2 2c-3 0-3.5 3-3.5 3.5 0 2.5 2 4.5 4.5 4.5Z" /></svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">CLOUDS GENERATOR</h3>
-                        <p class="text-gray-400 text-sm">Animated and Fun View oF clouds Generating</p>
-                    </a>
-                </div>
-                </div>
-                        <h3 class="text-xl font-bold text-white mb-2">SPOT Profit Calculator</h3>
-                        <p class="text-gray-400 text-sm">Calulate the profits of spot trades</p>
-                    </a>
-
-                    <a href="https://tekox.online/clc" target="_blank" class="tool-card p-8 rounded-3xl group">
-                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F7931A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.279 5.308m-.345 1.97-.345 1.97"/>
-</svg>
-                        </div>
-            </section>
-
-            <section id="contact" class="mt-40 relative rounded-[3rem] overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-sky-600/20 to-indigo-600/20 backdrop-blur-3xl"></div>
-                <div class="relative px-8 py-20 text-center">
-                    <h2 class="text-4xl font-black text-white mb-6">Join the Community</h2>
-                    <p class="text-gray-300 text-lg mb-10 max-w-xl mx-auto">Get real-time updates and exclusive tool access directly on our channel.</p>
-                    <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="cta-button inline-flex items-center gap-3 px-10 py-5 text-white font-black rounded-2xl shadow-2xl shadow-sky-500/40 hover:-translate-y-1 transition-transform">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.05c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Join WhatsApp Channel
-                    </a>
-                </div>
-            </section>
+    <div class="container mx-auto px-6 pt-32 pb-20">
+        
+        <main class="py-24 flex flex-col items-center text-center max-w-5xl mx-auto animate-float">
+            <div class="inline-flex items-center gap-3 px-5 py-2 mb-8 text-xs font-bold tracking-widest uppercase bg-gradient-to-r from-sky-500/10 to-indigo-500/10 text-sky-400 border border-sky-500/30 rounded-full shadow-[0_0_20px_rgba(14,165,233,0.15)] backdrop-blur-sm">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-sky-500"></span>
+                </span>
+                The Future of Tech Tools
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black leading-tight text-white mb-6 tracking-tight">
+                A Creative <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-fuchsia-400 glow-text">Tech World</span>
+            </h1>
+            <p class="text-lg md:text-2xl text-slate-400 leading-relaxed mb-12 max-w-3xl font-light">
+                Your centralized hub for high-performance utilities. Engineered for speed, reliability, and seamless digital experiences.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="#tools" class="btn-glow px-10 py-5 rounded-full font-bold text-white text-lg tracking-wide hover:-translate-y-1 transition-transform">
+                    Explore Ecosystem
+                </a>
+            </div>
         </main>
 
-        <footer class="py-12 border-t border-white/5 text-center">
-            <p class="text-gray-500 text-sm mb-2 font-medium tracking-wide uppercase">Developed by Riaz Hussain Solangi</p>
-            <p class="text-gray-600 text-xs">© 2026 Tekox Universe. Precision Tools for a Creative Tech World.</p>
-        </footer>
+        <section id="tools" class="mt-24 pt-20 scroll-mt-24 relative z-10">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6">Our Ecosystem</h2>
+                <div class="h-1.5 w-32 bg-gradient-to-r from-sky-500 to-indigo-500 mx-auto rounded-full shadow-[0_0_15px_rgba(14,165,233,0.5)]"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+                
+                <a href="https://tekox.online/data" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><path d="M19 2H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/><path d="M5 5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H5Zm1 4h12M6 13h5"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">SIM Database</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Access comprehensive SIM card ownership data instantly and securely through our network.</p>
+                    </div>
+                </a>
+
+                <a href="https://tekox.online/result" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><rect width="20" height="16" x="2" y="4" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M12 14h8"/><path d="M12 10h8"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">CNIC to SIMs</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Check total active SIMs registered against any given CNIC number efficiently.</p>
+                    </div>
+                </a>
+
+                <a href="https://tekox.online/info" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Weather Info</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Fetch highly accurate, real-time meteorological data and forecasts globally.</p>
+                    </div>
+                </a>
+
+                <a href="https://tekox.online/tv" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Live TV</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Stream your favorite television networks live with uninterrupted HD quality.</p>
+                    </div>
+                </a>
+
+                <a href="https://tekox.online/asia.cup" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">T20 World Cup</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Experience live cricket matches and major tournaments directly on your device.</p>
+                    </div>
+                </a>
+
+                <a href="https://tekox.online/yt-downloader" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">YT Downloader</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Ultra-fast and reliable media extraction framework for your favorite content.</p>
+                    </div>
+                </a>
+
+                <a href="https://tekox.online/clouds-generator" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5 0-3-3-3.5-3-3.5A6 6 0 0 0 7.5 7s-1.5 0-2 2c-3 0-3.5 3-3.5 3.5 0 2.5 2 4.5 4.5 4.5Z" /></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Cloud Generator</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Explore an animated, interactive visual engine mapping cloud generation physics.</p>
+                    </div>
+                </a>
+
+                <a href="https://tekox.online/clc" target="_blank" class="gradient-border-card group">
+                    <div class="card-content">
+                        <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300"><path d="M11.767 19.089c4.924.868 6.14-6.025 1.216-6.894m-1.216 6.894L5.86 18.047m5.908 1.042-.347 1.97m1.563-8.864c4.924.869 6.14-6.025 1.215-6.893m-1.215 6.893-3.94-.694m5.155-6.2L8.279 5.308m-.345 1.97-.345 1.97"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Spot Calculator</h3>
+                        <p class="text-slate-400 text-base leading-relaxed">Precision algorithms to calculate and project your trade margins and targets.</p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <section id="about" class="mt-40 scroll-mt-24 relative z-10">
+            <div class="max-w-5xl mx-auto">
+                <div class="relative rounded-[2.5rem] p-[1px] bg-gradient-to-br from-sky-500/40 via-indigo-500/20 to-purple-500/40">
+                    <div class="absolute inset-0 bg-gradient-to-r from-sky-500/20 via-indigo-500/20 to-purple-500/20 blur-3xl -z-10"></div>
+                    <div class="bg-slate-950/90 backdrop-blur-2xl rounded-[2.5rem] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12">
+                        
+                        <div class="shrink-0 relative group">
+                            <div class="absolute inset-0 bg-gradient-to-r from-sky-500 to-purple-500 blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-500 animate-spin" style="animation-duration: 8s;"></div>
+                            <img src="profile.png" alt="Riaz Hussain" class="relative w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-slate-900 shadow-[0_0_40px_rgba(14,165,233,0.3)] ring-2 ring-white/10 group-hover:ring-sky-500/50 transition-all duration-500">
+                        </div>
+
+                        <div class="text-center md:text-left">
+                            <div class="inline-block px-4 py-1.5 mb-5 text-xs font-bold tracking-widest uppercase bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 rounded-full">
+                                Architect & Creator
+                            </div>
+                            <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">Riaz Hussain</h2>
+                            <p class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400 font-bold text-xl mb-5">Web Developer & Tech Enthusiast</p>
+                            <p class="text-slate-400 text-lg leading-relaxed mb-8">
+                                Passionate about building high-performance web applications and intuitive tools. Experienced in modern web development frameworks, Python architecture, JavaScript environments, and exploring the dynamic world of blockchain technology. Dedicated to creating seamless, future-ready digital experiences.
+                            </p>
+                            
+                            <div class="flex flex-wrap justify-center md:justify-start gap-3">
+                                <span class="px-4 py-1.5 text-sm font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300 shadow-inner">HTML/CSS</span>
+                                <span class="px-4 py-1.5 text-sm font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300 shadow-inner">JavaScript</span>
+                                <span class="px-4 py-1.5 text-sm font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300 shadow-inner">Python</span>
+                                <span class="px-4 py-1.5 text-sm font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300 shadow-inner">Data Analysis</span>
+                                <span class="px-4 py-1.5 text-sm font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300 shadow-inner">Web3 & Crypto</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="mt-40 relative rounded-[3rem] overflow-hidden border border-white/10 z-10 bg-slate-900/50 backdrop-blur-md">
+            <div class="absolute inset-0 bg-gradient-to-br from-sky-600/10 to-indigo-600/10"></div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-sky-500/10 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"></div>
+            
+            <div class="relative px-8 py-24 text-center z-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">Join the Community</h2>
+                <p class="text-slate-300 text-xl mb-12 max-w-2xl mx-auto font-light">Stay ahead of the curve. Get real-time updates, access to exclusive utility tools, and connect with other visionaries directly on our channel.</p>
+                <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white font-bold text-lg rounded-2xl shadow-[0_0_40px_rgba(37,211,102,0.3)] hover:shadow-[0_0_60px_rgba(37,211,102,0.5)] hover:-translate-y-2 transition-all duration-300 border border-[#25D366]/50">
+                    <svg class="w-7 h-7 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.05c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Join WhatsApp Channel
+                </a>
+            </div>
+        </section>
     </div>
+
+    <footer class="py-12 mt-12 border-t border-white/5 bg-slate-950/80 backdrop-blur-md text-center relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <div class="h-px w-8 bg-gradient-to-r from-transparent to-sky-500"></div>
+                <p class="text-sky-400 text-sm font-bold tracking-[0.2em] uppercase">Developed by Riaz Hussain</p>
+                <div class="h-px w-8 bg-gradient-to-l from-transparent to-sky-500"></div>
+            </div>
+            <p class="text-slate-500 text-sm">© 2026 Tekox Universe. Precision Tools for a Creative Tech World.</p>
+        </div>
+    </footer>
 </body>
 </html>

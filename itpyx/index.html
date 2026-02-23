@@ -1,197 +1,307 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITPYX Company Lahore - CV Generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <title>ITPYX Company Lahore - Professional Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
+    :root {
+      --primary: #00c9a7;
+      --secondary: #928dab;
+      --dark: #1f1c2c;
+      --glass: rgba(255, 255, 255, 0.1);
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #1f1c2c, #928dab);
+      background: linear-gradient(135deg, var(--dark), #4b4453);
       color: white;
-      text-align: center;
-      padding: 30px;
+      margin: 0;
+      padding: 40px 20px;
+      min-height: 100vh;
     }
-    form {
-      max-width: 400px;
+
+    .container {
+      max-width: 800px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 15px;
     }
-    input, button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
+
+    h1 { font-weight: 600; letter-spacing: 1px; margin-bottom: 5px; }
+    p.subtitle { color: var(--secondary); margin-bottom: 30px; }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+
+    .grid-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    input {
+      padding: 12px 15px;
       border-radius: 8px;
-      border: none;
-      font-size: 1rem;
-    }
-    button {
-      background-color: #00c9a7;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.2);
       color: white;
-      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.3s;
     }
-    #loader {
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(0,0,0,0.4);
+    }
+
+    .full-width { grid-column: span 2; }
+
+    button {
+      background: var(--primary);
+      color: var(--dark);
+      font-weight: 600;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-transform: uppercase;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 201, 167, 0.4);
+    }
+
+    /* Modal Styles */
+    #successModal {
       display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      color: var(--dark);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .modal-content h3 { color: var(--primary); margin-top: 0; }
+    
+    .download-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: bold;
+      border: 2px solid var(--primary);
+      padding: 10px 20px;
+      border-radius: 50px;
+    }
+
+    #loader { display: none; color: var(--primary); font-weight: bold; margin-top: 10px; }
+
+    @media (max-width: 600px) {
+      .grid-form { grid-template-columns: 1fr; }
+      .full-width { grid-column: span 1; }
     }
   </style>
 </head>
 <body>
+
+<div class="container">
   <h1>ITPYX Company Lahore</h1>
-  <h2>Employment Form</h2>  <form id="employment-form">
-    <input type="text" name="Full Name" placeholder="Full Name" required>
-    <input type="text" name="Father's Name" placeholder="Father's Name" required>
-    <input type="email" name="Email" placeholder="Email Address" required>
-    <input type="text" name="Whatsapp No" placeholder="WhatsApp Number" required>
-    <input type="text" name="Qualification" placeholder="Qualification" required>
-    <input type="text" name="City" placeholder="City" required>
-    <button type="submit">Submit</button>
-  </form>  <br>
-  <h2>Download CV</h2>
-  <input type="email" id="searchEmail" placeholder="Enter your email">
-  <button onclick="downloadCV()">Download CV</button>
-  <p id="loader">Loading...</p>  <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyujC-_fWEiL4L7MGKdOsxNrJVj33aHVFX9AZhR-CQfPg0YIDOzITsBk5GYczb5FQCK2Q/exec';
-    const form = document.getElementById('employment-form');
+  <p class="subtitle">Official Employment & CV Generation Portal</p>
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      fetch(scriptURL, {
-        method: 'POST',
-        body: new FormData(form)
-      })
-      .then(() => alert('Form submitted successfully!'))
-      .catch(error => alert('Error!', error.message));
+  <div class="card">
+    <h2 style="margin-top:0">Registration Form</h2>
+    <form id="employment-form" class="grid-form">
+      <input type="text" name="Full Name" placeholder="Full Name" required>
+      <input type="text" name="Father's Name" placeholder="Father's Name" required>
+      <input type="email" name="Email" id="formEmail" placeholder="Email Address" required>
+      <input type="text" name="Whatsapp No" placeholder="WhatsApp Number" required>
+      <input type="text" name="Qualification" placeholder="Qualification" required>
+      <input type="text" name="City" placeholder="City" required>
+      <button type="submit" class="full-width">Submit Application</button>
+    </form>
+  </div>
+
+  <div class="card" id="download-section">
+    <h2>Already Registered?</h2>
+    <p style="font-size: 0.9rem; opacity: 0.8;">Enter your email to retrieve and download your professional CV.</p>
+    <div style="display: flex; gap: 10px;">
+      <input type="email" id="searchEmail" placeholder="Enter your registered email" style="flex:1">
+      <button onclick="downloadCV()">Download CV</button>
+    </div>
+    <p id="loader">Processing your document...</p>
+  </div>
+</div>
+
+<div id="successModal">
+  <div class="modal-content">
+    <h3>Submission Successful!</h3>
+    <p>Your details have been securely saved to our database.</p>
+    <a href="#download-section" class="download-link" onclick="closeModalAndFill()">Download My CV Now</a>
+    <br><br>
+    <button onclick="document.getElementById('successModal').style.display='none'" style="background: #eee; color: #666; width: auto; padding: 5px 15px;">Close</button>
+  </div>
+</div>
+
+<script>
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbyujC-_fWEiL4L7MGKdOsxNrJVj33aHVFX9AZhR-CQfPg0YIDOzITsBk5GYczb5FQCK2Q/exec';
+  const form = document.getElementById('employment-form');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const submitBtn = form.querySelector('button');
+    submitBtn.innerText = "Submitting...";
+    submitBtn.disabled = true;
+
+    fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+    .then(() => {
+      document.getElementById('successModal').style.display = 'flex';
+      submitBtn.innerText = "Submit Application";
+      submitBtn.disabled = false;
+    })
+    .catch(error => {
+      alert('Error saving data!');
+      submitBtn.disabled = false;
     });
+  });
 
-    async function downloadCV() {
-  const email = document.getElementById('searchEmail').value.trim();
-  if (!email) return alert("Enter a valid email");
-
-  document.getElementById('loader').style.display = 'block';
-
-  try {
-    const sheetURL = 'https://opensheet.vercel.app/18QClmPRcA6wxLYnDp5qijPhm2Si4s56oWWdZ-H-y0DE/Sheet1';
-    const response = await fetch(sheetURL);
-    const data = await response.json();
-
-    const user = data.find(row => row.Email.toLowerCase() === email.toLowerCase());
-
-    if (!user) {
-      alert("No record found!");
-      document.getElementById('loader').style.display = 'none';
-      return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    // Standard A4 size is better for printing
-    const doc = new jsPDF('p', 'pt', 'a4'); 
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-
-    // 1. DRAW SIDEBAR
-    doc.setFillColor(31, 28, 44); // Matches your website theme color
-    doc.rect(0, 0, 180, pageHeight, 'F');
-
-    // 2. HEADER AREA
-    doc.setFillColor(245, 245, 245);
-    doc.rect(180, 0, pageWidth - 180, 120, 'F');
-    
-    // User Name
-    doc.setFont('Helvetica', 'bold');
-    doc.setFontSize(28);
-    doc.setTextColor(31, 28, 44);
-    doc.text(user["Full Name"]?.toUpperCase() || 'CANDIDATE NAME', 210, 60);
-    
-    // Subtitle / Company Name
-    doc.setFont('Helvetica', 'normal');
-    doc.setFontSize(12);
-    doc.setTextColor(100, 100, 100);
-    doc.text('Applicant | ITPYX Company Lahore', 210, 80);
-
-    // 3. SIDEBAR CONTENT (White text)
-    doc.setTextColor(255, 255, 255);
-    
-    // Profile Section Header
-    doc.setFontSize(14);
-    doc.setFont('Helvetica', 'bold');
-    doc.text('CONTACT', 30, 160);
-    doc.setDrawColor(0, 201, 167); // Green accent line
-    doc.line(30, 165, 60, 165);
-
-    doc.setFontSize(10);
-    doc.setFont('Helvetica', 'normal');
-    doc.text('Email:', 30, 190);
-    doc.setFont('Helvetica', 'bold');
-    doc.text(user.Email || 'N/A', 30, 202);
-
-    doc.setFont('Helvetica', 'normal');
-    doc.text('WhatsApp:', 30, 230);
-    doc.setFont('Helvetica', 'bold');
-    doc.text(user["Whatsapp No"] || 'N/A', 30, 242);
-
-    doc.setFont('Helvetica', 'normal');
-    doc.text('Location:', 30, 270);
-    doc.setFont('Helvetica', 'bold');
-    doc.text(user.City || 'Lahore, PK', 30, 282);
-
-    // 4. MAIN CONTENT AREA (Left aligned to 210pt)
-    doc.setTextColor(40, 40, 40);
-
-    // Section: Education
-    doc.setFontSize(16);
-    doc.setFont('Helvetica', 'bold');
-    doc.text('EDUCATION', 210, 180);
-    doc.setDrawColor(200, 200, 200);
-    doc.line(210, 185, 550, 185);
-
-    doc.setFontSize(12);
-    doc.setFont('Helvetica', 'bold');
-    doc.text(user.Qualification || 'Degree/Certificate', 210, 210);
-    doc.setFont('Helvetica', 'italic');
-    doc.setFontSize(10);
-    doc.text('Completed / In Progress', 210, 222);
-
-    // Section: Profile/Father's Info
-    doc.setFontSize(16);
-    doc.setFont('Helvetica', 'bold');
-    doc.text('PERSONAL PROFILE', 210, 270);
-    doc.line(210, 275, 550, 275);
-    
-    doc.setFontSize(11);
-    doc.setFont('Helvetica', 'normal');
-    const profileText = `Son/Daughter of ${user["Father's Name"] || 'N/A'}. A dedicated professional seeking to leverage strong educational background and skills to contribute to the growth of ITPYX Company.`;
-    const splitProfile = doc.splitTextToSize(profileText, 320);
-    doc.text(splitProfile, 210, 295);
-
-    // Section: Skills (Placeholder for data if you add it to your sheet)
-    doc.setFontSize(16);
-    doc.setFont('Helvetica', 'bold');
-    doc.text('SKILLS & EXPERTISE', 210, 360);
-    doc.line(210, 365, 550, 365);
-
-    const skills = user.Skills || 'Microsoft Office, Team Management, Communication, Problem Solving';
-    const splitSkills = doc.splitTextToSize(skills, 320);
-    doc.text(splitSkills, 210, 385);
-
-    // 5. FOOTER
-    const today = new Date().toLocaleDateString();
-    doc.setFontSize(9);
-    doc.setTextColor(150, 150, 150);
-    doc.text(`Generated via ITPYX Portal on ${today}`, 210, pageHeight - 40);
-
-    // Save
-    doc.save(`${user["Full Name"] || 'CV'}_Professional.pdf`);
-    document.getElementById('loader').style.display = 'none';
-
-  } catch (err) {
-    console.error(err);
-    alert("System error. Please try again.");
-    document.getElementById('loader').style.display = 'none';
+  function closeModalAndFill() {
+    document.getElementById('successModal').style.display = 'none';
+    const email = document.getElementById('formEmail').value;
+    document.getElementById('searchEmail').value = email;
+    // Highlight the download button
+    document.getElementById('download-section').style.boxShadow = "0 0 20px #00c9a7";
   }
-}
-  </script></body>
+
+  async function downloadCV() {
+    const email = document.getElementById('searchEmail').value.trim();
+    if (!email) return alert("Please enter your email first");
+
+    document.getElementById('loader').style.display = 'block';
+
+    try {
+      const sheetURL = 'https://opensheet.vercel.app/18QClmPRcA6wxLYnDp5qijPhm2Si4s56oWWdZ-H-y0DE/Sheet1';
+      const response = await fetch(sheetURL);
+      const data = await response.json();
+      const user = data.find(row => row.Email && row.Email.toLowerCase() === email.toLowerCase());
+
+      if (!user) {
+        alert("No record found for this email. Please register first.");
+        document.getElementById('loader').style.display = 'none';
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'pt', 'a4');
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      // Sidebar Design
+      doc.setFillColor(31, 28, 44);
+      doc.rect(0, 0, 170, pageHeight, 'F');
+
+      // Header Design
+      doc.setFillColor(248, 249, 250);
+      doc.rect(170, 40, pageWidth - 170, 80, 'F');
+      
+      // Name & Title
+      doc.setTextColor(31, 28, 44);
+      doc.setFont('Helvetica', 'bold');
+      doc.setFontSize(26);
+      doc.text(user["Full Name"]?.toUpperCase() || 'NAME', 200, 85);
+      
+      doc.setFontSize(11);
+      doc.setFont('Helvetica', 'normal');
+      doc.setTextColor(100, 100, 100);
+      doc.text('Professional Applicant | ITPYX Company', 200, 102);
+
+      // Sidebar Content
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(12);
+      doc.text('CONTACT', 30, 150);
+      doc.setDrawColor(0, 201, 167);
+      doc.line(30, 155, 60, 155);
+
+      doc.setFontSize(9);
+      const contactY = 180;
+      doc.text('EMAIL:', 30, contactY);
+      doc.setFont('Helvetica', 'bold');
+      doc.text(user.Email || '', 30, contactY + 12);
+
+      doc.setFont('Helvetica', 'normal');
+      doc.text('WHATSAPP:', 30, contactY + 40);
+      doc.setFont('Helvetica', 'bold');
+      doc.text(user["Whatsapp No"] || '', 30, contactY + 52);
+
+      doc.setFont('Helvetica', 'normal');
+      doc.text('CITY:', 30, contactY + 80);
+      doc.setFont('Helvetica', 'bold');
+      doc.text(user.City || '', 30, contactY + 92);
+
+      // Main Content
+      doc.setTextColor(40, 40, 40);
+      
+      // Education Section
+      doc.setFontSize(15);
+      doc.text('ACADEMIC BACKGROUND', 200, 180);
+      doc.line(200, 185, 540, 185);
+      doc.setFontSize(11);
+      doc.setFont('Helvetica', 'bold');
+      doc.text(user.Qualification || 'N/A', 200, 205);
+
+      // Profile Section
+      doc.setFontSize(15);
+      doc.text('PERSONAL PROFILE', 200, 260);
+      doc.line(200, 265, 540, 265);
+      doc.setFont('Helvetica', 'normal');
+      doc.setFontSize(10);
+      const bio = `I am ${user["Full Name"]}, son/daughter of ${user["Father's Name"]}. I am a disciplined individual with a background in ${user.Qualification}. I am eager to apply my skills within the professional environment of ITPYX Company Lahore.`;
+      const splitBio = doc.splitTextToSize(bio, 330);
+      doc.text(splitBio, 200, 285);
+
+      // Skills Section
+      doc.setFontSize(15);
+      doc.setFont('Helvetica', 'bold');
+      doc.text('CORE COMPETENCIES', 200, 360);
+      doc.line(200, 365, 540, 365);
+      doc.setFont('Helvetica', 'normal');
+      doc.text('• Problem Solving   • Team Collaboration   • Effective Communication', 200, 385);
+      doc.text('• Digital Literacy   • Adaptability   • Time Management', 200, 400);
+
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(180, 180, 180);
+      doc.text(`Official Document - Generated on ${new Date().toLocaleDateString()}`, 200, pageHeight - 30);
+
+      doc.save(`${user["Full Name"]}_ITPYX_CV.pdf`);
+      document.getElementById('loader').style.display = 'none';
+
+    } catch (err) {
+      alert("Error generating PDF. Please try again later.");
+      document.getElementById('loader').style.display = 'none';
+    }
+  }
+</script>
+</body>
 </html>

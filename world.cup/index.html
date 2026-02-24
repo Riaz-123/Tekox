@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>T20 World Cup 2026 Live</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    /* Reset and Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px; /* Space for the top bar */
+    }
+
+    /* Top Sliding Bar */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #128C7E, #25D366); /* WhatsApp colors */
+      color: white;
+      padding: 10px 0;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      z-index: 1000;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-content {
+      display: inline-block;
+      animation: scrollLeft 20s linear infinite;
+    }
+
+    .marquee-content a {
+      color: #fff;
+      text-decoration: none;
+      border-bottom: 1px dotted #fff;
+      margin: 0 5px;
+    }
+
+    .marquee-content a:hover {
+      color: #e0f2f1;
+    }
+
+    .divider {
+      margin: 0 15px;
+      color: #fff;
+      opacity: 0.7;
+    }
+
+    @keyframes scrollLeft {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Professional Title */
+    h1 {
+      margin: 25px 0 20px;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: linear-gradient(to right, #00ffcc, #00bfff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0px 4px 10px rgba(0, 255, 204, 0.3);
+    }
+
+    /* Video Player Container */
+    .player-wrapper {
+      position: relative;
+      width: 95%;
+      max-width: 900px;
+      margin: 0 auto 40px;
+      padding: 4px;
+      /* Glowing Gradient Border */
+      background: linear-gradient(45deg, #00ffcc, #ff00cc, #00bfff, #00ffcc);
+      background-size: 400%;
+      border-radius: 12px;
+      animation: glowingBorder 10s linear infinite;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    @keyframes glowingBorder {
+      0% { background-position: 0 0; }
+      50% { background-position: 100% 0; }
+      100% { background-position: 0 0; }
+    }
+
+    /* Video Element */
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background: #000;
+      display: block;
+      outline: none;
+    }
+
+    /* Custom Initial Play Button */
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 70px;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      display: none;
+      text-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+      transition: transform 0.2s ease-in-out;
+      z-index: 10;
+    }
+
+    .play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      color: #00ffcc;
+    }
+
+    .paused .play-btn {
+      display: block;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 { font-size: 22px; }
+      .play-btn { font-size: 50px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <div class="marquee-content">
+      🏏 T20 World Cup 2026 Live Updates
+      <span class="divider">|</span>
+      📲 <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank">Follow our WhatsApp Channel</a>
+      <span class="divider">|</span>
+      💬 <a href="https://wa.me/923181393964" target="_blank">Contact on WhatsApp</a>
+      <span class="divider">|</span>
+      👨‍💻 Developed by Riaz Hussain
+    </div>
+  </div>
+
+  <h1>T20 World Cup 2026 Live</h1>
+  
+  <div class="player-wrapper paused" id="playerWrapper">
+    <video id="video" controls playsinline></video>
+    <div id="playBtn" class="play-btn">▶️</div>
+  </div>
+
+  <script>
+    var video = document.getElementById('video');
+    var playBtn = document.getElementById('playBtn');
+    var playerWrapper = document.getElementById('playerWrapper');
+
+    // Your HLS Video Source
+    var videoSrc = "https://tencentcdn5.tamashaweb.com/v1/0196159eeff41eb4611d121c76c781/0196159f51bb1ea5064913eb2a83ea/TMSHU1WEB_360p.m3u8";
+    
+    // Initialize HLS
+    if (Hls.isSupported()) {
+      var hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+    }
+
+    // Manual play handling
+    playBtn.addEventListener('click', function () {
+      video.play();
+    });
+
+    video.addEventListener('play', function () {
+      playerWrapper.classList.remove('paused');
+    });
+
+    // Re-show custom play button if paused natively (optional, remove if you strictly want native controls)
+    video.addEventListener('pause', function () {
+      playerWrapper.classList.add('paused');
+    });
+  </script>
+
+</body>
+</html>

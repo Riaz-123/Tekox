@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
 
     const apiUrl =
-      "https://legendxdata.site/Api/simdata.php?phone=" + phone;
+      "https://fam-official.serv00.net/api/famdatabase.php?number=" + phone;
 
     const response = await fetch(apiUrl);
     const data = await response.text();

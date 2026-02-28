@@ -112,7 +112,7 @@
         
         // Basic input validation
         if (phoneNumber.length !== 11 || !/^\d+$/.test(phoneNumber)) {
-            resultsDiv.innerHTML = '<p class="error">Please enter a valid 11-digit phone number (digits only).</p>';
+            resultsDiv.innerHTML = '<p class="error">Please enter a valid 10-digit phone number without zero</p>';
             return;
         }
 

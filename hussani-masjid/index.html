@@ -88,18 +88,47 @@
             margin-bottom: 30px;
         }
 
-        .quiz-title {
+        /* ٽائٽل جي بڪس جو مسئلو حل ڪرڻ لاءِ */
+.quiz-title {
     font-family: var(--heading-font);
     font-size: 32px;
     font-weight: 700;
     color: var(--text-dark);
     border: 2px solid var(--text-dark);
-    /* INCREASED PADDING and added LINE-HEIGHT */
-    padding: 20px 40px 10px 40px; 
+    /* هيٺان کان وڌيڪ پيڊنگ ڏني وئي آهي ته جيئن اکر نه ڪٽجن */
+    padding: 15px 40px 25px 40px; 
     line-height: 1.5;
-    height: auto; /* Removes any fixed height */
     display: inline-block;
     margin-top: 15px;
+}
+
+/* آپشنز جي بڪسن جو مسئلو حل ڪرڻ لاءِ */
+.option {
+    /* مٿان 8px، ساڄي 12px، هيٺان 18px (سنڌي اکرن لاءِ)، کاٻي 12px */
+    padding: 8px 12px 18px 12px; 
+    border: 1px solid #555; /* بارڊر کي ٿورو واضح ڪيو ويو آهي */
+    border-radius: 4px;
+    font-size: 15px;
+    line-height: 1.5;
+    /* Flexbox استعمال ڪيو آهي ته جيئن ٽيڪسٽ بڪس جي بلڪل وچ تي رهي */
+    display: flex;
+    align-items: center; 
+}
+
+/* نالو لکڻ واري ليڪ لاءِ نئين ڊيزائين */
+.student-name-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 10px;
+}
+
+.name-line {
+    display: inline-block;
+    width: 300px;
+    border-bottom: 2px solid #000;
+    height: 30px; /* هي ليڪ کي اکرن جي سطح کان ٿورو هيٺ رکندو */
 }
 
         /* Two-Column Grid Setup */
@@ -130,18 +159,7 @@
             gap: 10px;
         }
 
-        .option {
-    /* INCREASED PADDING so text doesn't touch the borders */
-    padding: 10px 12px; 
-    border: 1px solid #888;
-    border-radius: 4px;
-    font-size: 15px;
-    line-height: 1.8; /* Crucial for Sindhi fonts to stay centered */
-    height: auto; 
-    display: flex; /* Helps align text vertically */
-    align-items: center; /* Centers the text perfectly in the middle of the box */
-}
-
+        
         .answer {
             margin-top: 12px;
             font-size: 15px;
@@ -217,7 +235,7 @@
     <div class="container">
         
         <div class="cover-page">
-            <img src="https://cdn-icons-png.flaticon.com/512/3382/3382216.png" alt="مسجد جو لوگو" class="cover-logo">
+            <img src="quiz.png" alt="مسجد جو لوگو" class="cover-logo">
             <h1 class="masjid-name">حسيني مسجد</h1>
             <h2 class="village-name">ڳوٺ سيد بچل شاه</h2>
             <div class="quiz-title">اسلامي ڪوئز مقابلو</div>
@@ -226,8 +244,12 @@
                 <b>ڪل سوال:</b> ۲۰۰ &nbsp; 
             </p>
             <p style="margin-top: 20px; font-size: 18px; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 5px;">
-                <b>شاگرد جو نالو:</b> _________________________
-            </p>
+    <b>شاگرد جو نالو:</b> _________________________
+</p>
+            <div class="student-name-container">
+    <span style="font-size: 22px; font-weight: bold; font-family: var(--body-font);">شاگرد جو نالو:</span>
+    <span class="name-line"></span>
+</div>
         </div>
 
         <div id="quiz-container">

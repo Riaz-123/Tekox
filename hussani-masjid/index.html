@@ -9,6 +9,9 @@
         /* =========================================
            1. CUSTOM FONTS (From GitHub/Local Folder)
            ========================================= */
+        * {
+    box-sizing: border-box;
+}
         @font-face {
             font-family: 'CustomAmiri';
             /* Adjust this path based on your GitHub repo structure */
@@ -86,15 +89,18 @@
         }
 
         .quiz-title {
-            font-family: var(--heading-font);
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-dark);
-            border: 2px solid var(--text-dark);
-            padding: 12px 35px;
-            display: inline-block;
-            margin-top: 15px;
-        }
+    font-family: var(--heading-font);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-dark);
+    border: 2px solid var(--text-dark);
+    /* INCREASED PADDING and added LINE-HEIGHT */
+    padding: 20px 40px 10px 40px; 
+    line-height: 1.5;
+    height: auto; /* Removes any fixed height */
+    display: inline-block;
+    margin-top: 15px;
+}
 
         /* Two-Column Grid Setup */
         #quiz-container {
@@ -125,11 +131,16 @@
         }
 
         .option {
-            padding: 5px 8px;
-            border: 1px solid #888;
-            border-radius: 4px;
-            font-size: 14px;
-        }
+    /* INCREASED PADDING so text doesn't touch the borders */
+    padding: 10px 12px; 
+    border: 1px solid #888;
+    border-radius: 4px;
+    font-size: 15px;
+    line-height: 1.8; /* Crucial for Sindhi fonts to stay centered */
+    height: auto; 
+    display: flex; /* Helps align text vertically */
+    align-items: center; /* Centers the text perfectly in the middle of the box */
+}
 
         .answer {
             margin-top: 12px;

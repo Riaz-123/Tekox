@@ -13,12 +13,14 @@
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
-            --bg: #f8fafc;
+            --secondary: #ec4899;
+            --bg: #f0f2f5;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
+            --text-main: #1e293b;
             --text-muted: #64748b;
             --border: #e2e8f0;
             --success: #10b981;
+            --warning: #f59e0b;
         }
 
         * {
@@ -31,105 +33,164 @@
         body {
             background-color: var(--bg);
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            padding: 3rem 1rem;
             min-height: 100vh;
-        }
-
-        .container {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
-            max-width: 850px;
-            width: 100%;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            color: var(--text-main);
-            font-weight: 700;
-        }
-
-        /* Tabs Navigation */
-        .tabs {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 1rem;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
         }
 
-        .tab-btn {
-            padding: 0.75rem 1.25rem;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+        /* App Header */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            width: 100%;
+            max-width: 1200px;
         }
 
-        .tab-btn:hover {
-            background: #f1f5f9;
-            color: var(--text-main);
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-        }
-
-        /* Tool Sections */
-        .tool-section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .tool-section.active {
-            display: block;
-        }
-
-        .tool-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .tool-header h2 {
-            font-size: 1.5rem;
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 0.5rem;
         }
 
-        .tool-header p {
+        header p {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 1.1rem;
         }
 
-        /* Form Controls */
-        .input-group {
-            margin-bottom: 1.5rem;
+        /* Dashboard Grid */
+        #dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+            animation: fadeIn 0.4s ease;
         }
+
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--primary);
+        }
+
+        .tool-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover .icon {
+            transform: scale(1.1);
+        }
+
+        .tool-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .tool-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 999px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge.working { background: #d1fae5; color: #065f46; }
+        .badge.soon { background: #fef3c7; color: #92400e; }
+
+        /* Dedicated Tool Window */
+        #tool-window {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            animation: slideUp 0.3s ease;
+        }
+
+        .window-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .back-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+            margin-right: auto;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+        }
+
+        /* Tool Inner Styles */
+        .tool-content { display: none; }
+        .tool-content.active { display: block; }
+        
+        .tool-content h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .tool-content > p { color: var(--text-muted); margin-bottom: 2rem; }
+
+        /* Form Controls */
+        .input-group { margin-bottom: 1.5rem; }
 
         .file-drop-zone {
             border: 2px dashed var(--border);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
             background: #f8fafc;
             cursor: pointer;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
             position: relative;
         }
 
         .file-drop-zone:hover {
             border-color: var(--primary);
+            background: #f1f5f9;
         }
 
         .file-drop-zone input[type="file"] {
@@ -142,16 +203,18 @@
             cursor: pointer;
         }
 
+        .file-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.85rem;
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
@@ -161,161 +224,244 @@
 
         input[type="text"]:focus, input[type="number"]:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
-        /* Buttons & Status */
-        .btn {
+        .action-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0.85rem 1.5rem;
-            font-size: 1rem;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            transition: background 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
+            transition: background 0.2s, transform 0.1s;
         }
 
-        .btn:hover:not(:disabled) {
-            background: var(--primary-hover);
-        }
-
-        .btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
+        .action-btn:hover:not(:disabled) { background: var(--primary-hover); }
+        .action-btn:active:not(:disabled) { transform: scale(0.98); }
+        .action-btn:disabled { background: #94a3b8; cursor: not-allowed; }
 
         .status {
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             padding: 1rem;
             border-radius: 8px;
             text-align: center;
             font-weight: 500;
             display: none;
         }
+        .status.success { display: block; background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .status.error { display: block; background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+        .status.loading { display: block; background: #e0e7ff; color: #3730a3; border: 1px solid #6366f1; }
 
-        .status.success {
-            display: block;
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status.error {
-            display: block;
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .status.loading {
-            display: block;
-            background: #e0e7ff;
-            color: #3730a3;
+        /* Placeholder Content */
+        .coming-soon-box {
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>🛠️ Pro Web Utility Suite</h1>
-        
-        <nav class="tabs">
-            <button class="tab-btn active" onclick="openTab('bg-remover')">BG Remover</button>
-            <button class="tab-btn" onclick="openTab('img-compressor')">Image Compressor</button>
-            <button class="tab-btn" onclick="openTab('jpg-to-pdf')">JPG to PDF</button>
-            <button class="tab-btn" onclick="openTab('pdf-to-jpg')">PDF to JPG</button>
-            <button class="tab-btn" onclick="openTab('pdf-compressor')">PDF Compressor</button>
-        </nav>
+    <header id="main-header">
+        <h1>Ultimate Web Utility Suite</h1>
+        <p>12 powerful tools, running right in your browser.</p>
+    </header>
 
-        <section id="bg-remover" class="tool-section active">
-            <div class="tool-header">
-                <h2>Remove Image Background</h2>
-                <p>Upload an image to strip its background. Requires a free API key from remove.bg.</p>
-            </div>
+    <main id="dashboard">
+        <div class="tool-card" onclick="openTool('bg-remover')">
+            <span class="badge working">Working</span>
+            <span class="icon">🪄</span>
+            <h3>Background Remover</h3>
+            <p>Strip backgrounds instantly using remove.bg API.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('img-compressor')">
+            <span class="badge working">Working</span>
+            <span class="icon">🗜️</span>
+            <h3>Image Compressor</h3>
+            <p>Reduce file size without losing quality.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('jpg-to-pdf')">
+            <span class="badge working">Working</span>
+            <span class="icon">🖼️➡️📄</span>
+            <h3>JPG to PDF</h3>
+            <p>Combine multiple images into one PDF.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('pdf-to-jpg')">
+            <span class="badge working">Working</span>
+            <span class="icon">📄➡️🖼️</span>
+            <h3>PDF to JPG</h3>
+            <p>Extract PDF pages into a high-res ZIP.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('pdf-compressor')">
+            <span class="badge soon">Draft</span>
+            <span class="icon">📦</span>
+            <h3>PDF Compressor</h3>
+            <p>Reduce heavy PDF file sizes.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('pdf-merger')">
+            <span class="badge soon">Upcoming</span>
+            <span class="icon">🔗</span>
+            <h3>PDF Merger</h3>
+            <p>Combine multiple PDFs into a single file.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('video-gif')">
+            <span class="badge soon">Upcoming</span>
+            <span class="icon">🎬</span>
+            <h3>Video to GIF</h3>
+            <p>Convert short video clips into animated GIFs.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('image-resizer')">
+            <span class="badge soon">Upcoming</span>
+            <span class="icon">📐</span>
+            <h3>Image Resizer</h3>
+            <p>Change image dimensions (width/height).</p>
+        </div>
+        <div class="tool-card" onclick="openTool('qr-generator')">
+            <span class="badge soon">Upcoming</span>
+            <span class="icon">📱</span>
+            <h3>QR Code Generator</h3>
+            <p>Create QR codes from URLs or text.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('password-gen')">
+            <span class="badge soon">Upcoming</span>
+            <span class="icon">🔐</span>
+            <h3>Password Generator</h3>
+            <p>Generate highly secure random passwords.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('color-picker')">
+            <span class="badge soon">Upcoming</span>
+            <span class="icon">🎨</span>
+            <h3>Color Converter</h3>
+            <p>Convert between HEX, RGB, and HSL formats.</p>
+        </div>
+        <div class="tool-card" onclick="openTool('svg-png')">
+            <span class="badge soon">Upcoming</span>
+            <span class="icon">✨</span>
+            <h3>SVG to PNG</h3>
+            <p>Convert vector SVG files into raster PNGs.</p>
+        </div>
+    </main>
+
+    <div id="tool-window">
+        <div class="window-header">
+            <button class="back-btn" onclick="closeTool()">
+                ← Back to Dashboard
+            </button>
+        </div>
+
+        <div id="bg-remover" class="tool-content">
+            <h2>🪄 Remove Image Background</h2>
+            <p>Upload an image to strip its background. Requires a free API key from remove.bg.</p>
             
             <div class="input-group">
-                <label>Remove.bg API Key (Get free at remove.bg):</label>
+                <label>Remove.bg API Key:</label>
                 <input type="text" id="bg-api-key" placeholder="Paste your API key here...">
             </div>
-
             <div class="input-group file-drop-zone">
-                <span id="bg-file-label">📁 Click or drag an image here</span>
+                <span class="file-icon">📁</span>
+                <span id="bg-file-label" style="font-weight: 500;">Click or drag an image here</span>
                 <input type="file" id="bg-input" accept="image/*" onchange="updateFileName(this, 'bg-file-label')">
             </div>
-
-            <button class="btn" id="bg-btn" onclick="removeBackground()">Remove Background</button>
+            <button class="action-btn" id="bg-btn" onclick="removeBackground()">Remove Background</button>
             <div id="bg-status" class="status"></div>
-        </section>
+        </div>
 
-        <section id="img-compressor" class="tool-section">
-            <div class="tool-header">
-                <h2>Compress Image Size</h2>
-                <p>Reduce image file size instantly within your browser.</p>
-            </div>
+        <div id="img-compressor" class="tool-content">
+            <h2>🗜️ Compress Image Size</h2>
+            <p>Reduce image file size instantly within your browser.</p>
 
             <div class="input-group file-drop-zone">
-                <span id="compress-file-label">📁 Click or drag an image here</span>
+                <span class="file-icon">📁</span>
+                <span id="compress-file-label" style="font-weight: 500;">Click or drag an image here</span>
                 <input type="file" id="compress-input" accept="image/*" onchange="updateFileName(this, 'compress-file-label')">
             </div>
-
             <div class="input-group">
-                <label>Quality (0.1 = Lowest Size, 1.0 = Best Quality):</label>
+                <label>Quality Target (0.1 = Lowest Size, 1.0 = Best Quality):</label>
                 <input type="number" id="quality" value="0.7" step="0.1" min="0.1" max="1.0">
             </div>
-
-            <button class="btn" onclick="compressImage()">Compress & Download</button>
+            <button class="action-btn" onclick="compressImage()">Compress & Download</button>
             <div id="compress-status" class="status"></div>
-        </section>
+        </div>
 
-        <section id="jpg-to-pdf" class="tool-section">
-            <div class="tool-header">
-                <h2>JPG to PDF Converter</h2>
-                <p>Select multiple images to combine them into a single PDF document.</p>
-            </div>
+        <div id="jpg-to-pdf" class="tool-content">
+            <h2>🖼️➡️📄 JPG to PDF Converter</h2>
+            <p>Select multiple images to combine them into a single PDF document.</p>
 
             <div class="input-group file-drop-zone">
-                <span id="jpg-pdf-file-label">📁 Click or drag multiple images here</span>
+                <span class="file-icon">📁</span>
+                <span id="jpg-pdf-file-label" style="font-weight: 500;">Click or drag multiple images here</span>
                 <input type="file" id="jpg-pdf-input" accept="image/jpeg, image/png" multiple onchange="updateFileName(this, 'jpg-pdf-file-label', true)">
             </div>
-
-            <button class="btn" id="jpg-pdf-btn" onclick="convertToPdf()">Generate PDF</button>
+            <button class="action-btn" id="jpg-pdf-btn" onclick="convertToPdf()">Generate PDF</button>
             <div id="jpg-pdf-status" class="status"></div>
-        </section>
+        </div>
 
-        <section id="pdf-to-jpg" class="tool-section">
-            <div class="tool-header">
-                <h2>PDF to JPG Converter</h2>
-                <p>Convert all pages of a PDF into JPG images (Downloads as a ZIP file).</p>
-            </div>
+        <div id="pdf-to-jpg" class="tool-content">
+            <h2>📄➡️🖼️ PDF to JPG Converter</h2>
+            <p>Convert all pages of a PDF into JPG images (Downloads as a ZIP file).</p>
 
             <div class="input-group file-drop-zone">
-                <span id="pdf-jpg-file-label">📁 Click or drag a PDF file here</span>
+                <span class="file-icon">📁</span>
+                <span id="pdf-jpg-file-label" style="font-weight: 500;">Click or drag a PDF file here</span>
                 <input type="file" id="pdf-jpg-input" accept="application/pdf" onchange="updateFileName(this, 'pdf-jpg-file-label')">
             </div>
-
-            <button class="btn" id="pdf-jpg-btn" onclick="convertPdfToJpg()">Extract All Pages to ZIP</button>
+            <button class="action-btn" id="pdf-jpg-btn" onclick="convertPdfToJpg()">Extract All Pages to ZIP</button>
             <div id="pdf-jpg-status" class="status"></div>
-        </section>
+        </div>
 
-        <section id="pdf-compressor" class="tool-section">
-            <div class="tool-header">
-                <h2>Compress PDF</h2>
-                <p>Note on PDF Compression</p>
-            </div>
-            <div style="background: #fffbeb; border: 1px solid #fde68a; padding: 1.5rem; border-radius: 8px; color: #92400e;">
+        <div id="pdf-compressor" class="tool-content">
+            <h2>📦 Compress PDF</h2>
+            <p>Status: Requires Backend Server</p>
+            <div class="coming-soon-box">
                 <strong>Why isn't this tool available offline?</strong><br><br>
-                Compressing PDFs reliably requires complex parsing of internal document objects (fonts, vectors, and embedded images). Standard browser JavaScript cannot easily rewrite PDF structures to compress them without corrupting the file. To build this, you would need to set up a server backend using Python (PyPDF2) or Node.js.
+                Compressing PDFs reliably requires complex parsing of internal document objects (fonts, vectors, and embedded images). Standard browser JavaScript cannot easily rewrite PDF structures. A backend logic is needed.
             </div>
-        </section>
+        </div>
+
+        <div id="pdf-merger" class="tool-content">
+            <h2>🔗 PDF Merger</h2><p>Select multiple PDFs to combine them.</p>
+            <div class="coming-soon-box"><h3>🛠️ UI & Logic to be built</h3></div>
+        </div>
+        <div id="video-gif" class="tool-content">
+            <h2>🎬 Video to GIF</h2><p>Upload a video to convert it.</p>
+            <div class="coming-soon-box"><h3>🛠️ UI & Logic to be built</h3></div>
+        </div>
+        <div id="image-resizer" class="tool-content">
+            <h2>📐 Image Resizer</h2><p>Change image dimensions easily.</p>
+            <div class="coming-soon-box"><h3>🛠️ UI & Logic to be built</h3></div>
+        </div>
+        <div id="qr-generator" class="tool-content">
+            <h2>📱 QR Code Generator</h2><p>Type text or URL to generate QR.</p>
+            <div class="coming-soon-box"><h3>🛠️ UI & Logic to be built</h3></div>
+        </div>
+        <div id="password-gen" class="tool-content">
+            <h2>🔐 Password Generator</h2><p>Generate highly secure passwords.</p>
+            <div class="coming-soon-box"><h3>🛠️ UI & Logic to be built</h3></div>
+        </div>
+        <div id="color-picker" class="tool-content">
+            <h2>🎨 Color Converter</h2><p>Convert color codes formats.</p>
+            <div class="coming-soon-box"><h3>🛠️ UI & Logic to be built</h3></div>
+        </div>
+        <div id="svg-png" class="tool-content">
+            <h2>✨ SVG to PNG</h2><p>Rasterize vector graphics.</p>
+            <div class="coming-soon-box"><h3>🛠️ UI & Logic to be built</h3></div>
+        </div>
 
     </div>
 
@@ -323,24 +469,47 @@
         // --- Setup PDF.js worker ---
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        // --- Utility Functions ---
-        function openTab(tabId) {
-            document.querySelectorAll('.tool-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+        // --- Window / Navigation Logic ---
+        function openTool(toolId) {
+            // Hide dashboard
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('main-header').style.display = 'none';
+            
+            // Show window
+            document.getElementById('tool-window').style.display = 'block';
+            
+            // Hide all tool contents, show specific one
+            document.querySelectorAll('.tool-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(toolId).classList.add('active');
         }
 
+        function closeTool() {
+            // Hide window, show dashboard
+            document.getElementById('tool-window').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'grid';
+            document.getElementById('main-header').style.display = 'block';
+            
+            // Optional: clear file inputs & statuses when leaving a tool
+            document.querySelectorAll('input[type="file"]').forEach(input => input.value = "");
+            document.querySelectorAll('.status').forEach(status => status.style.display = "none");
+            document.querySelectorAll('[id$="-label"]').forEach(label => {
+                if(label.id) label.innerText = "Click or drag file(s) here";
+            });
+        }
+
+        // --- General Utility Functions ---
         function updateFileName(input, labelId, isMultiple = false) {
             const label = document.getElementById(labelId);
             if (input.files.length > 0) {
                 if (isMultiple && input.files.length > 1) {
-                    label.innerText = `📄 ${input.files.length} files selected`;
+                    label.innerText = `${input.files.length} files selected`;
                 } else {
-                    label.innerText = `📄 ${input.files[0].name}`;
+                    label.innerText = input.files[0].name;
                 }
             } else {
-                label.innerText = "📁 Click or drag file(s) here";
+                label.innerText = "Click or drag file(s) here";
             }
         }
 
@@ -368,7 +537,7 @@
             });
         }
 
-        // --- 1. Background Remover (Working with API Key) ---
+        // --- 1. Background Remover ---
         async function removeBackground() {
             const fileInput = document.getElementById('bg-input');
             const apiKey = document.getElementById('bg-api-key').value.trim();
@@ -462,8 +631,6 @@
                 for (let i = 0; i < files.length; i++) {
                     const imgData = await readFileAsDataURL(files[i]);
                     if (i > 0) doc.addPage();
-                    
-                    // Simple logic to fit image to A4 dimensions (210x297mm)
                     doc.addImage(imgData, 'JPEG', 10, 10, 190, 0); 
                 }
 
@@ -489,14 +656,12 @@
                 const file = fileInput.files[0];
                 const arrayBuffer = await readFileAsArrayBuffer(file);
                 
-                // Load PDF
                 const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
                 const zip = new JSZip();
                 
-                // Loop through all pages
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
-                    const viewport = page.getViewport({ scale: 2.0 }); // Scale 2.0 for better quality
+                    const viewport = page.getViewport({ scale: 2.0 }); 
                     
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
@@ -505,12 +670,10 @@
                     
                     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
                     
-                    // Convert canvas to base64 and add to ZIP
                     const imgData = canvas.toDataURL('image/jpeg').split('base64,')[1];
                     zip.file(`page_${i}.jpg`, imgData, {base64: true});
                 }
                 
-                // Generate and download ZIP
                 const content = await zip.generateAsync({type:"blob"});
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(content);

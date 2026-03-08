@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Web Utility Suite</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 3rem 1rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
+            max-width: 850px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Tool Sections */
+        .tool-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tool-section.active {
+            display: block;
+        }
+
+        .tool-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Form Controls */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .file-drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            position: relative;
+        }
+
+        .file-drop-zone:hover {
+            border-color: var(--primary);
+        }
+
+        .file-drop-zone input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: var(--primary);
+        }
+
+        /* Buttons & Status */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+        }
+
+        .btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status.success {
+            display: block;
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status.loading {
+            display: block;
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🛠️ Pro Web Utility Suite</h1>
+        
+        <nav class="tabs">
+            <button class="tab-btn active" onclick="openTab('bg-remover')">BG Remover</button>
+            <button class="tab-btn" onclick="openTab('img-compressor')">Image Compressor</button>
+            <button class="tab-btn" onclick="openTab('jpg-to-pdf')">JPG to PDF</button>
+            <button class="tab-btn" onclick="openTab('pdf-to-jpg')">PDF to JPG</button>
+            <button class="tab-btn" onclick="openTab('pdf-compressor')">PDF Compressor</button>
+        </nav>
+
+        <section id="bg-remover" class="tool-section active">
+            <div class="tool-header">
+                <h2>Remove Image Background</h2>
+                <p>Upload an image to strip its background. Requires a free API key from remove.bg.</p>
+            </div>
+            
+            <div class="input-group">
+                <label>Remove.bg API Key (Get free at remove.bg):</label>
+                <input type="text" id="bg-api-key" placeholder="Paste your API key here...">
+            </div>
+
+            <div class="input-group file-drop-zone">
+                <span id="bg-file-label">📁 Click or drag an image here</span>
+                <input type="file" id="bg-input" accept="image/*" onchange="updateFileName(this, 'bg-file-label')">
+            </div>
+
+            <button class="btn" id="bg-btn" onclick="removeBackground()">Remove Background</button>
+            <div id="bg-status" class="status"></div>
+        </section>
+
+        <section id="img-compressor" class="tool-section">
+            <div class="tool-header">
+                <h2>Compress Image Size</h2>
+                <p>Reduce image file size instantly within your browser.</p>
+            </div>
+
+            <div class="input-group file-drop-zone">
+                <span id="compress-file-label">📁 Click or drag an image here</span>
+                <input type="file" id="compress-input" accept="image/*" onchange="updateFileName(this, 'compress-file-label')">
+            </div>
+
+            <div class="input-group">
+                <label>Quality (0.1 = Lowest Size, 1.0 = Best Quality):</label>
+                <input type="number" id="quality" value="0.7" step="0.1" min="0.1" max="1.0">
+            </div>
+
+            <button class="btn" onclick="compressImage()">Compress & Download</button>
+            <div id="compress-status" class="status"></div>
+        </section>
+
+        <section id="jpg-to-pdf" class="tool-section">
+            <div class="tool-header">
+                <h2>JPG to PDF Converter</h2>
+                <p>Select multiple images to combine them into a single PDF document.</p>
+            </div>
+
+            <div class="input-group file-drop-zone">
+                <span id="jpg-pdf-file-label">📁 Click or drag multiple images here</span>
+                <input type="file" id="jpg-pdf-input" accept="image/jpeg, image/png" multiple onchange="updateFileName(this, 'jpg-pdf-file-label', true)">
+            </div>
+
+            <button class="btn" id="jpg-pdf-btn" onclick="convertToPdf()">Generate PDF</button>
+            <div id="jpg-pdf-status" class="status"></div>
+        </section>
+
+        <section id="pdf-to-jpg" class="tool-section">
+            <div class="tool-header">
+                <h2>PDF to JPG Converter</h2>
+                <p>Convert all pages of a PDF into JPG images (Downloads as a ZIP file).</p>
+            </div>
+
+            <div class="input-group file-drop-zone">
+                <span id="pdf-jpg-file-label">📁 Click or drag a PDF file here</span>
+                <input type="file" id="pdf-jpg-input" accept="application/pdf" onchange="updateFileName(this, 'pdf-jpg-file-label')">
+            </div>
+
+            <button class="btn" id="pdf-jpg-btn" onclick="convertPdfToJpg()">Extract All Pages to ZIP</button>
+            <div id="pdf-jpg-status" class="status"></div>
+        </section>
+
+        <section id="pdf-compressor" class="tool-section">
+            <div class="tool-header">
+                <h2>Compress PDF</h2>
+                <p>Note on PDF Compression</p>
+            </div>
+            <div style="background: #fffbeb; border: 1px solid #fde68a; padding: 1.5rem; border-radius: 8px; color: #92400e;">
+                <strong>Why isn't this tool available offline?</strong><br><br>
+                Compressing PDFs reliably requires complex parsing of internal document objects (fonts, vectors, and embedded images). Standard browser JavaScript cannot easily rewrite PDF structures to compress them without corrupting the file. To build this, you would need to set up a server backend using Python (PyPDF2) or Node.js.
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- Setup PDF.js worker ---
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // --- Utility Functions ---
+        function openTab(tabId) {
+            document.querySelectorAll('.tool-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function updateFileName(input, labelId, isMultiple = false) {
+            const label = document.getElementById(labelId);
+            if (input.files.length > 0) {
+                if (isMultiple && input.files.length > 1) {
+                    label.innerText = `📄 ${input.files.length} files selected`;
+                } else {
+                    label.innerText = `📄 ${input.files[0].name}`;
+                }
+            } else {
+                label.innerText = "📁 Click or drag file(s) here";
+            }
+        }
+
+        function showStatus(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.className = `status ${type}`;
+            el.innerText = message;
+        }
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function readFileAsArrayBuffer(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // --- 1. Background Remover (Working with API Key) ---
+        async function removeBackground() {
+            const fileInput = document.getElementById('bg-input');
+            const apiKey = document.getElementById('bg-api-key').value.trim();
+            
+            if (!apiKey) return showStatus('bg-status', 'Please enter your remove.bg API key.', 'error');
+            if (!fileInput.files.length) return showStatus('bg-status', 'Please select an image.', 'error');
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('size', 'auto');
+            formData.append('image_file', file);
+
+            const btn = document.getElementById('bg-btn');
+            btn.disabled = true;
+            showStatus('bg-status', 'Processing image... Please wait.', 'loading');
+
+            try {
+                const response = await fetch('https://api.remove.bg/v1.0/removebg', {
+                    method: 'POST',
+                    headers: { 'X-Api-Key': apiKey },
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'no-bg-' + file.name.replace(/\.[^/.]+$/, ".png");
+                link.click();
+
+                showStatus('bg-status', 'Background removed successfully!', 'success');
+            } catch (error) {
+                showStatus('bg-status', 'Error: ' + error.message, 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // --- 2. Image Compressor ---
+        function compressImage() {
+            const fileInput = document.getElementById('compress-input');
+            const quality = parseFloat(document.getElementById('quality').value);
+            
+            if (!fileInput.files.length) return showStatus('compress-status', 'Please select an image.', 'error');
+
+            showStatus('compress-status', 'Compressing...', 'loading');
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                    
+                    const link = document.createElement('a');
+                    link.download = 'compressed_' + file.name.replace(/\.[^/.]+$/, ".jpg");
+                    link.href = compressedDataUrl;
+                    link.click();
+
+                    showStatus('compress-status', 'Image compressed and downloaded!', 'success');
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // --- 3. JPG to PDF ---
+        async function convertToPdf() {
+            const fileInput = document.getElementById('jpg-pdf-input');
+            if (!fileInput.files.length) return showStatus('jpg-pdf-status', 'Please select images.', 'error');
+
+            const btn = document.getElementById('jpg-pdf-btn');
+            btn.disabled = true;
+            showStatus('jpg-pdf-status', 'Generating PDF...', 'loading');
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const files = Array.from(fileInput.files);
+
+                for (let i = 0; i < files.length; i++) {
+                    const imgData = await readFileAsDataURL(files[i]);
+                    if (i > 0) doc.addPage();
+                    
+                    // Simple logic to fit image to A4 dimensions (210x297mm)
+                    doc.addImage(imgData, 'JPEG', 10, 10, 190, 0); 
+                }
+
+                doc.save('converted_images.pdf');
+                showStatus('jpg-pdf-status', 'PDF generated successfully!', 'success');
+            } catch (error) {
+                showStatus('jpg-pdf-status', 'Error creating PDF.', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // --- 4. PDF to JPG (Extracts pages to ZIP) ---
+        async function convertPdfToJpg() {
+            const fileInput = document.getElementById('pdf-jpg-input');
+            if (!fileInput.files.length) return showStatus('pdf-jpg-status', 'Please select a PDF.', 'error');
+
+            const btn = document.getElementById('pdf-jpg-btn');
+            btn.disabled = true;
+            showStatus('pdf-jpg-status', 'Extracting pages... this may take a moment.', 'loading');
+
+            try {
+                const file = fileInput.files[0];
+                const arrayBuffer = await readFileAsArrayBuffer(file);
+                
+                // Load PDF
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                const zip = new JSZip();
+                
+                // Loop through all pages
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const viewport = page.getViewport({ scale: 2.0 }); // Scale 2.0 for better quality
+                    
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+                    
+                    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+                    
+                    // Convert canvas to base64 and add to ZIP
+                    const imgData = canvas.toDataURL('image/jpeg').split('base64,')[1];
+                    zip.file(`page_${i}.jpg`, imgData, {base64: true});
+                }
+                
+                // Generate and download ZIP
+                const content = await zip.generateAsync({type:"blob"});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(content);
+                link.download = file.name.replace('.pdf', '') + '_images.zip';
+                link.click();
+
+                showStatus('pdf-jpg-status', `Successfully extracted ${pdf.numPages} pages!`, 'success');
+            } catch (error) {
+                console.error(error);
+                showStatus('pdf-jpg-status', 'Error extracting PDF pages.', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

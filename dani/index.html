@@ -3,124 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dani Medico - Test Creator Tool</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>DaniMedico | Admit Card & Marksheet Generator</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
     <style>
+        /* --- UI & Control Panel --- */
         :root {
-            --primary: #007BFF;
-            --secondary: #28A745;
-            --bg: #f4f7f6;
-            --card: #ffffff;
+            --primary: #1e3a8a; /* Deep Blue */
+            --secondary: #3b82f6;
+            --text: #333;
+            --bg: #f3f4f6;
         }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; background: var(--card); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { color: var(--primary); text-align: center; margin-bottom: 20px; }
-        .form-section { margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
-        input, select, textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .mcq-card { background: #f9f9f9; padding: 15px; border-left: 5px solid var(--primary); margin-bottom: 15px; position: relative; }
-        .btn { padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .btn-add { background: var(--secondary); color: white; width: 100%; margin-top: 10px; }
-        .btn-gen { background: var(--primary); color: white; width: 100%; margin-top: 20px; font-size: 1.1rem; }
-        #output-area { margin-top: 30px; display: none; }
-        #code-box { background: #2d2d2d; color: #f8f8f2; font-family: monospace; height: 300px; }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; color: var(--text); }
+        
+        .controls {
+            background: white; padding: 20px; text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px;
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        button {
+            background: var(--primary); color: white; border: none;
+            padding: 10px 20px; margin: 0 10px; border-radius: 5px;
+            cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s;
+        }
+
+        button:hover { background: var(--secondary); }
+        .print-btn { background: #10b981; }
+        .print-btn:hover { background: #059669; }
+
+        /* --- Print & Card Layout --- */
+        #print-container { display: flex; flex-direction: column; align-items: center; }
+
+        .card-wrapper {
+            width: 210mm; height: 297mm; /* A4 Size */
+            background: white; margin: 20px auto; padding: 40px;
+            box-sizing: border-box; position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            page-break-after: always; /* Crucial for printing multiple pages */
+            border: 2px solid #e5e7eb;
+        }
+
+        /* --- Header Styling --- */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 3px solid var(--primary); padding-bottom: 20px; margin-bottom: 30px;
+        }
+        
+        .header-text { text-align: center; flex-grow: 1; }
+        .header-text h1 { margin: 0; color: var(--primary); font-size: 28px; text-transform: uppercase; }
+        .header-text p { margin: 5px 0 0; font-size: 16px; color: #666; font-weight: bold; }
+        
+        .qr-code { width: 80px; height: 80px; }
+
+        /* --- Student Info Grid --- */
+        .student-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .info-item { font-size: 16px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
+        .info-item strong { color: var(--primary); }
+
+        /* --- Marksheet Table --- */
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { border: 1px solid #ccc; padding: 12px; text-align: center; }
+        th { background: var(--primary); color: white; }
+        .total-row { font-weight: bold; background: #f3f4f6; }
+
+        /* --- Footer Signatures --- */
+        .footer {
+            position: absolute; bottom: 50px; left: 40px; right: 40px;
+            display: flex; justify-content: space-between;
+        }
+        .signature { text-align: center; width: 200px; border-top: 1px solid #000; padding-top: 5px; }
+
+        /* --- Print Specific Rules --- */
+        @media print {
+            .controls { display: none; }
+            body { background: white; }
+            .card-wrapper { margin: 0; box-shadow: none; border: none; }
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2><i class="fas fa-tools"></i> Test Data Generator</h2>
-    
-    <div class="form-section">
-        <label>Test Title</label>
-        <input type="text" id="test-title" placeholder="e.g. BIOLOGY MDCAT">
-        <div style="display: flex; gap: 10px;">
-            <input type="text" id="test-subject" placeholder="Subject (Biology)">
-            <input type="text" id="test-exam" placeholder="Exam (MDCAT)">
-        </div>
-        <input type="text" id="test-chapter" placeholder="Chapter (1. ACELLULAR LIFE)">
+    <div class="controls">
+        <button onclick="processData('admit')">Generate Admit Cards</button>
+        <button onclick="processData('marksheet')">Generate Marksheets</button>
+        <button class="print-btn" onclick="window.print()">🖨️ Print All</button>
     </div>
 
-    <div id="questions-container">
-        </div>
-
-    <button class="btn btn-add" onclick="addQuestion()"><i class="fas fa-plus"></i> Add New Question</button>
-    <button class="btn btn-gen" onclick="generateCode()"><i class="fas fa-code"></i> Generate JavaScript Template</button>
-
-    <div id="output-area">
-        <h3>Generated Code:</h3>
-        <p style="font-size: 0.8rem; color: #666;">Copy this block and paste it inside the <code>testsData</code> array in tests.html</p>
-        <textarea id="code-box" readonly></textarea>
-        <button class="btn btn-add" style="background:#444;" onclick="copyCode()">Copy to Clipboard</button>
+    <div id="print-container">
+        <h2 style="color: #666; margin-top: 50px;">Click a button above to generate documents.</h2>
     </div>
-</div>
 
-<script>
-    let qCount = 0;
+    <script>
+        // 1. Google Sheets Setup
+        // Replace this URL with your published Google Sheet CSV link
+        // Format: File > Share > Publish to web > CSV
+        const GOOGLE_SHEET_URL = ''; 
 
-    function addQuestion() {
-        qCount++;
-        const container = document.getElementById('questions-container');
-        const html = `
-            <div class="mcq-card" id="q-row-${qCount}">
-                <strong>Question ${qCount}</strong>
-                <input type="text" class="q-text" placeholder="Enter question text" required>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <input type="text" class="opt" placeholder="Option 0" required>
-                    <input type="text" class="opt" placeholder="Option 1" required>
-                    <input type="text" class="opt" placeholder="Option 2" required>
-                    <input type="text" class="opt" placeholder="Option 3" required>
-                </div>
-                <select class="ans-idx">
-                    <option value="0">Correct: Option 0</option>
-                    <option value="1">Correct: Option 1</option>
-                    <option value="2">Correct: Option 2</option>
-                    <option value="3">Correct: Option 3</option>
-                </select>
-            </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-    }
+        // 2. Sample Data (Fallback if no Google Sheet is linked yet)
+        const sampleCSV = `RollNo,Name,FatherName,Physics,Chemistry,Biology
+        1001,Riaz Hussain,Ali Hassan,85,90,88
+        1002,Sooraj,Kumar,75,80,82`;
 
-    function generateCode() {
-        const mcqs = [];
-        const rows = document.querySelectorAll('.mcq-card');
-        
-        rows.forEach(row => {
-            const options = Array.from(row.querySelectorAll('.opt')).map(i => i.value);
-            mcqs.push({
-                q: row.querySelector('.q-text').value,
-                options: options,
-                answer: parseInt(row.querySelector('.ans-idx').value)
+        function processData(type) {
+            const container = document.getElementById('print-container');
+            container.innerHTML = "<h2>Loading Data...</h2>";
+
+            // If a Google Sheet URL is provided, fetch it. Otherwise, use sample data.
+            if (GOOGLE_SHEET_URL) {
+                Papa.parse(GOOGLE_SHEET_URL, {
+                    download: true, header: true, skipEmptyLines: true,
+                    complete: function(results) { renderCards(results.data, type); }
+                });
+            } else {
+                Papa.parse(sampleCSV, {
+                    header: true, skipEmptyLines: true,
+                    complete: function(results) { renderCards(results.data, type); }
+                });
+            }
+        }
+
+        function renderCards(data, type) {
+            const container = document.getElementById('print-container');
+            container.innerHTML = ''; // Clear container
+
+            data.forEach((student, index) => {
+                const cardId = `card-${index}`;
+                let htmlContent = '';
+
+                if (type === 'admit') {
+                    htmlContent = createAdmitCard(student, cardId);
+                } else if (type === 'marksheet') {
+                    htmlContent = createMarksheet(student, cardId);
+                }
+
+                container.innerHTML += htmlContent;
             });
-        });
 
-        const testObject = {
-            id: 'T' + Date.now(), // Unique Timestamp ID
-            title: document.getElementById('test-title').value,
-            subject: document.getElementById('test-subject').value,
-            chapter: document.getElementById('test-chapter').value,
-            exam: document.getElementById('test-exam').value,
-            province: 'All Provinces',
-            mcqs: mcqs
-        };
+            // Generate QR Codes after HTML is injected
+            data.forEach((student, index) => {
+                const qrContainer = document.getElementById(`qr-${index}`);
+                if (qrContainer) {
+                    new QRCode(qrContainer, {
+                        text: `Roll No: ${student.RollNo} | Name: ${student.Name}`,
+                        width: 80, height: 80,
+                        colorDark : "#1e3a8a",
+                        colorLight : "#ffffff",
+                    });
+                }
+            });
+        }
 
-        const outputArea = document.getElementById('output-area');
-        const codeBox = document.getElementById('code-box');
-        
-        // Formats as a clean JS object string
-        codeBox.value = JSON.stringify(testObject, null, 4) + ",";
-        outputArea.style.display = 'block';
-        window.scrollTo(0, document.body.scrollHeight);
-    }
+        function createAdmitCard(student, cardId) {
+            return `
+            <div class="card-wrapper" id="${cardId}">
+                <div class="header">
+                    <div style="width: 80px;"></div> <div class="header-text">
+                        <h1>DaniMedico</h1>
+                        <p>Admit Card - Annual Examination 2026</p>
+                    </div>
+                    <div id="qr-${cardId.split('-')[1]}" class="qr-code"></div>
+                </div>
+                
+                <h3 style="text-align:center; text-decoration: underline; margin-bottom: 30px;">STUDENT COPY</h3>
+                
+                <div class="student-info">
+                    <div class="info-item"><strong>Roll Number:</strong> ${student.RollNo}</div>
+                    <div class="info-item"><strong>Center:</strong> Main Campus Hall</div>
+                    <div class="info-item"><strong>Student Name:</strong> ${student.Name}</div>
+                    <div class="info-item"><strong>Father's Name:</strong> ${student.FatherName}</div>
+                </div>
 
-    function copyCode() {
-        const box = document.getElementById('code-box');
-        box.select();
-        document.execCommand('copy');
-        alert("Code copied! Now paste it into tests.html inside the testsData array.");
-    }
-</script>
+                <div style="margin-top: 40px;">
+                    <h4>Instructions for Candidate:</h4>
+                    <ul style="line-height: 1.8;">
+                        <li>Bring this Admit Card daily to the examination hall.</li>
+                        <li>Mobile phones and electronic gadgets are strictly prohibited.</li>
+                        <li>Report to the center 30 minutes before the exam starts.</li>
+                    </ul>
+                </div>
 
+                <div class="footer">
+                    <div class="signature">Candidate's Signature</div>
+                    <div class="signature">Controller of Examinations</div>
+                </div>
+            </div>`;
+        }
+
+        function createMarksheet(student, cardId) {
+            // Convert strings to numbers for calculation
+            const phy = Number(student.Physics) || 0;
+            const chem = Number(student.Chemistry) || 0;
+            const bio = Number(student.Biology) || 0;
+            const obtained = phy + chem + bio;
+            const total = 300;
+            const percentage = ((obtained / total) * 100).toFixed(2);
+            
+            let grade = 'F';
+            if(percentage >= 80) grade = 'A+';
+            else if(percentage >= 70) grade = 'A';
+            else if(percentage >= 60) grade = 'B';
+            else if(percentage >= 50) grade = 'C';
+
+            return `
+            <div class="card-wrapper" id="${cardId}">
+                <div class="header">
+                    <div style="width: 80px;"></div> <div class="header-text">
+                        <h1>DaniMedico</h1>
+                        <p>Official Marksheet - Annual Examination 2026</p>
+                    </div>
+                    <div id="qr-${cardId.split('-')[1]}" class="qr-code"></div>
+                </div>
+                
+                <div class="student-info">
+                    <div class="info-item"><strong>Roll Number:</strong> ${student.RollNo}</div>
+                    <div class="info-item"><strong>Student Name:</strong> ${student.Name}</div>
+                    <div class="info-item"><strong>Father's Name:</strong> ${student.FatherName}</div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Total Marks</th>
+                            <th>Passing Marks</th>
+                            <th>Obtained Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Physics</td><td>100</td><td>33</td><td>${phy}</td></tr>
+                        <tr><td>Chemistry</td><td>100</td><td>33</td><td>${chem}</td></tr>
+                        <tr><td>Biology</td><td>100</td><td>33</td><td>${bio}</td></tr>
+                        <tr class="total-row">
+                            <td colspan="3" style="text-align:right; padding-right: 20px;">Grand Total:</td>
+                            <td>${obtained} / ${total}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div style="text-align: right; font-size: 18px; margin-top: 20px;">
+                    <strong>Percentage:</strong> ${percentage}% &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <strong>Grade:</strong> ${grade}
+                </div>
+
+                <div class="footer">
+                    <div class="signature">Class Teacher</div>
+                    <div class="signature">Principal</div>
+                </div>
+            </div>`;
+        }
+    </script>
 </body>
 </html>

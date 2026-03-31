@@ -135,25 +135,7 @@
     .paused .play-btn {
       display: block;
     }
-    .video-container {
-  position: relative;
-  width: 100%;
-  max-width: 800px; /* Adjust to your layout */
-}
-
-iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-}
-
-.custom-logo {
-  position: absolute;
-  top: 10px;      /* Adjust to cover the Tamasha logo */
-  right: 10px;    /* Adjust to cover the Tamasha logo */
-  width: 60px;    /* Match the size of the original logo */
-  z-index: 10;    /* Ensures it stays on top */
-  pointer-events: none; /* Prevents the logo from blocking clicks */
-}
+    
 
     /* Responsive adjustments */
     @media (max-width: 600px) {
@@ -182,11 +164,7 @@ iframe {
     <video id="video" controls playsinline></video>
     <div id="playBtn" class="play-btn">▶️</div>
   </div>
-  <div class="video-container">
-  <iframe src="https://tekox.online/world.cup" frameborder="0" allowfullscreen></iframe>
   
-  <img src="logo.png" class="custom-logo" alt="My Brand">
-</div>
 
   <script>
     var video = document.getElementById('video');

@@ -157,15 +157,40 @@
         function handleAuthClick() {
             tokenClient.callback = async (resp) => {
                 if (resp.error !== undefined) throw (resp);
+                
+                // Enable Copy Button
                 document.getElementById('start_btn').disabled = false;
                 document.getElementById('start_btn').classList.remove('opacity-40', 'cursor-not-allowed');
+                
+                // Update Login Button
                 document.getElementById('auth_btn').innerText = "Account Connected";
                 document.getElementById('auth_btn').classList.replace('bg-blue-600', 'bg-emerald-600');
+                
+                // SHOW the Sign Out button
+                document.getElementById('signout_btn').classList.remove('hidden');
+                
                 log("Authentication successful.");
             };
             tokenClient.requestAccessToken({prompt: 'consent'});
         }
-
+function handleSignoutClick() {
+            const token = gapi.client.getToken();
+            if (token !== null) {
+                // This tells Google to actually revoke the permission for this session
+                google.accounts.oauth2.revoke(token.access_token, () => {
+                    gapi.client.setToken('');
+                    
+                    // UI Reset
+                    document.getElementById('start_btn').disabled = true;
+                    document.getElementById('start_btn').classList.add('opacity-40', 'cursor-not-allowed');
+                    document.getElementById('auth_btn').innerText = "1. Connect Google Account";
+                    document.getElementById('auth_btn').classList.replace('bg-emerald-600', 'bg-blue-600');
+                    document.getElementById('signout_btn').classList.add('hidden');
+                    
+                    log("Signed out successfully. Session cleared.");
+                });
+            }
+        }
         function extractId(input) {
             const match = input.match(/([-\w]{25,})/);
             if (match && match[1]) {

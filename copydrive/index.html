@@ -103,20 +103,47 @@
             };
             tokenClient.requestAccessToken({prompt: 'consent'});
         }
+        function extractId(input) {
+    // Regex explanation: Looks for a string of 25 or more 
+    // alphanumeric characters, including underscores and hyphens.
+    const match = input.match(/([-\w]{25,})/);
+    
+    if (match && match[1]) {
+        return match[1]; // Returns just the ID part
+    }
+    
+    // If it's not a link but a raw ID, return it trimmed
+    return input.trim();
+}
 
         async function startCloning() {
-            const sourceId = document.getElementById('source_id').value;
-            const targetId = document.getElementById('target_id').value;
-            const prefix = document.getElementById('prefix').value;
-            const findText = document.getElementById('find_text').value;
-            const replaceText = document.getElementById('replace_text').value;
+    // 1. Get the messy links from the inputs
+    const rawSource = document.getElementById('source_id').value;
+    const rawTarget = document.getElementById('target_id').value;
 
-            if (!sourceId || !targetId) return alert("Please enter both Folder IDs");
+    // 2. Convert links to clean IDs
+    const sourceId = extractId(rawSource);
+    const targetId = extractId(rawTarget);
 
-            log("Initializing cloud transfer...");
-            await copyFolderContents(sourceId, targetId, prefix, findText, replaceText);
-            log("COMPLETED: All files copied and renamed on Google's Servers.");
-        }
+    // 3. Validation Check
+    if (sourceId.length < 20 || targetId.length < 20) {
+        log("ERROR: Invalid Link. Please paste the full Google Drive folder link.");
+        return;
+    }
+
+    log(`Cleaned Source ID: ${sourceId}`);
+    log(`Cleaned Target ID: ${targetId}`);
+    log("Initializing cloud-to-cloud transfer...");
+
+    try {
+        // Now the API receives the correct ID format
+        await copyFolderContents(sourceId, targetId);
+        log("SUCCESS: All files copied to the new folder!");
+    } catch (err) {
+        log("API ERROR: " + (err.result?.error?.message || "Check Console"));
+        console.error(err);
+    }
+}
 
         async function copyFolderContents(sourceId, targetId, prefix, find, replace) {
             let pageToken = null;

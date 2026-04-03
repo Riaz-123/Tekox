@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudDrive Cloner & Renamer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+</head>
+<body class="bg-gray-900 text-white font-sans p-8">
+
+    <div class="max-w-3xl mx-auto bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700">
+        <h1 class="text-3xl font-bold mb-6 text-blue-400">Google Drive Cloud-Cloner</h1>
+        
+        <div class="space-y-4">
+            <div class="flex gap-4 mb-6">
+                <button id="auth_btn" onclick="handleAuthClick()" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded font-bold transition">1. Login with Gmail</button>
+                <button id="signout_btn" onclick="handleSignoutClick()" class="hidden bg-red-600 hover:bg-red-700 px-6 py-2 rounded font-bold transition">Sign Out</button>
+            </div>
+
+            <hr class="border-gray-700">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-gray-400">Source Folder ID</label>
+                    <input type="text" id="source_id" placeholder="Paste Folder ID here" class="w-full bg-gray-700 border border-gray-600 p-2 rounded mt-1">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400">Target Folder ID</label>
+                    <input type="text" id="target_id" placeholder="Paste Target ID here" class="w-full bg-gray-700 border border-gray-600 p-2 rounded mt-1">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm text-gray-400">Rename Prefix</label>
+                    <input type="text" id="prefix" placeholder="e.g. Final_" class="w-full bg-gray-700 border border-gray-600 p-2 rounded mt-1">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400">Find Text</label>
+                    <input type="text" id="find_text" placeholder="Old name" class="w-full bg-gray-700 border border-gray-600 p-2 rounded mt-1">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400">Replace With</label>
+                    <input type="text" id="replace_text" placeholder="New name" class="w-full bg-gray-700 border border-gray-600 p-2 rounded mt-1">
+                </div>
+            </div>
+
+            <button id="start_btn" onclick="startCloning()" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-bold text-xl transition mt-4 opacity-50 cursor-not-allowed" disabled>
+                Start Automated Cloud Copy
+            </button>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-sm font-semibold uppercase text-gray-500 mb-2">Process Logs</h2>
+            <div id="logs" class="bg-black p-4 rounded h-64 overflow-y-auto text-xs font-mono text-green-400 border border-gray-700">
+                Waiting for login...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- CONFIGURATION --- */
+        const CLIENT_ID = '1011189617297-rmkk8o2iufbshgrmf891i0dlo0r7t4v9.apps.googleusercontent.com';
+        const API_KEY = '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';
+        const SCOPES = 'https://www.googleapis.com/auth/drive';
+
+        let tokenClient;
+        let gapiInited = false;
+        let gisInited = false;
+
+        const log = (msg) => {
+            const div = document.getElementById('logs');
+            div.innerHTML += `> ${msg}<br>`;
+            div.scrollTop = div.scrollHeight;
+        };
+
+        // Initialize GAPI and GIS
+        function gapiLoaded() { gapi.load('client', initializeGapiClient); }
+        async function initializeGapiClient() {
+            await gapi.client.init({ apiKey: API_KEY, discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"] });
+            gapiInited = true;
+            checkAuth();
+        }
+        function gisLoaded() {
+            tokenClient = google.accounts.oauth2.initTokenClient({ client_id: CLIENT_ID, scope: SCOPES, callback: '', });
+            gisInited = true;
+            checkAuth();
+        }
+
+        function checkAuth() {
+            if (gapiInited && gisInited) { log("System ready. Please login."); }
+        }
+
+        function handleAuthClick() {
+            tokenClient.callback = async (resp) => {
+                if (resp.error !== undefined) throw (resp);
+                document.getElementById('start_btn').disabled = false;
+                document.getElementById('start_btn').classList.remove('opacity-50', 'cursor-not-allowed');
+                document.getElementById('auth_btn').innerText = "Logged In";
+                log("Authentication successful.");
+            };
+            tokenClient.requestAccessToken({prompt: 'consent'});
+        }
+
+        async function startCloning() {
+            const sourceId = document.getElementById('source_id').value;
+            const targetId = document.getElementById('target_id').value;
+            const prefix = document.getElementById('prefix').value;
+            const findText = document.getElementById('find_text').value;
+            const replaceText = document.getElementById('replace_text').value;
+
+            if (!sourceId || !targetId) return alert("Please enter both Folder IDs");
+
+            log("Initializing cloud transfer...");
+            await copyFolderContents(sourceId, targetId, prefix, findText, replaceText);
+            log("COMPLETED: All files copied and renamed on Google's Servers.");
+        }
+
+        async function copyFolderContents(sourceId, targetId, prefix, find, replace) {
+            let pageToken = null;
+            do {
+                const response = await gapi.client.drive.files.list({
+                    q: `'${sourceId}' in parents and trashed = false`,
+                    fields: 'nextPageToken, files(id, name, mimeType)',
+                    pageToken: pageToken
+                });
+
+                const files = response.result.files;
+                for (const file of files) {
+                    let newName = file.name;
+                    if (find) newName = newName.replace(new RegExp(find, 'g'), replace);
+                    newName = prefix + newName;
+
+                    if (file.mimeType === 'application/vnd.google-apps.folder') {
+                        log(`Creating folder: ${newName}`);
+                        const newFolder = await gapi.client.drive.files.create({
+                            resource: { name: newName, mimeType: 'application/vnd.google-apps.folder', parents: [targetId] },
+                            fields: 'id'
+                        });
+                        await copyFolderContents(file.id, newFolder.result.id, prefix, find, replace);
+                    } else {
+                        log(`Cloud-copying: ${newName}`);
+                        await gapi.client.drive.files.copy({
+                            fileId: file.id,
+                            resource: { name: newName, parents: [targetId] }
+                        });
+                    }
+                }
+                pageToken = response.result.nextPageToken;
+            } while (pageToken);
+        }
+
+        window.onload = () => { gapiLoaded(); gisLoaded(); };
+    </script>
+</body>
+</html>

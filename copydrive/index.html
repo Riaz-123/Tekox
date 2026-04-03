@@ -181,28 +181,51 @@
             const targetId = extractId(rawTarget);
 
             if (sourceId.length < 20 || targetId.length < 20) {
-                log("ERROR: Invalid Link. Please paste the full Google Drive folder link.");
+                log("ERROR: Invalid Link. Please paste a valid Google Drive link.");
                 return;
             }
 
-            log(`Source ID Verified: ${sourceId.substring(0,8)}...`);
-            log(`Target ID Verified: ${targetId.substring(0,8)}...`);
-            log("Initializing cloud-to-cloud transfer...");
+            const prefix = document.getElementById('prefix').value || "";
+            const find = document.getElementById('find_text').value;
+            const replace = document.getElementById('replace_text').value;
+
+            log("🔍 Checking source type...");
 
             try {
-                const prefix = document.getElementById('prefix').value;
-                const find = document.getElementById('find_text').value;
-                const replace = document.getElementById('replace_text').value;
-                await copyFolderContents(sourceId, targetId, prefix, find, replace);
-                log("SUCCESS: Cloud migration completed successfully.");
+                // First, check if the source is a file or a folder
+                const sourceMeta = await gapi.client.drive.files.get({
+                    fileId: sourceId,
+                    fields: 'name, mimeType'
+                });
+
+                const isFolder = sourceMeta.result.mimeType === 'application/vnd.google-apps.folder';
+
+                if (isFolder) {
+                    log(`📁 Folder detected: ${sourceMeta.result.name}. Starting deep copy...`);
+                    await copyFolderContents(sourceId, targetId, prefix, find, replace);
+                } else {
+                    log(`📄 Single file detected. Copying: ${sourceMeta.result.name}...`);
+                    let newName = sourceMeta.result.name;
+                    if (find) newName = newName.replace(new RegExp(find, 'g'), replace);
+                    newName = prefix + newName;
+                    
+                    await gapi.client.drive.files.copy({
+                        fileId: sourceId,
+                        resource: { name: newName, parents: [targetId] }
+                    });
+                }
+                
+                log("✅ SUCCESS: Process finished.");
             } catch (err) {
-                log("API ERROR: " + (err.result?.error?.message || "Check Console"));
+                log("❌ API ERROR: " + (err.result?.error?.message || "Verify permissions/ID"));
                 console.error(err);
             }
         }
 
         async function copyFolderContents(sourceId, targetId, prefix, find, replace) {
             let pageToken = null;
+            let fileCount = 0;
+
             do {
                 const response = await gapi.client.drive.files.list({
                     q: `'${sourceId}' in parents and trashed = false`,
@@ -211,22 +234,27 @@
                 });
 
                 const files = response.result.files;
-                if(!files) return;
                 
+                if (!files || files.length === 0) {
+                    if (fileCount === 0) log("⚠️ Warning: Source folder appears to be empty.");
+                    return;
+                }
+
                 for (const file of files) {
+                    fileCount++;
                     let newName = file.name;
                     if (find) newName = newName.replace(new RegExp(find, 'g'), replace);
-                    newName = (prefix || "") + newName;
+                    newName = prefix + newName;
 
                     if (file.mimeType === 'application/vnd.google-apps.folder') {
-                        log(`Creating sub-folder: ${newName}`);
+                        log(`📂 Creating sub-folder: ${newName}`);
                         const newFolder = await gapi.client.drive.files.create({
                             resource: { name: newName, mimeType: 'application/vnd.google-apps.folder', parents: [targetId] },
                             fields: 'id'
                         });
                         await copyFolderContents(file.id, newFolder.result.id, prefix, find, replace);
                     } else {
-                        log(`Cloud-copying: ${newName}`);
+                        log(`🚀 Copying: ${newName}`);
                         await gapi.client.drive.files.copy({
                             fileId: file.id,
                             resource: { name: newName, parents: [targetId] }
@@ -236,7 +264,6 @@
                 pageToken = response.result.nextPageToken;
             } while (pageToken);
         }
-
         window.onload = () => { gapiLoaded(); gisLoaded(); };
     </script>
     </body>

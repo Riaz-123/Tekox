@@ -9,6 +9,7 @@
     <script src="https://apis.google.com/js/api.js" async defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        html {scroll-behavior: smooth;}
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: radial-gradient(circle at top right, #1e293b, #0f172a); }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .terminal-log { background: #050505; border-left: 4px solid #3b82f6; }
@@ -90,6 +91,55 @@
                 </div>
             </div>
         </div>
+        <div class="w-full max-w-4xl mt-10 space-y-6">
+    <button onclick="document.getElementById('doc_content').classList.toggle('hidden')" 
+            class="flex items-center justify-between w-full bg-slate-800/40 border border-white/5 p-4 rounded-2xl hover:bg-slate-800/60 transition-all group">
+        <span class="text-sm font-bold uppercase tracking-widest text-blue-400">View Operational Guide & Troubleshooting</span>
+        <svg class="w-5 h-5 text-slate-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+    </button>
+
+    <div id="doc_content" class="hidden glass-card rounded-3xl p-8 space-y-8 border border-white/5">
+        <section>
+            <h3 class="text-xl font-bold text-white mb-3">Project Overview [cite: 5]</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                The GoogleDrive Cloner leverages the Google Drive V3 API to perform "Cloud-to-Cloud" transfers[cite: 6]. 
+                Unlike traditional methods that download files to your device before re-uploading them, this tool sends 
+                a "Copy" instruction directly to Google’s data centers[cite: 7].
+            </p>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-2">Zero Data Consumption [cite: 12]</h4>
+                <p class="text-slate-500 text-xs">Operations occur on Google's infrastructure. Local internet is only used for JSON commands[cite: 12].</p>
+            </div>
+            <div class="bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-2">Automated Recursion [cite: 13]</h4>
+                <p class="text-slate-500 text-xs">Deep-scans folders and recreates the entire directory structure in the target location[cite: 13].</p>
+            </div>
+        </div>
+
+        <section class="bg-red-900/10 border border-red-500/20 p-6 rounded-2xl">
+            <h3 class="text-red-400 font-bold mb-4 italic">Troubleshooting (The Knowledge Base) [cite: 30]</h3>
+            <div class="space-y-4 text-sm">
+                <div>
+                    <p class="text-white font-semibold italic">Error 403: Forbidden (Insufficient Permissions) [cite: 31]</p>
+                    <p class="text-slate-400 text-xs">Cause: The logged-in account lacks "Editor" access to the Target folder[cite: 32]. Fix: Ensure you own the destination or have Editor rights[cite: 33].</p>
+                </div>
+                <div>
+                    <p class="text-white font-semibold italic">Error 404: File Not Found [cite: 34]</p>
+                    <p class="text-slate-400 text-xs">Cause: Source ID is incorrect or folder is not shared[cite: 35]. Fix: Ensure source is set to "Anyone with the link can view"[cite: 36].</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="text-center pt-4">
+            <p class="text-[10px] text-slate-600 uppercase tracking-widest">Official Support provided via WhatsApp Channel [cite: 43]</p>
+        </div>
+    </div>
+</div>
     </div>
 
    <footer class="mt-16 w-full max-w-4xl flex flex-col md:flex-row items-center justify-between gap-8 border-t border-white/10 pt-10 pb-6 px-4">
@@ -119,6 +169,14 @@
             <span class="relative">Join WhatsApp Channel</span>
         </a>
     </div>
+       <a href="Documentation-GoogleDrive-Cloner.pdf" 
+   download 
+   class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-white/10 px-4 py-2 rounded-xl transition-all text-sm font-semibold text-slate-300">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+     Download Manual File
+</a>
 </footer>
 
     <script>

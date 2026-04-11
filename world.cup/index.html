@@ -18,12 +18,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      /* CHANGED: min-height allows the page to grow, overflow: auto enables scroll */
+      min-height: 100vh;
+      overflow-y: auto; 
       text-align: center;
-      overflow: hidden;
+      padding: 40px 10px; /* Added padding so content doesn't touch screen edges on scroll */
     }
 
     .container {
+      width: 100%;
       max-width: 600px;
       padding: 40px;
       background: rgba(0, 0, 0, 0.6);
@@ -31,7 +34,8 @@
       border: 1px solid rgba(0, 255, 204, 0.3);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(10px);
-      margin: 20px;
+      /* Ensures container stays centered but allows page to scroll if it's taller than the screen */
+      margin: auto; 
     }
 
     .icon {
@@ -90,6 +94,13 @@
       border-radius: 50%;
       display: inline-block;
       box-shadow: 0 0 10px #ff4b2b;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
     }
 
     .btn {
@@ -102,6 +113,7 @@
       border-radius: 50px;
       transition: 0.3s;
       box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+      cursor: pointer;
     }
 
     .btn:hover {
@@ -110,9 +122,16 @@
     }
 
     .footer-text {
-      margin-top: 20px;
+      margin-top: 30px;
       font-size: 12px;
       opacity: 0.5;
+    }
+
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 480px) {
+      .container { padding: 25px 15px; }
+      h1 { font-size: 22px; }
+      .icon { font-size: 60px; }
     }
   </style>
 </head>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSeek Professional AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-main: #0b0e14;
+            --bg-card: #151921;
+            --accent: #3b82f6;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #2d333f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Main Layout */
+        .app-container {
+            width: 100%;
+            max-width: 1000px;
+            height: 90vh;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* Header */
+        header {
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #10b981;
+        }
+
+        .status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        /* Chat Body */
+        #chat-flow {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .message-row {
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 15px 20px;
+            border-radius: 12px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .user-msg {
+            align-self: flex-end;
+            background: var(--accent);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-msg {
+            align-self: flex-start;
+            background: #1e2530;
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Markdown Styling inside AI messages */
+        .ai-msg pre {
+            background: #000;
+            padding: 10px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+
+        /* Input Bar */
+        .input-wrapper {
+            padding: 25px 30px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+        }
+
+        .input-box {
+            display: flex;
+            gap: 15px;
+            background: #0b0e14;
+            padding: 8px 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            padding: 10px 0;
+            font-size: 1rem;
+        }
+
+        button {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 0 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <div>
+            <h2 style="font-size: 1.1rem; letter-spacing: 0.5px;">DEEPSEEK V3</h2>
+            <p style="font-size: 0.75rem; color: var(--text-secondary);">Professional Interface</p>
+        </div>
+        <div class="status">System Active</div>
+    </header>
+
+    <div id="chat-flow">
+        <div class="message-row">
+            <div class="message ai-msg">Welcome. System initialized. How can I assist your workflow today?</div>
+        </div>
+    </div>
+
+    <div class="input-wrapper">
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="Ask anything..." autocomplete="off">
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const chatFlow = document.getElementById('chat-flow');
+    const userInput = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Base API URL
+    const API_URL = "https://rumix-ai.vercel.app/api/chat/deepseek/v3";
+
+    async function processChat() {
+        const prompt = userInput.value.trim();
+        if (!prompt) return;
+
+        // 1. Add User Message
+        addMessage(prompt, 'user-msg');
+        userInput.value = '';
+
+        // 2. Add AI Loading Placeholder
+        const loadingId = 'ai-' + Date.now();
+        addMessage('Generating response...', 'ai-msg', loadingId);
+
+        try {
+            // 3. Fetch from API
+            const response = await fetch(`${API_URL}?p=${encodeURIComponent(prompt)}`);
+            
+            if (!response.ok) throw new Error("Connection failed");
+
+            const result = await response.text();
+
+            // 4. Update AI Message with Markdown rendering
+            const aiContainer = document.getElementById(loadingId);
+            aiContainer.innerHTML = marked.parse(result); // Renders code blocks and bold text
+
+        } catch (error) {
+            document.getElementById(loadingId).innerText = "Error: Unable to reach the server. Please try again.";
+        }
+
+        // Scroll to bottom
+        chatFlow.scrollTop = chatFlow.scrollHeight;
+    }
+
+    function addMessage(text, className, id = '') {
+        const row = document.createElement('div');
+        row.className = 'message-row';
+        
+        const msg = document.createElement('div');
+        msg.className = `message ${className}`;
+        if (id) msg.id = id;
+        msg.innerHTML = text;
+        
+        row.appendChild(msg);
+        chatFlow.appendChild(row);
+        chatFlow.scrollTop = chatFlow.scrollHeight;
+    }
+
+    // Listeners
+    sendBtn.addEventListener('click', processChat);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') processChat();
+    });
+</script>
+
+</body>
+</html>

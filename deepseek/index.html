@@ -206,37 +206,38 @@
 const API_URL = "https://cors-anywhere.herokuapp.com/https://rumix-ai.vercel.app/api/chat/deepseek/v3";
 
     async function processChat() {
-        const prompt = userInput.value.trim();
-        if (!prompt) return;
+    const prompt = userInput.value.trim();
+    if (!prompt) return;
 
-        // 1. Add User Message
-        addMessage(prompt, 'user-msg');
-        userInput.value = '';
+    addMessage(prompt, 'user-msg');
+    userInput.value = '';
 
-        // 2. Add AI Loading Placeholder
-        const loadingId = 'ai-' + Date.now();
-        addMessage('Generating response...', 'ai-msg', loadingId);
+    const loadingId = 'ai-' + Date.now();
+    addMessage('Generating response...', 'ai-msg', loadingId);
 
-        try {
-            // 3. Fetch from API
-            const response = await fetch(`${API_URL}?p=${encodeURIComponent(prompt)}`);
-            
-            if (!response.ok) throw new Error("Connection failed");
+    try {
+        // Use AllOrigins to bypass CORS
+        const targetUrl = `https://rumix-ai.vercel.app/api/chat/deepseek/v3?p=${encodeURIComponent(prompt)}`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
 
-            const result = await response.text();
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error("Connection failed");
 
-            // 4. Update AI Message with Markdown rendering
-            const aiContainer = document.getElementById(loadingId);
-            aiContainer.innerHTML = marked.parse(result); // Renders code blocks and bold text
+        const data = await response.json();
+        
+        // AllOrigins wraps the API response inside 'contents'
+        const result = data.contents;
 
-        } catch (error) {
-            document.getElementById(loadingId).innerText = "Error: Unable to reach the server. Please try again.";
-        }
+        const aiContainer = document.getElementById(loadingId);
+        aiContainer.innerHTML = marked.parse(result);
 
-        // Scroll to bottom
-        chatFlow.scrollTop = chatFlow.scrollHeight;
+    } catch (error) {
+        console.error("Fetch Error:", error);
+        document.getElementById(loadingId).innerText = "Error: Check browser console (F12) for details.";
     }
 
+    chatFlow.scrollTop = chatFlow.scrollHeight;
+}
     function addMessage(text, className, id = '') {
         const row = document.createElement('div');
         row.className = 'message-row';

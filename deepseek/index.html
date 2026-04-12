@@ -197,66 +197,113 @@
 </div>
 
 <script>
-    const chatFlow = document.getElementById('chat-flow');
-    const userInput = document.getElementById('userInput');
-    const sendBtn = document.getElementById('sendBtn');
+  /**
+ * DeepSeek AI Interface - Professional Logic
+ * Handling CORS and Markdown Rendering
+ */
 
-    // Base API URL
-    // Add the proxy prefix to your URL
-const API_URL = "https://cors-anywhere.herokuapp.com/https://rumix-ai.vercel.app/api/chat/deepseek/v3";
+const chatFlow = document.getElementById('chat-flow');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
 
-    async function processChat() {
+// 1. Configuration - Use the full API path and a reliable proxy
+const BASE_API_URL = "https://rumix-ai.vercel.app/api/chat/deepseek/v3";
+const PROXY_PREFIX = "https://corsproxy.io/?";
+
+/**
+ * Main function to handle the chat logic
+ */
+async function processChat() {
     const prompt = userInput.value.trim();
+    
+    // Prevent empty messages
     if (!prompt) return;
 
+    // 2. UI: Add User Message
     addMessage(prompt, 'user-msg');
-    userInput.value = '';
+    userInput.value = ''; // Clear input
 
+    // 3. UI: Add AI Loading State with a unique ID
     const loadingId = 'ai-' + Date.now();
-    addMessage('Generating response...', 'ai-msg', loadingId);
+    addMessage('Thinking...', 'ai-msg', loadingId);
 
     try {
-        // Use AllOrigins to bypass CORS
-        const targetUrl = `https://rumix-ai.vercel.app/api/chat/deepseek/v3?p=${encodeURIComponent(prompt)}`;
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        // 4. Construct the URL with proxy and full path
+        // Important: We encode the full target URL to prevent the proxy from breaking
+        const targetUrl = `${BASE_API_URL}?p=${encodeURIComponent(prompt)}`;
+        const finalUrl = `${PROXY_PREFIX}${encodeURIComponent(targetUrl)}`;
 
-        const response = await fetch(proxyUrl);
-        if (!response.ok) throw new Error("Connection failed");
+        const response = await fetch(finalUrl);
 
-        const data = await response.json();
-        
-        // AllOrigins wraps the API response inside 'contents'
-        const result = data.contents;
+        if (!response.ok) {
+            throw new Error(`Server responded with ${response.status}`);
+        }
 
+        const result = await response.text();
+
+        // 5. Render Response
         const aiContainer = document.getElementById(loadingId);
-        aiContainer.innerHTML = marked.parse(result);
+        
+        // If the response is empty or weird, handle it
+        if (!result || result.trim() === "") {
+            aiContainer.innerText = "The AI returned an empty response. Please try a different query.";
+        } else {
+            // Use 'marked' library to render Markdown (must have the CDN link in your HTML)
+            aiContainer.innerHTML = marked.parse(result);
+        }
 
     } catch (error) {
-        console.error("Fetch Error:", error);
-        document.getElementById(loadingId).innerText = "Error: Check browser console (F12) for details.";
+        console.error("Connection Error:", error);
+        const aiContainer = document.getElementById(loadingId);
+        aiContainer.innerHTML = `<span style="color: #ff4b4b;">Error: ${error.message}. Please check your internet connection or try again later.</span>`;
+    } finally {
+        // Always scroll to the bottom after interaction
+        scrollToBottom();
     }
-
-    chatFlow.scrollTop = chatFlow.scrollHeight;
 }
-    function addMessage(text, className, id = '') {
-        const row = document.createElement('div');
-        row.className = 'message-row';
-        
-        const msg = document.createElement('div');
-        msg.className = `message ${className}`;
-        if (id) msg.id = id;
-        msg.innerHTML = text;
-        
-        row.appendChild(msg);
-        chatFlow.appendChild(row);
-        chatFlow.scrollTop = chatFlow.scrollHeight;
-    }
 
-    // Listeners
-    sendBtn.addEventListener('click', processChat);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') processChat();
+/**
+ * Utility: Adds a message bubble to the chat flow
+ */
+function addMessage(text, className, id = '') {
+    const row = document.createElement('div');
+    row.className = 'message-row';
+    
+    const msg = document.createElement('div');
+    msg.className = `message ${className}`;
+    if (id) msg.id = id;
+    
+    // Set text (loading state) or HTML (finished response)
+    msg.innerHTML = text;
+    
+    row.appendChild(msg);
+    chatFlow.appendChild(row);
+    scrollToBottom();
+}
+
+/**
+ * Utility: Smooth scroll to latest message
+ */
+function scrollToBottom() {
+    chatFlow.scrollTo({
+        top: chatFlow.scrollHeight,
+        behavior: 'smooth'
     });
+}
+
+/**
+ * Event Listeners
+ */
+sendBtn.addEventListener('click', processChat);
+
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        processChat();
+    }
+});
+
+// Focus input on load for professional feel
+window.onload = () => userInput.focus();
 </script>
 
 </body>

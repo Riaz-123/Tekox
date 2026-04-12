@@ -197,113 +197,58 @@
 </div>
 
 <script>
-  /**
- * DeepSeek AI Interface - Professional Logic
- * Handling CORS and Markdown Rendering
- */
-
-const chatFlow = document.getElementById('chat-flow');
+ const chatFlow = document.getElementById('chat-flow');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 
-// 1. Configuration - Use the full API path and a reliable proxy
-const BASE_API_URL = "https://rumix-ai.vercel.app/api/chat/deepseek/v3";
-const PROXY_PREFIX = "https://corsproxy.io/?";
+// Point to YOUR OWN Next.js API route
+const API_URL = "/api/chat"; 
 
-/**
- * Main function to handle the chat logic
- */
 async function processChat() {
     const prompt = userInput.value.trim();
-    
-    // Prevent empty messages
     if (!prompt) return;
 
-    // 2. UI: Add User Message
     addMessage(prompt, 'user-msg');
-    userInput.value = ''; // Clear input
+    userInput.value = '';
 
-    // 3. UI: Add AI Loading State with a unique ID
     const loadingId = 'ai-' + Date.now();
     addMessage('Thinking...', 'ai-msg', loadingId);
 
     try {
-        // 4. Construct the URL with proxy and full path
-        // Important: We encode the full target URL to prevent the proxy from breaking
-        const targetUrl = `${BASE_API_URL}?p=${encodeURIComponent(prompt)}`;
-        const finalUrl = `${PROXY_PREFIX}${encodeURIComponent(targetUrl)}`;
-
-        const response = await fetch(finalUrl);
-
+        // Fetch from your own server-side route
+        const response = await fetch(`${API_URL}?p=${encodeURIComponent(prompt)}`);
+        
         if (!response.ok) {
-            throw new Error(`Server responded with ${response.status}`);
+            throw new Error(`Server Error: ${response.status}`);
         }
 
         const result = await response.text();
-
-        // 5. Render Response
         const aiContainer = document.getElementById(loadingId);
         
-        // If the response is empty or weird, handle it
-        if (!result || result.trim() === "") {
-            aiContainer.innerText = "The AI returned an empty response. Please try a different query.";
-        } else {
-            // Use 'marked' library to render Markdown (must have the CDN link in your HTML)
-            aiContainer.innerHTML = marked.parse(result);
-        }
+        // Render Markdown
+        aiContainer.innerHTML = marked.parse(result);
 
     } catch (error) {
-        console.error("Connection Error:", error);
-        const aiContainer = document.getElementById(loadingId);
-        aiContainer.innerHTML = `<span style="color: #ff4b4b;">Error: ${error.message}. Please check your internet connection or try again later.</span>`;
-    } finally {
-        // Always scroll to the bottom after interaction
-        scrollToBottom();
+        console.error("Fetch Error:", error);
+        document.getElementById(loadingId).innerText = "Error: Could not connect to your API.";
     }
+
+    chatFlow.scrollTop = chatFlow.scrollHeight;
 }
 
-/**
- * Utility: Adds a message bubble to the chat flow
- */
 function addMessage(text, className, id = '') {
     const row = document.createElement('div');
     row.className = 'message-row';
-    
     const msg = document.createElement('div');
     msg.className = `message ${className}`;
     if (id) msg.id = id;
-    
-    // Set text (loading state) or HTML (finished response)
     msg.innerHTML = text;
-    
     row.appendChild(msg);
     chatFlow.appendChild(row);
-    scrollToBottom();
 }
 
-/**
- * Utility: Smooth scroll to latest message
- */
-function scrollToBottom() {
-    chatFlow.scrollTo({
-        top: chatFlow.scrollHeight,
-        behavior: 'smooth'
-    });
-}
-
-/**
- * Event Listeners
- */
 sendBtn.addEventListener('click', processChat);
-
-userInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        processChat();
-    }
-});
-
-// Focus input on load for professional feel
-window.onload = () => userInput.focus();
+userInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') processChat(); });
 </script>
 
 </body>

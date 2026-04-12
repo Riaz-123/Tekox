@@ -202,7 +202,8 @@
     const sendBtn = document.getElementById('sendBtn');
 
     // Base API URL
-    const API_URL = "https://rumix-ai.vercel.app/api/chat/deepseek/v3";
+    // Add the proxy prefix to your URL
+const API_URL = "https://cors-anywhere.herokuapp.com/https://rumix-ai.vercel.app/api/chat/deepseek/v3";
 
     async function processChat() {
         const prompt = userInput.value.trim();

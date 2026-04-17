@@ -3,320 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tekox - A Creative Tech World</title>
+    <title>Tekox | Pro Tech </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="tekox.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --bg-base: #020617;
-            --primary: #0ea5e9;
-            --secondary: #6366f1;
-            --accent: #a855f7;
+            --obsidian: #020617;
+            --accent-teal: #2dd4bf;
+            --accent-blue: #3b82f6;
+            --card-bg: rgba(15, 23, 42, 0.6);
         }
 
         body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-base);
-            color: #f8fafc;
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(45, 212, 191, 0.15), transparent),
+                radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.1), transparent);
+            background-attachment: fixed;
         }
 
-        h1, h2, h3, .brand-font {
-            font-family: 'Space Grotesk', sans-serif;
-        }
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
 
-        /* Mesh Background */
-        .mesh-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            background-color: var(--bg-base);
-            overflow: hidden;
-        }
-
-        .mesh-blob {
-            position: absolute;
-            filter: blur(90px);
-            opacity: 0.4;
-            border-radius: 50%;
-            animation: float-blob 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: rgba(14, 165, 233, 0.3); }
-        .blob-2 { top: 40%; right: -20%; width: 60vw; height: 60vw; background: rgba(99, 102, 241, 0.2); animation-delay: -5s; }
-        .blob-3 { bottom: -20%; left: 20%; width: 55vw; height: 55vw; background: rgba(168, 85, 247, 0.2); animation-delay: -10s; }
-
-        @keyframes float-blob {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(10%, -5%) scale(1.05); }
-        }
-
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .glow-text { text-shadow: 0 0 30px rgba(14, 165, 233, 0.5); }
-
-        /* Card Styles */
-        .gradient-border-card {
-            position: relative;
-            border-radius: 1.5rem;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* Professional Glassmorphism */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
         }
 
-        .gradient-border-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(14, 165, 233, 0.15), transparent 80%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            z-index: 1;
-        }
-
-        .gradient-border-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(14, 165, 233, 0.3);
-            box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.2);
-        }
-
-        .gradient-border-card:hover::before { opacity: 1; }
-
-        .card-content {
+        /* Smart Button Design */
+        .btn-smart {
             position: relative;
-            z-index: 2;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--obsidian);
+            font-weight: 700;
+        }
+
+        .btn-smart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(45, 212, 191, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* Bento Grid Card Animation */
+        .tool-card {
+            position: relative;
+            border-radius: 24px;
             padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             height: 100%;
         }
 
-        .icon-box {
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(99, 102, 241, 0.1));
-            border: 1px solid rgba(14, 165, 233, 0.2);
-            transition: all 0.4s ease;
+        .tool-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(45, 212, 191, 0.4);
+            transform: scale(1.02);
         }
 
-        .gradient-border-card:hover .icon-box {
-            transform: rotate(-5deg) scale(1.1);
-            border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+        .icon-container {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.1), rgba(59, 130, 246, 0.1));
+            color: var(--accent-teal);
+            font-size: 1.5rem;
+            border: 1px solid rgba(45, 212, 191, 0.2);
         }
 
-        .btn-glow {
-            background-size: 200% auto;
-            transition: 0.5s;
-            background-image: linear-gradient(to right, #0ea5e9 0%, #6366f1 50%, #0ea5e9 100%);
+        /* Subtle Animation for BG */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
         }
-        .btn-glow:hover {
-            background-position: right center;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+
+        .glow-point {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-teal);
+            box-shadow: 0 0 15px 2px var(--accent-teal);
+            border-radius: 50%;
         }
     </style>
 </head>
-<body class="antialiased selection:bg-sky-500/30 selection:text-white">
+<body class="antialiased">
 
-    <div class="mesh-bg">
-        <div class="mesh-blob blob-1"></div>
-        <div class="mesh-blob blob-2"></div>
-        <div class="mesh-blob blob-3"></div>
-    </div>
+    <div class="grid-bg"></div>
 
-    <nav class="fixed w-full z-50 top-0 border-b border-white/5 bg-slate-950/60 backdrop-blur-2xl">
-        <div class="container mx-auto px-6 h-20 flex justify-between items-center">
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="relative">
-                    <div class="absolute inset-0 bg-sky-500 blur-lg opacity-40 group-hover:opacity-100 transition-opacity"></div>
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="relative transform group-hover:scale-110 transition-transform">
-                        <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" fill="url(#logoGradient)" stroke="white" stroke-width="0.5"/>
-                        <path d="M2 7L12 12M22 7L12 12M12 22V12" stroke="white" stroke-width="2" stroke-linejoin="round" opacity="0.9"/>
-                        <defs>
-                            <linearGradient id="logoGradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#0EA5E9"/><stop offset="1" stop-color="#6366F1"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
+    <header class="fixed top-0 w-full z-50 px-4 pt-4">
+        <nav class="max-w-6xl mx-auto glass-panel rounded-2xl px-6 py-3 flex justify-between items-center border-white/10">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center rotate-3 shadow-lg shadow-teal-500/20">
+                    <i class="fa-solid fa-bolt text-slate-900 text-sm"></i>
                 </div>
-                <span class="text-2xl font-extrabold tracking-tight brand-font glow-text">TEKOX</span>
-            </a>
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#tools" class="text-sm font-semibold text-slate-300 hover:text-sky-400 transition-colors">Ecosystem</a>
-                <a href="#about" class="text-sm font-semibold text-slate-300 hover:text-sky-400 transition-colors">Developer</a>
-                <a href="https://wa.me/923181393964" class="px-6 py-2.5 text-sm font-bold bg-white/5 border border-white/10 rounded-full hover:bg-sky-500 hover:text-white transition-all">Contact Us</a>
+                <span class="text-xl font-bold tracking-tighter heading-font text-white">TEKOX<span class="text-teal-400 text-3xl">.</span></span>
             </div>
-        </div>
-    </nav>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="#ecosystem" class="hover:text-teal-400 transition-colors">Ecosystem</a>
+                <a href="#about" class="hover:text-teal-400 transition-colors">Developer</a>
+                <a href="https://wa.me/923181393964" class="btn-smart px-5 py-2 rounded-xl text-xs">
+                    CONNECT NOW
+                </a>
+            </div>
+        </nav>
+    </header>
 
-    <div class="container mx-auto px-6 pt-32 pb-20">
-        <main class="py-24 flex flex-col items-center text-center max-w-5xl mx-auto animate-float">
-            <div class="inline-flex items-center gap-3 px-5 py-2 mb-8 text-xs font-bold tracking-widest uppercase bg-sky-500/10 text-sky-400 border border-sky-500/30 rounded-full backdrop-blur-sm">
-                <span class="relative flex h-2 w-2">
-                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                  <span class="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
-                </span>
-                The Future of Tech Tools
-            </div>
-            <h1 class="text-5xl md:text-8xl font-black leading-tight mb-6">
-                A Creative <br/>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-400 to-fuchsia-400 glow-text">Tech World</span>
+    <section class="pt-44 pb-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="px-4 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold tracking-widest uppercase mb-6 inline-block">
+                Powered by Advanced Algorithms
+            </span>
+            <h1 class="text-5xl md:text-7xl font-extrabold heading-font text-white mb-6 leading-[1.1]">
+                Digital Pro <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">Tools</span>
             </h1>
-            <p class="text-lg md:text-2xl text-slate-400 leading-relaxed mb-12 max-w-3xl">
-                Your centralized hub for high-performance utilities. Engineered for speed, reliability, and seamless digital experiences.
+            <p class="text-slate-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10">
+                A professional suite of utility tools engineered for speed, privacy, and seamless user interaction.
             </p>
-            <a href="#tools" class="btn-glow px-10 py-5 rounded-full font-bold text-white text-lg hover:-translate-y-1 transition-transform">
-                Explore Ecosystem
-            </a>
-        </main>
-
-        <section id="tools" class="mt-24 pt-20 scroll-mt-24 relative z-10">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-6">Our Ecosystem</h2>
-                <div class="h-1.5 w-32 bg-gradient-to-r from-sky-500 to-indigo-500 mx-auto rounded-full"></div>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#ecosystem" class="btn-smart px-8 py-4 rounded-2xl text-base shadow-xl">
+                    LAUNCH ECOSYSTEM <i class="fa-solid fa-chevron-right text-xs"></i>
+                </a>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
-    
-    <a href="https://tekox.online/data" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 2H9a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/><path d="M5 5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H5Zm1 4h12M6 13h5"/></svg>
-            </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">SIM Database</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Access comprehensive SIM card ownership data instantly and securely.</p>
         </div>
-    </a>
+    </section>
 
-    <a href="https://tekox.online/result" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M12 14h8M12 10h8"/></svg>
+    <section id="ecosystem" class="py-20 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold heading-font text-white">Professional Services</h2>
+                <p class="text-slate-500 mt-2 font-medium">Click on any module to initialize the interface.</p>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">CNIC to SIMs</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Check total active SIMs registered against any given CNIC number efficiently.</p>
+            <div class="h-px flex-1 bg-white/5 mx-8 hidden md:block"></div>
+            <div class="text-teal-400 font-mono text-sm tracking-tighter">V2.0.26 RELEASE</div>
         </div>
-    </a>
 
-    <a href="https://tekox.online/info" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            
+            <div class="tool-card glass-panel group">
+                <div>
+                    <div class="icon-container"><i class="fa-solid fa-database"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">SIM DATA</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Secure protocol for real-time ownership verification and record retrieval.</p>
+                </div>
+                <a href="https://tekox.online/data" class="mt-8 flex items-center justify-between text-teal-400 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                    Access Database <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Weather Info</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Fetch highly accurate, real-time meteorological data and forecasts globally.</p>
-        </div>
-    </a>
 
-    <a href="https://tekox.online/tv" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+            <div class="tool-card glass-panel group">
+                <div>
+                    <div class="icon-container"><i class="fa-solid fa-id-card-clip"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">CNIC TO SIM</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Advanced lookup engine to identify all networks registered per identity.</p>
+                </div>
+                <a href="https://tekox.online/result" class="mt-8 flex items-center justify-between text-teal-400 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                    Identify Now <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Live TV</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Stream your favorite television networks live with uninterrupted HD quality.</p>
-        </div>
-    </a>
 
-    <a href="https://tekox.online/world.cup" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+            <div class="tool-card glass-panel group">
+                <div>
+                    <div class="icon-container"><i class="fa-solid fa-cloud-sun-bolt"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">WEATHER INFO</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">High-precision meteorological data with dynamic climate projections.</p>
+                </div>
+                <a href="https://tekox.online/info" class="mt-8 flex items-center justify-between text-teal-400 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                    View Forecast <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">T20 World Cup</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Experience live cricket matches and major tournaments directly on your device.</p>
-        </div>
-    </a>
 
-    <a href="https://tekox.online/yt-downloader" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <div class="tool-card glass-panel group">
+                <div>
+                    <div class="icon-container"><i class="fa-brands fa-google-drive"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">DRIVE CLONER</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Automated cloud-to-cloud data migration and backup framework.</p>
+                </div>
+                <a href="https://tekox.online/copydrive" class="mt-8 flex items-center justify-between text-teal-400 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                    Clone Files <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">YT Downloader</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Ultra-fast and reliable media extraction framework for your favorite content.</p>
-        </div>
-    </a>
 
-    <a href="https://tekox.online/clouds-generator" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19c2.5 0 4.5-2 4.5-4.5 0-3-3-3.5-3-3.5A6 6 0 0 0 7.5 7s-1.5 0-2 2c-3 0-3.5 3-3.5 3.5 0 2.5 2 4.5 4.5 4.5Z" /></svg>
+            <div class="tool-card glass-panel group lg:col-span-1">
+                <div>
+                    <div class="icon-container"><i class="fa-solid fa-file-pen"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">DOCS TOOLS</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Professional toolkit for PDF manipulation, OCR, and document conversion.</p>
+                </div>
+                <a href="https://tekox.online/tools" class="mt-8 flex items-center justify-between text-teal-400 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                    Open Editor <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Cloud Generator</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Explore an animated, interactive visual engine mapping cloud physics.</p>
-        </div>
-    </a>
 
-    <a href="https://tekox.online/clc" target="_blank" rel="noopener" class="gradient-border-card group">
-        <div class="card-content">
-            <div class="icon-box w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7V3m0 18v-4m-9-5h4m10 0h4M5.6 5.6l2.9 2.9m7 7l2.9 2.9M5.6 18.4l2.9-2.9m7-7l2.9-2.9"/></svg>
+            <div class="tool-card glass-panel group">
+                <div>
+                    <div class="icon-container"><i class="fa-solid fa-tv"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">LIVE TV</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Ultra-low latency streaming for global broadcast news and sports.</p>
+                </div>
+                <a href="https://tekox.online/tv" class="mt-8 flex items-center justify-between text-teal-400 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                    Watch Live <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
             </div>
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors">Spot Calculator</h3>
-            <p class="text-slate-400 text-base leading-relaxed">Precision algorithms to calculate and project your trade margins and targets.</p>
+
+            <div class="tool-card glass-panel group md:col-span-2 lg:col-span-2">
+                <div>
+                    <div class="icon-container"><i class="fa-solid fa-comment-dots"></i></div>
+                    <h3 class="text-xl font-bold text-white mb-2">TEXT TO SPEECH</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed">Neural-voice synthesis engine converting plain text into natural human audio using advanced AI models.</p>
+                </div>
+                <a href="https://tekox.online/tts" class="mt-8 flex items-center justify-between text-teal-400 font-bold text-xs uppercase tracking-widest hover:gap-2 transition-all">
+                    Synthesize Voice <i class="fa-solid fa-arrow-right-long"></i>
+                </a>
+            </div>
+
         </div>
-    </a>
+    </section>
 
-</div>
-        </section>
+    <section id="about" class="py-20 px-6">
+        <div class="max-w-5xl mx-auto glass-panel rounded-[32px] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12 overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-teal-500/5 blur-[80px] rounded-full -mr-20 -mt-20"></div>
+            
+            <div class="relative z-10 w-48 h-48 shrink-0">
+                <div class="absolute inset-0 bg-gradient-to-tr from-teal-500 to-blue-500 rounded-3xl rotate-6 opacity-20"></div>
+                <img src="profile.jpg" alt="Riaz Hussain" class="w-full h-full object-cover rounded-3xl border border-white/10 relative z-10 shadow-2xl">
+            </div>
 
-        <section id="about" class="mt-40 scroll-mt-24 relative z-10">
-            <div class="max-w-5xl mx-auto">
-                <div class="bg-slate-900/50 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-16 border border-white/10 flex flex-col md:flex-row items-center gap-12">
-                    <div class="shrink-0 relative group">
-                        <div class="absolute inset-0 bg-sky-500 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                        <img src="profile.jpg" alt="Riaz Hussain" class="relative w-48 h-48 rounded-full object-cover border-4 border-slate-800 shadow-2xl">
-                    </div>
-                    <div class="text-center md:text-left">
-                        <span class="inline-block px-4 py-1.5 mb-4 text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 rounded-full">Architect & Creator</span>
-                        <h2 class="text-4xl font-extrabold mb-2">Riaz Hussain</h2>
-                        <p class="text-sky-400 font-bold text-xl mb-5">Web Developer & Tech Enthusiast</p>
-                        <p class="text-slate-400 leading-relaxed mb-8">
-                            Passionate about building high-performance web applications. Dedicated to creating seamless, future-ready digital experiences across Python, JavaScript, and Web3 ecosystems.
-                        </p>
-                        <div class="flex flex-wrap gap-2 justify-center md:justify-start">
-                            <span class="px-3 py-1 text-xs font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300">HTML/CSS/JS</span>
-                            <span class="px-3 py-1 text-xs font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300">React/Next.js</span>
-                            <span class="px-3 py-1 text-xs font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300">Chat-bots</span>
-                            <span class="px-3 py-1 text-xs font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300">web3/Crypto</span>
-                            <span class="px-3 py-1 text-xs font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300">Python</span>
-                            <span class="px-3 py-1 text-xs font-semibold bg-slate-800 border border-slate-700 rounded-lg text-slate-300">Data Analytics</span>
-                        </div>
-                    </div>
+            <div class="relative z-10 text-center md:text-left">
+                <h4 class="text-teal-400 font-bold text-sm tracking-widest uppercase mb-2">Lead Architect</h4>
+                <h2 class="text-4xl font-extrabold text-white heading-font mb-4">Riaz Hussain</h2>
+                <p class="text-slate-400 leading-relaxed mb-8 max-w-xl">
+                    Specializing in high-performance web architecture and digital security systems. Building tools that bridge the gap between complexity and user-centric design.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <a href="https://wa.me/923181393964" class="btn-smart px-6 py-3 rounded-xl">
+                        <i class="fa-brands fa-whatsapp"></i> CHAT
+                    </a>
+                    <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 font-bold text-white hover:bg-white/10 transition-all">
+                        CHANNEL
+                    </a>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="mt-40 relative rounded-[2.5rem] overflow-hidden border border-white/10 bg-slate-900/50 backdrop-blur-md p-12 md:p-20 text-center">
-            <h2 class="text-4xl md:text-5xl font-extrabold mb-6">Join the Community</h2>
-            <p class="text-slate-300 text-lg mb-10 max-w-2xl mx-auto">Stay updated with exclusive utility tools and connect with other visionaries.</p>
-            <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" rel="noopener" class="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white font-bold rounded-2xl hover:scale-105 transition-transform shadow-lg shadow-green-500/20">
-                Join WhatsApp Channel
-            </a>
-        </section>
-    </div>
+    <footer class="py-12 border-t border-white/5 mt-20">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <div class="flex items-center gap-2 justify-center md:justify-start mb-2">
+                    <div class="w-6 h-6 bg-teal-500/20 rounded flex items-center justify-center">
+                        <i class="fa-solid fa-bolt text-teal-400 text-[10px]"></i>
+                    </div>
+                    <span class="text-lg font-bold tracking-tighter heading-font text-white uppercase">Tekox </span>
+                </div>
+                <p class="text-slate-500 text-xs">Developing the next generation of web tools frameworks.</p>
+            </div>
 
-    <footer class="py-12 border-t border-white/5 bg-slate-950/80 text-center">
-        <p class="text-sky-400 text-xs font-bold tracking-widest uppercase mb-2">Developed by Riaz Hussain</p>
-        <p class="text-slate-500 text-sm">© 2026 Tekox Universe. All rights reserved.</p>
+            <div class="text-center md:text-right">
+                <p class="text-teal-400 text-xs font-bold tracking-[0.2em] uppercase mb-1">Developer: Riaz Hussain</p>
+                <p class="text-slate-600 text-[10px]">© 2026 ALL RIGHTS RESERVED </p>
+            </div>
+        </div>
     </footer>
 
     <script>
-        document.querySelectorAll('.gradient-border-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
+        // Optional: Hover glow effect for the grid
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return;
+            const glow = document.createElement('div');
+            glow.className = 'glow-point';
+            glow.style.left = e.pageX + 'px';
+            glow.style.top = e.pageY + 'px';
+            document.body.appendChild(glow);
+            
+            setTimeout(() => {
+                glow.style.opacity = '0';
+                setTimeout(() => glow.remove(), 500);
+            }, 100);
         });
     </script>
 </body>

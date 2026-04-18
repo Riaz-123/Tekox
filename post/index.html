@@ -3,335 +3,690 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7th MDCAT Self-Assessment 2025 - CMCian's</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <title>CMCian's Testing Service - Self-Assessment 2025</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
-        :root {
-            --primary: #002D4E;
-            --secondary: #00606B;
-            --gold: #FFD700;
-            --white: #ffffff;
-            --text-muted: #e0e0e0;
+        /* Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            /* Color Palette for Premium UI */
+            --primary: #002D4E; /* Deep Navy Blue */
+            --gold: #FFD700; /* Rich Gold */
+            --secondary: #00606B; /* Cyan/Teal Accent */
+            --white: #ffffff;
+            --light-gray: #f0f2f5;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
 
         body {
-            background-color: #1a1a1a;
-            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light-gray);
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
             padding: 20px;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
         }
 
-        /* Poster Container - Standard High-Res Ratio */
-        #posterArea {
-            width: 750px;
-            min-height: 1100px;
-            background: var(--primary);
-            position: relative;
+        /* Fluid layout that occupies full content easily, dynamic height */
+        .poster-canvas {
+            width: 750px; /* High-res width */
+            background-color: var(--white);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .poster-content {
+            width: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        /* Top Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 30px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        /* HEADER BAR */
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: var(--white);
+            padding: 20px 25px;
+            height: 90px; /* Enhanced height for UI */
             z-index: 10;
         }
 
-        .header img { height: 70px; width: auto; }
-
-        .header-text { text-align: center; color: var(--white); }
-        .header-text h1 { font-family: 'Oswald', sans-serif; font-size: 28px; letter-spacing: 1px; }
-        .header-text p { font-size: 12px; color: var(--gold); font-weight: 600; text-transform: uppercase; }
-
-        /* Hero Image Section */
-        .hero {
-            height: 300px;
-            background: url('image/background.png') center/cover no-repeat;
-            position: relative;
+        .header-inner {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            height: 100%;
+        }
+
+        .top-logo {
+            height: 100%;
+            width: auto;
+        }
+
+        .header-text-container {
             text-align: center;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 45, 78, 0.7);
-        }
-
-        .hero-content { position: relative; z-index: 2; color: var(--white); width: 90%; }
-        .hero-content h2 { font-size: 22px; text-transform: uppercase; }
-        .hero-content .now { 
-            font-size: 80px; 
-            font-weight: 800; 
-            color: var(--gold); 
-            line-height: 1;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .title-badge {
-            background: var(--gold);
-            color: var(--primary);
-            padding: 10px 30px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 20px;
-            margin-top: 15px;
-            display: inline-block;
-        }
-
-        /* Main Body Content */
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 20px;
-            padding: 25px;
             flex-grow: 1;
         }
 
-        .card {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 15px;
-            color: var(--white);
+        .header-text-container h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
         }
 
-        .card-title {
+        .header-text-container p {
+            font-size: 12px;
             color: var(--gold);
-            border-bottom: 2px solid var(--gold);
-            padding-bottom: 5px;
-            margin-bottom: 12px;
-            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
-        /* Tables & Lists */
-        ul { list-style: none; font-size: 13px; line-height: 1.6; }
-        ul li { margin-bottom: 8px; position: relative; padding-left: 20px; }
-        ul li::before { content: '✓'; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
-
-        .table { width: 100%; font-size: 13px; border-collapse: collapse; }
-        .table th { text-align: left; color: var(--gold); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
-        .table td { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        /* Payment Accounts */
-        .account-box {
-            background: var(--white);
-            color: #333;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
+        /* HERO SECTION (Locate background image here post/background.png) */
+        .hero-section {
+            background-size: cover;
+            background-position: center;
+            height: 280px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            color: var(--white);
         }
-        .account-box.ep { border-left: 6px solid #2ecc71; }
-        .account-box.jc { border-left: 6px solid #e67e22; }
-        .acc-info h4 { font-size: 18px; color: #000; }
-        .acc-info p { font-size: 11px; color: #666; font-weight: 600; }
 
-        /* Registration Link Section */
-        .reg-link-section {
-            background: var(--gold);
+        /* Subtle classroom backdrop integration overlay */
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 45, 78, 0.4);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+
+        .test-title-container {
+            padding-bottom: 25px;
+        }
+
+        .pre-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .now-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 80px;
+            font-weight: 700;
+            color: var(--gold);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .test-gold-box {
+            background-color: var(--primary);
+            border: 3px solid var(--gold); /* Gold border for lookup */
+            border-radius: 25px; /* Fully rounded UI */
+            width: 90%;
+            margin: 0 auto;
+            padding: 12px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .test-gold-box p {
+            font-family: 'Oswald', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* MAIN CONTENT DATA GRID (Density-focused, full of UI) */
+        .main-content {
+            background: linear-gradient(to bottom, #001a2e, #004d55);
+            flex-grow: 1;
+            padding: 25px;
+            position: relative;
+        }
+
+        .columns-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* PANEL BASIC STYLE (Enhanced lookup) */
+        .panel {
+            background-color: rgba(255,255,255,0.05); /* Lighter over dark blue */
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--white);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--gold); /* Gold accent line */
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .panel-header svg {
+            margin-right: 12px;
+        }
+
+        .panel-header h3, .panel-header-simple h3 {
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .panel-header-simple {
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        /* LEFT COL */
+        .why-list li {
+            list-style: none;
+            display: flex;
+            align-items: flex-start;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .why-list li svg {
+            flex-shrink: 0;
+            margin-right: 10px;
+            margin-top: 3px;
+        }
+
+        .centers-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .centers-table th {
+            text-align: left;
+            padding-bottom: 10px;
+            color: var(--gold);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .centers-table tr {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .centers-table td {
+            padding: 10px 0;
+        }
+
+        .city-name {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .city-name svg {
+            margin-right: 8px;
+        }
+
+        /* RIGHT COL (Highly UI Focused) */
+        .account-details-panel {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            color: var(--primary);
+        }
+
+        .account-details-panel .panel-header h3 {
+            border: none;
             color: var(--primary);
             text-align: center;
-            padding: 15px;
-            font-weight: 800;
-            border-radius: 10px;
-            margin-top: 10px;
+            width: 100%;
         }
-        .reg-link-section p { font-size: 14px; margin-bottom: 2px; }
-        .reg-link-section span { font-size: 22px; text-decoration: underline; }
 
-        /* Footer Info */
-        .footer {
-            background: #001a2e;
-            padding: 20px;
+        .easypaisa-jazzcash-numbers-cta {
+            background: linear-gradient(to right, #2ecc71, #f39c12); /* Combined color look */
             color: var(--white);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .visit-link-cta-prompt {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .account-title-numbers-table {
+            width: 100%;
+            border-collapse: collapse;
             font-size: 12px;
         }
-        .contact-row { display: flex; justify-content: space-around; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 10px; }
-        .contact-row div span { color: var(--gold); font-weight: bold; }
 
-        /* Circular Badge */
-        .center-badge {
+        .account-title-numbers-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .account-title-numbers-table .label {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .account-title-numbers-table .value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .fee-date-panels {
+            display: flex;
+            gap: 12px;
+        }
+
+        .fee-panel, .date-panel {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0;
+            padding: 12px;
+            flex-grow: 1;
+        }
+
+        .tag-icon, .calendar-icon {
+            font-size: 32px;
+            margin-right: 10px;
+        }
+
+        .fee-text p, .date-text p {
+            margin: 0;
+        }
+
+        .pre-fee, .pre-date {
+            font-size: 11px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .fee-amount {
+            font-family: 'Oswald', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .date-value {
+            font-family: 'Oswald', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* Circular Overlay Badge (CTS) */
+        .cts-badge {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: var(--white);
-            width: 130px;
-            height: 130px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
+            background-color: var(--white);
+            color: var(--primary);
             border: 4px solid var(--gold);
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--primary);
-            padding: 15px;
-            z-index: 5;
+            padding: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.3;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1;
         }
 
-        .download-btn {
-            margin-top: 30px;
-            padding: 15px 40px;
-            background: var(--gold);
+        /* FOOTER AREA (Contact, highly structured) */
+        footer {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 20px;
+            margin-top: -1px;
+        }
+
+        .footer-inner {
+            width: 100%;
+        }
+
+        .contact-section {
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .contact-header {
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .contact-details-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 12px;
+        }
+
+        .contact-item, .social-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-item svg, .social-item svg {
+            margin-right: 8px;
+        }
+
+        .contact-name {
+            font-weight: 700;
+            margin-right: 8px;
+            color: var(--gold);
+        }
+
+        .social-item {
+            color: #ddd;
+        }
+
+        /* Download Button Style (Attractive and full of UI) */
+        .download-button {
+            background-color: var(--gold);
             border: none;
-            border-radius: 50px;
-            font-weight: 800;
+            border-radius: 50px; /* Modern shape */
+            color: var(--primary);
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px 0;
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 18px;
-            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
-        .download-btn:hover { transform: scale(1.05); }
 
+        .download-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
     </style>
 </head>
 <body>
 
-    <div id="posterArea">
-        <div class="header">
-            <img src="post/logo1.png" alt="Logo 1">
-            <div class="header-text">
-                <h1>CMCIAN'S TESTING SERVICE</h1>
-                <p>Path to Your Medical Success</p>
-            </div>
-            <img src="post/logo2.png" alt="Logo 2">
-        </div>
+    <div class="poster-canvas" id="posterArea">
+        <div class="poster-content">
 
-        <div class="hero">
-            <div class="hero-content">
-                <h2>Registrations are Open</h2>
-                <div class="now">NOW!</div>
-                <div class="title-badge">7TH MDCAT SELF-ASSESSMENT TEST 2025</div>
-            </div>
-        </div>
-
-        <div class="main-grid">
-            <div class="left-col">
-                <div class="card" style="margin-bottom: 20px;">
-                    <h3 class="card-title">Why Choose Us?</h3>
-                    <ul>
-                        <li>7th Time Successfully Conducting Mock Tests.</li>
-                        <li><strong>8 Centers</strong> Across Multiple Cities.</li>
-                        <li>Strictly According to <strong>Latest PMDC Syllabus</strong>.</li>
-                        <li>Simulate a Real Exam Environment.</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3 class="card-title">Test Centers & Dates</h3>
-                    <table class="table">
-                        <thead>
-                            <tr><th>CITY</th><th>DATE</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>LARKANA</td><td>27 July 2025</td></tr>
-                            <tr><td>SHIKARPUR</td><td>03 August 2025</td></tr>
-                            <tr><td>RANIPUR</td><td>03 August 2025</td></tr>
-                            <tr><td>HYDERABAD</td><td>10 August 2025</td></tr>
-                            <tr><td>KARACHI</td><td>10 August 2025</td></tr>
-                            <tr><td>THUL</td><td>10 August 2025</td></tr>
-                            <tr><td>DADU</td><td>10 August 2025</td></tr>
-                            <tr><td>SUKKUR</td><td>24 August 2025</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="right-col">
-                <div class="card" style="margin-bottom: 20px;">
-                    <h3 class="card-title">Registration Link</h3>
-                    <div class="reg-link-section">
-                        <p>REGISTER ONLINE AT:</p>
-                        <span>tekox.online/cts</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3 class="card-title">Payment Details</h3>
-                    <div class="account-box ep">
-                        <div class="acc-info">
-                            <p>EASYPAISA</p>
-                            <h4>03292189891</h4>
-                            <p>Title: Ehsan Ali</p>
-                        </div>
-                    </div>
-                    <div class="account-box jc">
-                        <div class="acc-info">
-                            <p>JAZZCASH</p>
-                            <h4>03029127046</h4>
-                            <p>Title: Ehsan Ali</p>
-                        </div>
-                    </div>
+            <header>
+                <div class="header-inner">
+                    <img src="post/logo1.png" alt="CMCian's Logo" class="top-logo top-left-logo">
                     
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <div style="flex:1; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; text-align: center;">
-                            <p style="font-size: 10px; color: var(--gold);">FEE</p>
-                            <p style="font-weight: 700; font-size: 16px;">1000/=</p>
+                    <div class="header-text-container">
+                        <h1>CMCIAN'S TESTING SERVICE</h1>
+                        <p>Path to Your Medical Success</p>
+                    </div>
+
+                    <img src="post/logo2.png" alt="University Logo" class="top-logo top-right-logo">
+                </div>
+            </header>
+
+            <section class="hero-section" style="background-image: url('post/background.png');">
+                <div class="hero-content">
+                    <div class="test-title-container">
+                        <p class="pre-title">REGISTRATIONS ARE OPEN</p>
+                        <p class="now-text">Now!</p>
+                    </div>
+                    <div class="test-gold-box">
+                        <p>7TH MDCAT SELF-ASSESSMENT TEST 2025</p>
+                    </div>
+                </div>
+            </section>
+
+            <main class="main-content">
+                <div class="columns-grid">
+                    
+                    <div class="left-col">
+                        <div class="why-choose panel">
+                            <div class="panel-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#B89454" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 7V17M12 17L15 14M12 17L9 14" stroke="#B89454" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <h3>Why Choose Us?</h3>
+                            </div>
+                            <ul class="why-list">
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="white" stroke-opacity="0.5"/><path d="M13.5 7.5L8.5 13L6.5 11" stroke="white" stroke-width="2"/></svg>
+                                    <span>7th Time Successfully Conducting Mock Tests - Trusted by hundreds of MDCAT aspirants every year.</span>
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="white" stroke-opacity="0.5"/><path d="M13.5 7.5L8.5 13L6.5 11" stroke="white" stroke-width="2"/></svg>
+                                    <span><strong>8 Centers Across Multiple Cities</strong> - Join from the center nearest to you.</span>
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="white" stroke-opacity="0.5"/><path d="M13.5 7.5L8.5 13L6.5 11" stroke="white" stroke-width="2"/></svg>
+                                    <span><strong>Strictly According to Latest PMDC Syllabus</strong> - Stay aligned with the real exam format and content.</span>
+                                </li>
+                                <li>
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="white" stroke-opacity="0.5"/><path d="M13.5 7.5L8.5 13L6.5 11" stroke="white" stroke-width="2"/></svg>
+                                    <span><strong>Real Exam Environment</strong> - Experience the same pressure, timing, and format as the actual MDCAT.</span>
+                                </li>
+                            </ul>
                         </div>
-                        <div style="flex:1; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; text-align: center;">
-                            <p style="font-size: 10px; color: var(--gold);">DEADLINE</p>
-                            <p style="font-weight: 700; font-size: 16px;">13-06-25</p>
+
+                        <div class="centers-dates panel">
+                            <div class="panel-header-simple">
+                                <h3>Centers & Dates</h3>
+                            </div>
+                            <table class="centers-table">
+                                <thead>
+                                    <tr>
+                                        <th>CITY</th>
+                                        <th>DATE</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> LARKANA</span></td>
+                                        <td>27 July 2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> SHIKARPUR</span></td>
+                                        <td>03 August 2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> RANIPUR</span></td>
+                                        <td>03 August 2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> HYDERABAD</span></td>
+                                        <td>10 August 2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> KARACHI</span></td>
+                                        <td>10 August 2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> THUL</span></td>
+                                        <td>10 August 2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> SUKKUR</span></td>
+                                        <td>24 August 2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="city-name"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.5C9 16.5 15.5 12 15.5 7.5C15.5 4.18629 12.8137 1.5 9.5 1.5C6.18629 1.5 3.5 4.18629 3.5 7.5C3.5 12 9 16.5 9 16.5ZM9 10.5C7.61929 10.5 6.5 9.38071 6.5 8C6.5 6.61929 7.61929 5.5 9 5.5C10.3807 5.5 11.5 6.61929 11.5 8C11.5 9.38071 10.3807 10.5 9 10.5Z" fill="#D32F2F"/></svg> DADU</span></td>
+                                        <td>10 August 2025</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="right-col">
+                        <div class="account-details-panel panel">
+                            <div class="panel-header-simple">
+                                <h3>Account Holder (Ehsan Ali)</h3>
+                            </div>
+                            <div class="account easypaisa-account">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="23" height="23" rx="11.5" stroke="#2ecc71" stroke-opacity="0.3"/><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 6C13.66 6 15 7.34 15 9C15 10.66 13.66 12 12 12C10.34 12 9 10.66 9 9C9 7.34 10.34 6 12 6ZM12 20C9.97 20 8.16 19.16 6.84 17.8C7.16 16.92 9.56 16 12 16C14.44 16 16.84 16.92 17.16 17.8C15.84 19.16 14.03 20 12 20Z" fill="#2ecc71"/></svg>
+                                <div class="easypaisa-jazzcash-numbers-cta">easypaisa / Jazz Cash Numbers</div>
+                                <div class="visit-link-cta-prompt">Contact Admin or Check Registration Procedure for Numbers</div>
+                                <table class="account-title-numbers-table">
+                                    <tr>
+                                        <td class="label">Account Title:</td>
+                                        <td class="value">Ehsan Ali (CTS Admin)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Primary easypsaisa:</td>
+                                        <td class="value">[Contact Admin]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="label">Primary Jazz Cash:</td>
+                                        <td class="value">[Contact Admin]</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="procedure panel">
+                            <div class="panel-header-simple">
+                                <h3>Registration Procedure</h3>
+                            </div>
+                            <ol class="procedure-list">
+                                <li>Deposit Your Registration Fee in any of Above Accounts.</li>
+                                <li>Send Screenshot of Transaction on Mentioned Numbers.</li>
+                                <li>You'll be added in CTS Official Groups within 24 Hours.</li>
+                            </ol>
+                        </div>
+
+                        <div class="fee-date-panels">
+                            <div class="fee-panel panel">
+                                <span class="tag-icon">🏷️</span>
+                                <div class="fee-text">
+                                    <p class="pre-fee">REGISTRATION FEE:</p>
+                                    <p class="fee-amount">1000/= ONLY</p>
+                                </div>
+                            </div>
+                            <div class="date-panel panel">
+                                <div class="calendar-icon">📅</div>
+                                <div class="date-text">
+                                    <p class="pre-date">LAST DATE OF REGISTRATION:</p>
+                                    <p class="date-value">13-06-2025</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="center-badge">
-                CTS: The Name of Quality Testing Service
-            </div>
-        </div>
+                <div class="cts-badge">
+                    <p>CTS- The Name of Quality Testing Service</p>
+                </div>
+            </main>
 
-        <div class="footer">
-            <div class="contact-row">
-                <div><span>Dr. Zeeshan Hyder:</span> 03253826307</div>
-                <div><span>Dr. M. Asif Awan:</span> 03252454409</div>
-            </div>
-            <div style="display: flex; justify-content: space-around; opacity: 0.8;">
-                <p>FB: CMCian'S Testing Service</p>
-                <p>Web: tekox.online/cts</p>
-            </div>
+            <footer>
+                <div class="footer-inner">
+                    <div class="contact-section">
+                        <p class="contact-header">CONTACT US</p>
+                    </div>
+                    <div class="contact-details-row">
+                        <div class="contact-item">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92V19.92C22 21.03 21.03 22 19.92 22C17.7 22 15.53 21.2 13.62 19.97C11.83 18.81 10.3 17.29 9.1 15.48C7.88 13.56 7.1 11.41 7.1 9.21C7.1 8.1 8.07 7.13 9.21 7.13H12.21C13.31 7.13 14.28 8.1 14.28 9.21V11.21C14.28 12.31 13.31 13.28 12.21 13.28V14.28C13.31 15.28 14.28 16.21 15.28 17.21L17.21 15.28" stroke="white" stroke-opacity="0.5"/></svg>
+                            <span class="contact-name">Dr. Zeeshan Hyder</span> <span class="contact-num">03253826307</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg ...></svg>
+                            <span class="contact-name">Dr. M. Asif Awan</span> <span class="contact-num">03252454409</span>
+                        </div>
+                        <div class="social-item">
+                            <svg ...></svg>
+                            <span>CMCIAN'S Testing Service</span>
+                        </div>
+                        <div class="social-item">
+                            <svg ...></svg>
+                            <span>CMcian's_Testing_Service</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="downloadBtn" class="download-button">Download Poster (PNG)</button>
+            </footer>
         </div>
     </div>
 
-    <button class="download-btn" onclick="downloadPoster()">Download Poster (PNG)</button>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
 
-    <script>
-        function downloadPoster() {
-            const btn = document.querySelector('.download-btn');
-            btn.innerHTML = "Generating...";
-            
-            html2canvas(document.querySelector("#posterArea"), {
-                scale: 2, // High resolution
-                useCORS: true,
-                allowTaint: true
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'CMCIANS_MDCAT_2025.png';
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                btn.innerHTML = "Download Poster (PNG)";
+            const downloadBtn = document.getElementById('downloadBtn');
+            const posterArea = document.getElementById('posterArea');
+
+            downloadBtn.addEventListener('click', () => {
+                // Change button state to show processing
+                downloadBtn.textContent = "Processing...";
+                downloadBtn.style.opacity = "0.7";
+
+                // Using html2canvas (CDN loaded in header) to capture the poster div
+                html2canvas(posterArea, {
+                    scale: 2, // Capture at high resolution for quality
+                    useCORS: true, // Attempt to load cross-origin images (important for fonts)
+                    backgroundColor: "var(--light-gray)" // Ensure canvas has a clean background artifact match
+                }).then(canvas => {
+                    // Create a virtual anchor element and download the PNG
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL("image/png");
+                    link.download = 'CMCIANS_Testing_SelfAssessment_2025.png';
+                    document.body.appendChild(link); // Required for download in some browsers
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Reset button
+                    downloadBtn.textContent = "Download Poster (PNG)";
+                    downloadBtn.style.opacity = "1";
+                }).catch(err => {
+                    console.error("PNG Download error:", err);
+                    alert("Unable to generate PNG image. Local image files may block browser capture. Try serving file via a simple local server.");
+                    // Reset button
+                    downloadBtn.textContent = "Download Poster (PNG)";
+                    downloadBtn.style.opacity = "1";
+                });
+
             });
-        }
+        });
     </script>
 </body>
 </html>

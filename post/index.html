@@ -3,668 +3,335 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMCian's Testing Service Poster (Single File)</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
-    
+    <title>7th MDCAT Self-Assessment 2025 - CMCian's</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <style>
-        /* Reset */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --primary: #002D4E;
+            --secondary: #00606B;
+            --gold: #FFD700;
+            --white: #ffffff;
+            --text-muted: #e0e0e0;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
+            background-color: #1a1a1a;
             font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
-        }
-
-        /* Maintain the exact poster aspect ratio and size */
-        .poster-canvas {
-            width: 680px; 
-            height: calc(680px * (1111 / 680)); /* AR: ~680x1111 */
-            background-color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow: hidden;
             display: flex;
-            justify-content: center;
-            flex-shrink: 0;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
 
-        .poster-content {
-            width: 100%;
-            height: 100%;
+        /* Poster Container - Standard High-Res Ratio */
+        #posterArea {
+            width: 750px;
+            min-height: 1100px;
+            background: var(--primary);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
         }
 
-        /* HEADER */
-        header {
-            background: linear-gradient(to right, #002D4E, #00606B);
-            color: white;
-            padding: 15px 10px;
-            height: 80px; /* Maintain exact height */
-        }
-
-        .header-inner {
+        /* Top Header */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 100%;
+            padding: 20px 30px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 10;
         }
 
-        .top-logo {
-            height: 100%;
-            width: auto;
-        }
+        .header img { height: 70px; width: auto; }
 
-        .header-text-container {
-            text-align: center;
-            flex-grow: 1;
-        }
+        .header-text { text-align: center; color: var(--white); }
+        .header-text h1 { font-family: 'Oswald', sans-serif; font-size: 28px; letter-spacing: 1px; }
+        .header-text p { font-size: 12px; color: var(--gold); font-weight: 600; text-transform: uppercase; }
 
-        .header-text-container h1 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .header-text-container p {
-            font-size: 11px;
-        }
-
-        /* HERO SECTION */
-        .hero-section {
-            background-size: cover;
-            background-position: center;
-            height: 250px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Hero Image Section */
+        .hero {
+            height: 300px;
+            background: url('image/background.png') center/cover no-repeat;
             position: relative;
-            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        /* Overlay for hero text readability */
-        .hero-section::after {
+        .hero::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.1);
+            background: rgba(0, 45, 78, 0.7);
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            width: 100%;
+        .hero-content { position: relative; z-index: 2; color: var(--white); width: 90%; }
+        .hero-content h2 { font-size: 22px; text-transform: uppercase; }
+        .hero-content .now { 
+            font-size: 80px; 
+            font-weight: 800; 
+            color: var(--gold); 
+            line-height: 1;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
 
-        .test-title-container {
-            padding-bottom: 20px;
-        }
-
-        .pre-title {
-            font-family: 'Oswald', sans-serif;
-            font-size: 26px;
-            font-weight: 700;
-        }
-
-        .now-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 60px;
-            font-weight: 700;
-            color: #FFDE89; /* Pale Gold */
-        }
-
-        .test-gold-box {
-            background-color: #002D4E;
-            border: 3px solid #FFDE89; /* Gold border */
-            border-radius: 20px;
-            width: 90%;
-            margin: 0 auto;
-            padding: 10px 0;
-        }
-
-        .test-gold-box p {
-            font-family: 'Oswald', sans-serif;
+        .title-badge {
+            background: var(--gold);
+            color: var(--primary);
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-weight: 800;
             font-size: 20px;
-            font-weight: 700;
-            color: white;
+            margin-top: 15px;
+            display: inline-block;
         }
 
-        /* MAIN CONTENT DATA AREA */
-        .main-content {
-            background: linear-gradient(to bottom, #002D4E, #00606B);
-            flex-grow: 1;
-            padding: 20px;
-            position: relative;
-        }
-
-        .columns-grid {
+        /* Main Body Content */
+        .main-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 20px;
+            padding: 25px;
+            flex-grow: 1;
         }
 
-        /* PANEL BASIC STYLE */
-        .panel {
-            background-color: rgba(255,255,255,0.05); /* Lighter over dark blue */
-            border-radius: 10px;
+        .card {
+            background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
-            color: white;
+            border-radius: 15px;
             padding: 15px;
-            margin-bottom: 15px;
+            color: var(--white);
         }
 
-        .panel-header {
-            display: flex;
-            align-items: center;
-            border-bottom: 2px solid #FFDE89; /* Gold accent line */
+        .card-title {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
             padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
-
-        .panel-header svg {
-            margin-right: 10px;
-        }
-
-        .panel-header h3, .panel-header-simple h3 {
-            font-size: 18px;
-            font-weight: 700;
+            margin-bottom: 12px;
+            font-family: 'Oswald', sans-serif;
             text-transform: uppercase;
         }
 
-        .panel-header-simple {
-            border-bottom: 2px solid #FFDE89;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
+        /* Tables & Lists */
+        ul { list-style: none; font-size: 13px; line-height: 1.6; }
+        ul li { margin-bottom: 8px; position: relative; padding-left: 20px; }
+        ul li::before { content: '✓'; position: absolute; left: 0; color: var(--gold); font-weight: bold; }
 
-        /* LEFT COL */
-        .why-list li {
-            list-style: none;
-            display: flex;
-            align-items: flex-start;
-            font-size: 11px;
-            margin-bottom: 8px;
-        }
+        .table { width: 100%; font-size: 13px; border-collapse: collapse; }
+        .table th { text-align: left; color: var(--gold); padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .table td { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        .why-list li svg {
-            flex-shrink: 0;
-            margin-right: 8px;
-            margin-top: 2px;
-        }
-
-        .centers-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
-
-        .centers-table th {
-            text-align: left;
-            padding-bottom: 8px;
-            color: #FFDE89;
-            font-size: 10px;
-        }
-
-        .centers-table tr {
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .centers-table td {
-            padding: 8px 0;
-        }
-
-        .city-name {
-            display: flex;
-            align-items: center;
-            font-weight: 700;
-        }
-
-        .city-name svg {
-            margin-right: 5px;
-        }
-
-        /* RIGHT COL */
-        .account {
-            background-color: white;
-            border-radius: 8px;
+        /* Payment Accounts */
+        .account-box {
+            background: var(--white);
+            color: #333;
+            border-radius: 10px;
             padding: 10px;
             margin-bottom: 10px;
-            color: #002D4E;
-        }
-
-        .easypaisa-account {
-            border-left: 5px solid #2ECC71; /* Easypaisa green */
-        }
-
-        .jazzcash-account {
-            border-left: 5px solid #E67E22; /* Jazzcash orange */
-        }
-
-        .account-header {
             display: flex;
             align-items: center;
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #666;
         }
+        .account-box.ep { border-left: 6px solid #2ecc71; }
+        .account-box.jc { border-left: 6px solid #e67e22; }
+        .acc-info h4 { font-size: 18px; color: #000; }
+        .acc-info p { font-size: 11px; color: #666; font-weight: 600; }
 
-        .account-header span {
-            margin-left: 5px;
+        /* Registration Link Section */
+        .reg-link-section {
+            background: var(--gold);
+            color: var(--primary);
+            text-align: center;
+            padding: 15px;
+            font-weight: 800;
+            border-radius: 10px;
+            margin-top: 10px;
         }
+        .reg-link-section p { font-size: 14px; margin-bottom: 2px; }
+        .reg-link-section span { font-size: 22px; text-decoration: underline; }
 
-        .easy-icon, .jazz-icon {
-            width: 20px; height: 20px;
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-weight: 700; font-size: 14px;
+        /* Footer Info */
+        .footer {
+            background: #001a2e;
+            padding: 20px;
+            color: var(--white);
+            font-size: 12px;
         }
-        .easy-icon { background-color: #2ECC71; color: white; }
-        .jazz-icon { background-color: #E67E22; color: white; }
+        .contact-row { display: flex; justify-content: space-around; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 10px; }
+        .contact-row div span { color: var(--gold); font-weight: bold; }
 
-        .account-number {
-            font-family: 'Oswald', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            margin: 5px 0;
-        }
-
-        .account-title {
-            font-size: 11px;
-        }
-
-        .procedure-list {
-            font-size: 11px;
-            padding-left: 15px;
-        }
-
-        .procedure-list li {
-            margin-bottom: 5px;
-        }
-
-        .fee-date-panels {
-            display: flex;
-            gap: 10px;
-        }
-
-        .fee-panel, .date-panel {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0;
-            padding: 10px;
-        }
-
-        .tag-icon, .calendar-icon {
-            font-size: 28px;
-            margin-right: 8px;
-        }
-
-        .fee-text p, .date-text p {
-            margin: 0;
-        }
-
-        .pre-fee, .pre-date {
-            font-size: 10px;
-            color: #FFDE89;
-            text-transform: uppercase;
-        }
-
-        .fee-amount {
-            font-family: 'Oswald', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .date-value {
-            font-family: 'Oswald', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #FFDE89;
-        }
-
-        /* Circular Overlay Badge (CTS) */
-        .cts-badge {
+        /* Circular Badge */
+        .center-badge {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 140px;
-            height: 140px;
+            background: var(--white);
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
-            background-color: white;
-            color: #002D4E;
-            border: 3px solid #FFDE89;
+            border: 4px solid var(--gold);
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 15px;
             font-size: 11px;
-            font-weight: 700;
-            line-height: 1.3;
-        }
-
-        /* FOOTER AREA */
-        footer {
-            background-color: #002D4E;
-            color: white;
+            font-weight: 800;
+            color: var(--primary);
             padding: 15px;
-            margin-top: -1px; /* Overlap slightly with main to prevent gap */
+            z-index: 5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .footer-inner {
-            width: 100%;
-        }
-
-        .contact-section {
-            width: 100%;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
-
-        .contact-header {
-            text-transform: uppercase;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .contact-details-row {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 11px;
-        }
-
-        .contact-item, .social-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .contact-item svg, .social-item svg {
-            margin-right: 5px;
-        }
-
-        .contact-name {
-            font-weight: 700;
-            margin-right: 5px;
-        }
-
-        .social-item {
-            color: #bbb;
-        }
-
-        /* Download Button Style */
-        .download-button {
-            background-color: #002D4E;
-            border: 2px solid #FFDE89;
-            border-radius: 20px;
-            color: #FFDE89;
-            width: 100%;
-            margin-top: 15px;
-            padding: 10px 0;
-            font-family: 'Oswald', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
+        .download-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            background: var(--gold);
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s, opacity 0.2s;
+            font-size: 18px;
+            transition: 0.3s;
         }
+        .download-btn:hover { transform: scale(1.05); }
 
-        .download-button:hover {
-            background-color: #FFDE89;
-            color: #002D4E;
-        }
     </style>
 </head>
 <body>
 
-    <div class="poster-canvas" id="posterArea">
-        <div class="poster-content">
+    <div id="posterArea">
+        <div class="header">
+            <img src="post/logo1.png" alt="Logo 1">
+            <div class="header-text">
+                <h1>CMCIAN'S TESTING SERVICE</h1>
+                <p>Path to Your Medical Success</p>
+            </div>
+            <img src="post/logo2.png" alt="Logo 2">
+        </div>
 
-            <header>
-                <div class="header-inner">
-                    <img src="post/logo1.png" alt="CTS Logo" class="top-logo top-left-logo">
+        <div class="hero">
+            <div class="hero-content">
+                <h2>Registrations are Open</h2>
+                <div class="now">NOW!</div>
+                <div class="title-badge">7TH MDCAT SELF-ASSESSMENT TEST 2025</div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="left-col">
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3 class="card-title">Why Choose Us?</h3>
+                    <ul>
+                        <li>7th Time Successfully Conducting Mock Tests.</li>
+                        <li><strong>8 Centers</strong> Across Multiple Cities.</li>
+                        <li>Strictly According to <strong>Latest PMDC Syllabus</strong>.</li>
+                        <li>Simulate a Real Exam Environment.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Test Centers & Dates</h3>
+                    <table class="table">
+                        <thead>
+                            <tr><th>CITY</th><th>DATE</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>LARKANA</td><td>27 July 2025</td></tr>
+                            <tr><td>SHIKARPUR</td><td>03 August 2025</td></tr>
+                            <tr><td>RANIPUR</td><td>03 August 2025</td></tr>
+                            <tr><td>HYDERABAD</td><td>10 August 2025</td></tr>
+                            <tr><td>KARACHI</td><td>10 August 2025</td></tr>
+                            <tr><td>THUL</td><td>10 August 2025</td></tr>
+                            <tr><td>DADU</td><td>10 August 2025</td></tr>
+                            <tr><td>SUKKUR</td><td>24 August 2025</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="right-col">
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3 class="card-title">Registration Link</h3>
+                    <div class="reg-link-section">
+                        <p>REGISTER ONLINE AT:</p>
+                        <span>tekox.online/cts</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Payment Details</h3>
+                    <div class="account-box ep">
+                        <div class="acc-info">
+                            <p>EASYPAISA</p>
+                            <h4>03292189891</h4>
+                            <p>Title: Ehsan Ali</p>
+                        </div>
+                    </div>
+                    <div class="account-box jc">
+                        <div class="acc-info">
+                            <p>JAZZCASH</p>
+                            <h4>03029127046</h4>
+                            <p>Title: Ehsan Ali</p>
+                        </div>
+                    </div>
                     
-                    <div class="header-text-container">
-                        <h1>CMCIAN'S TESTING SERVICE</h1>
-                        <p>Success doesn't come to you, you go to it!</p>
-                    </div>
-
-                    <img src="post/logo2.png" alt="Uni Logo" class="top-logo top-right-logo">
-                </div>
-            </header>
-
-            <section class="hero-section" style="background-image: url('post/background.png');">
-                <div class="hero-content">
-                    <div class="test-title-container">
-                        <p class="pre-title">REGISTRATIONS ARE OPEN</p>
-                        <p class="now-text">Now!</p>
-                    </div>
-                    <div class="test-gold-box">
-                        <p>7TH MDCAT SELF-ASSESSMENT TEST 2025</p>
-                    </div>
-                </div>
-            </section>
-
-            <main class="main-content">
-                <div class="columns-grid">
-                    
-                    <div class="left-col">
-                        <div class="why-choose panel">
-                            <div class="panel-header">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#B89454" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12 7V17M12 17L15 14M12 17L9 14" stroke="#B89454" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <h3>Why Choose Us?</h3>
-                            </div>
-                            <ul class="why-list">
-                                <li>
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="17" height="17" rx="8.5" stroke="white"/><path d="M11.5 6.5L8.5 11.5L6.5 9.5" stroke="white" stroke-width="2"/></svg>
-                                    <span>7th Time Successfully Conducting Mock Tests - Trusted by hundreds of MDCAT aspirants every year.</span>
-                                </li>
-                                <li>
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="17" height="17" rx="8.5" stroke="white"/><path d="M11.5 6.5L8.5 11.5L6.5 9.5" stroke="white" stroke-width="2"/></svg>
-                                    <span><strong>8 Centers Across Multiple Cities</strong> - Join from the center nearest to you.</span>
-                                </li>
-                                <li>
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="17" height="17" rx="8.5" stroke="white"/><path d="M11.5 6.5L8.5 11.5L6.5 9.5" stroke="white" stroke-width="2"/></svg>
-                                    <span><strong>Strictly According to Latest PMDC Syllabus</strong> - Stay aligned with the real exam format and content.</span>
-                                </li>
-                                <li>
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0.5" y="0.5" width="17" height="17" rx="8.5" stroke="white"/><path d="M11.5 6.5L8.5 11.5L6.5 9.5" stroke="white" stroke-width="2"/></svg>
-                                    <span><strong>Real Exam Environment</strong> - Experience the same pressure, timing, and format as the actual MDCAT.</span>
-                                </li>
-                            </ul>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <div style="flex:1; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                            <p style="font-size: 10px; color: var(--gold);">FEE</p>
+                            <p style="font-weight: 700; font-size: 16px;">1000/=</p>
                         </div>
-
-                        <div class="centers-dates panel">
-                            <div class="panel-header-simple">
-                                <h3>Centers & Dates</h3>
-                            </div>
-                            <table class="centers-table">
-                                <thead>
-                                    <tr>
-                                        <th>CITY</th>
-                                        <th>DATE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><span class="city-name"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21C12 21 21 15 21 9C21 6.61305 20.0518 4.32387 18.364 2.63604C16.6761 0.948211 14.387 0 12 0C9.61305 0 7.32387 0.948211 5.63604 2.63604C3.94821 4.32387 3 6.61305 3 9C3 15 12 21 12 21ZM12 12C11.2044 12 10.4413 11.6839 9.87868 11.1213C9.31607 10.5587 9 9.79565 9 9C9 8.20435 9.31607 7.44129 9.87868 6.87868C10.4413 6.31607 11.2044 6 12 6C12.7957 6 13.5587 6.31607 14.1213 6.87868C14.6839 7.44129 15 8.20435 15 9C15 9.79565 14.6839 10.5587 14.1213 11.1213C13.5587 11.6839 12.7957 12 12 12Z" fill="#D32F2F"/></svg> LARKANA</span></td>
-                                        <td>27 July 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="city-name"><svg ...></svg> SHIKARPUR</span></td>
-                                        <td>03 August 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="city-name"><svg ...></svg> RANIPUR</span></td>
-                                        <td>03 August 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="city-name"><svg ...></svg> HYDERABAD</span></td>
-                                        <td>10 August 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="city-name"><svg ...></svg> KARACHI</span></td>
-                                        <td>10 August 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="city-name"><svg ...></svg> THUL</span></td>
-                                        <td>10 August 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="city-name"><svg ...></svg> SUKKUR</span></td>
-                                        <td>24 August 2025</td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="city-name"><svg ...></svg> DADU</span></td>
-                                        <td>10 August 2025</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="right-col">
-                        <div class="account-details panel">
-                            <div class="panel-header-simple">
-                                <h3>Account Details</h3>
-                            </div>
-                            <div class="accounts">
-                                <div class="account easypaisa-account">
-                                    <div class="account-header">
-                                        <div class="easy-icon">e</div>
-                                        <span>easypaisa</span>
-                                    </div>
-                                    <p class="account-number">03292189891</p>
-                                    <p class="account-title">Account Title: <strong>Ehsan Ali</strong></p>
-                                </div>
-                                <div class="account jazzcash-account">
-                                    <div class="account-header">
-                                        <div class="jazz-icon">J</div>
-                                        <span>Jazz Cash</span>
-                                    </div>
-                                    <p class="account-number">03029127046</p>
-                                    <p class="account-title">Account Title: <strong>Ehsan Ali</strong></p>
-                                }
-                            </div>
-                        </div>
-
-                        <div class="procedure panel">
-                            <div class="panel-header-simple">
-                                <h3>Registration Procedure</h3>
-                            </div>
-                            <ol class="procedure-list">
-                                <li>Deposit Your Registration Fee in any of Above Accounts.</li>
-                                <li>Send Screenshot of Transaction on Mentioned Numbers.</li>
-                                <li>You'll be added in CTS Official Groups within 24 Hours.</li>
-                            </ol>
-                        </div>
-
-                        <div class="fee-date-panels">
-                            <div class="fee-panel panel">
-                                <span class="tag-icon">🏷️</span>
-                                <div class="fee-text">
-                                    <p class="pre-fee">REGISTRATION FEE:</p>
-                                    <p class="fee-amount">1000/= ONLY</p>
-                                </div>
-                            </div>
-                            <div class="date-panel panel">
-                                <div class="calendar-icon">📅</div>
-                                <div class="date-text">
-                                    <p class="pre-date">LAST DATE OF REGISTRATION:</p>
-                                    <p class="date-value">13-06-2025</p>
-                                </div>
-                            </div>
+                        <div style="flex:1; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                            <p style="font-size: 10px; color: var(--gold);">DEADLINE</p>
+                            <p style="font-weight: 700; font-size: 16px;">13-06-25</p>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="cts-badge">
-                    <p>CTS- The Name of Quality Testing Service</p>
-                </div>
-            </main>
+            <div class="center-badge">
+                CTS: The Name of Quality Testing Service
+            </div>
+        </div>
 
-            <footer>
-                <div class="footer-inner">
-                    <div class="contact-section">
-                        <p class="contact-header">CONTACT US</p>
-                    </div>
-                    <div class="contact-details-row">
-                        <div class="contact-item">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 16.92V19.92C22 21.03 21.03 22 19.92 22C17.7 22 15.53 21.2 13.62 19.97C11.83 18.81 10.3 17.29 9.1 15.48C7.88 13.56 7.1 11.41 7.1 9.21C7.1 8.1 8.07 7.13 9.21 7.13H12.21C13.31 7.13 14.28 8.1 14.28 9.21V11.21C14.28 12.31 13.31 13.28 12.21 13.28V14.28C13.31 15.28 14.28 16.21 15.28 17.21L17.21 15.28" stroke="white"/></svg>
-                            <span class="contact-name">Dr. Zeeshan Hyder</span> <span class="contact-num">03253826307</span>
-                        </div>
-                        <div class="contact-item">
-                            <svg ...></svg>
-                            <span class="contact-name">Dr. M. Asif Awan</span> <span class="contact-num">03252454409</span>
-                        </div>
-                        <div class="social-item">
-                            <svg ...></svg>
-                            <span>CMCIAN'S Testing Service</span>
-                        </div>
-                        <div class="social-item">
-                            <svg ...></svg>
-                            <span>CMcian's_Testing_Service</span>
-                        </div>
-                    </div>
-                </div>
-                <button id="downloadBtn" class="download-button">Download Poster (PNG)</button>
-            </footer>
+        <div class="footer">
+            <div class="contact-row">
+                <div><span>Dr. Zeeshan Hyder:</span> 03253826307</div>
+                <div><span>Dr. M. Asif Awan:</span> 03252454409</div>
+            </div>
+            <div style="display: flex; justify-content: space-around; opacity: 0.8;">
+                <p>FB: CMCian'S Testing Service</p>
+                <p>Web: tekox.online/cts</p>
+            </div>
         </div>
     </div>
 
+    <button class="download-btn" onclick="downloadPoster()">Download Poster (PNG)</button>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const downloadBtn = document.getElementById('downloadBtn');
-            const posterArea = document.getElementById('posterArea');
-
-            downloadBtn.addEventListener('click', () => {
-                // Change button state to show processing
-                downloadBtn.textContent = "Processing...";
-                downloadBtn.style.opacity = "0.7";
-
-                // Using html2canvas (CDN loaded in header) to capture the poster div
-                html2canvas(posterArea, {
-                    scale: 2, // Capture at high quality
-                    useCORS: true, // Attempt to load cross-origin images (important for CDN fonts/libs, may help with local files if served via server)
-                    backgroundColor: "#f0f2f5" // Ensure canvas doesn't render with transparent background artifacts from body reset
-                }).then(canvas => {
-                    // Create a virtual anchor element and download the PNG
-                    const link = document.createElement('a');
-                    link.href = canvas.toDataURL("image/png");
-                    link.download = 'CMCIANS_Testing_Poster_2025.png';
-                    document.body.appendChild(link); // Required for download in some browsers
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    // Reset button
-                    downloadBtn.textContent = "Download Poster (PNG)";
-                    downloadBtn.style.opacity = "1";
-                }).catch(err => {
-                    console.error("PNG Download error:", err);
-                    alert("Unable to generate PNG image. Local image files may block browser capture. Try serving file via a simple local server (e.g., Live Server or python -m http.server).");
-                    // Reset button
-                    downloadBtn.textContent = "Download Poster (PNG)";
-                    downloadBtn.style.opacity = "1";
-                });
-
+        function downloadPoster() {
+            const btn = document.querySelector('.download-btn');
+            btn.innerHTML = "Generating...";
+            
+            html2canvas(document.querySelector("#posterArea"), {
+                scale: 2, // High resolution
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'CMCIANS_MDCAT_2025.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                btn.innerHTML = "Download Poster (PNG)";
             });
-        });
+        }
     </script>
 </body>
 </html>

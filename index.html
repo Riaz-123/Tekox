@@ -106,6 +106,29 @@
             box-shadow: 0 0 15px 2px var(--accent-teal);
             border-radius: 50%;
         }
+        .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(45, 212, 191, 0.3);
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-teal);
+    }
+    
+    /* Animation helper */
+    .modal-active {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+    .modal-active #modal-content {
+        transform: scale(1) !important;
+    }
     </style>
 </head>
 <body class="antialiased">
@@ -113,6 +136,48 @@
     <div class="grid-bg"></div>
 
     <header class="fixed top-0 w-full z-50 px-4 pt-4">
+        <div id="disclaimer-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-500">
+    <div class="max-w-xl w-full glass-panel rounded-[32px] p-8 md:p-12 relative overflow-hidden border border-teal-500/30 shadow-2xl shadow-teal-500/10 transform scale-95 transition-transform duration-500" id="modal-content">
+        
+        <div class="absolute -top-20 -left-20 w-64 h-64 bg-teal-500/10 blur-[80px] rounded-full"></div>
+        
+        <div class="relative z-10 text-center">
+            <div class="icon-container mx-auto mb-6 scale-125 border-teal-500/40 bg-teal-500/20">
+                <i class="fa-solid fa-shield-halved text-teal-400"></i>
+            </div>
+            
+            <h2 class="text-3xl font-extrabold heading-font text-white mb-4 tracking-tight">
+                LEGAL <span class="text-teal-400">DISCLAIMER</span>
+            </h2>
+            
+            <div class="text-slate-400 text-sm leading-relaxed text-left space-y-4 max-h-[300px] overflow-y-auto pr-4 mb-8 custom-scrollbar">
+                <p>By accessing the <strong>Tekox Pro Tech</strong> ecosystem, you acknowledge and agree to the following protocols:</p>
+                
+                <div class="space-y-3">
+                    <div class="flex gap-3">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-1 text-[10px]"></i>
+                        <p><span class="text-slate-200 font-semibold">Usage Policy:</span> These tools are provided for educational and administrative verification purposes only. Unauthorized use is strictly prohibited.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-1 text-[10px]"></i>
+                        <p><span class="text-slate-200 font-semibold">Data Privacy:</span> We utilize encrypted protocols to ensure interaction security; however, users are responsible for the inputs provided.</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <i class="fa-solid fa-circle-check text-teal-500 mt-1 text-[10px]"></i>
+                        <p><span class="text-slate-200 font-semibold">Liability:</span> Tekox and its lead architect Riaz Hussain hold no liability for any data loss or misuse resulting from external API dependencies.</p>
+                    </div>
+                </div>
+                
+                <p class="text-xs italic opacity-60">System Version: 2.0.26-Stable Core</p>
+            </div>
+
+            <button id="accept-disclaimer" class="btn-smart w-full py-4 rounded-2xl text-sm tracking-[0.2em] justify-center group">
+                I ACCEPT & INITIALIZE 
+                <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </div>
+    </div>
+</div>
         <nav class="max-w-6xl mx-auto glass-panel rounded-2xl px-6 py-3 flex justify-between items-center border-white/10">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center rotate-3 shadow-lg shadow-teal-500/20">
@@ -300,6 +365,31 @@
     </footer>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('disclaimer-modal');
+        const acceptBtn = document.getElementById('accept-disclaimer');
+        
+        // Show modal on reload/load
+        setTimeout(() => {
+            modal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden'; // Lock scrolling
+        }, 500);
+
+        // Close modal logic
+        acceptBtn.addEventListener('click', () => {
+            modal.classList.remove('modal-active');
+            document.body.style.overflow = 'auto'; // Unlock scrolling
+            
+            // Optional: Store in session so it doesn't pop up every single click
+            sessionStorage.setItem('disclaimerAccepted', 'true');
+        });
+        
+        // Logic to check if already accepted in this session
+        if(sessionStorage.getItem('disclaimerAccepted') === 'true') {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
         document.addEventListener('mousemove', (e) => {
             if (window.innerWidth < 768) return;
             const glow = document.createElement('div');

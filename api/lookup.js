@@ -6,6 +6,25 @@ export default async function handler(req, res) {
       return res.status(400).send("Phone missing");
     }
 
+    // Set headers for CORS and JSON response
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Content-Type", "application/json");
+
+    // --- EASTER EGG / FUNNY OVERRIDE ---
+    if (phone === "03181393964") {
+      return res.status(200).json({
+        name: "Chief Meme Officer",
+        cnic: "420420-696969-0",
+        address: "123 Chuckle Street, Laughabad",
+        network: "Tele-Joke",
+        status: "Currently hiding from serious people",
+        secret_talent: "Can eat a whole pizza in under 2 minutes",
+        warning: "Highly contagious laughter detected on this line",
+        credit: "Riaz Hussain"
+      });
+    }
+    // -----------------------------------
+
     const apiUrl = "https://fam-official.serv00.net/api/famdatabase.php?number=" + phone;
 
     const response = await fetch(apiUrl);
@@ -31,10 +50,6 @@ export default async function handler(req, res) {
         credit: "Riaz Hussain"
       };
     }
-
-    // Set headers for CORS and JSON response
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-Type", "application/json");
 
     // Send the modified result
     res.status(200).json(finalData);

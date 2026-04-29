@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casio fx-991ES PLUS Emulator</title>
+    <title>Casio fx-991ES PLUS - Advanced Emulator</title>
     <style>
         :root {
             --calc-bg: #c9ccd3;
@@ -12,8 +12,8 @@
             --btn-gray: #5c5f66;
             --btn-white: #e8e8e8;
             --btn-del-ac: #ff6b6b;
-            --btn-shift: #ffd700;
-            --btn-alpha: #ff4d4d;
+            --btn-shift: #d69e2e; /* Slightly darker gold for readability on gray */
+            --btn-alpha: #e53e3e; /* Red */
         }
 
         body {
@@ -27,11 +27,11 @@
         }
 
         .calculator {
-            background: linear-gradient(to bottom, #d4d8e1, #a4a7ae);
+            background: linear-gradient(to bottom, #e2e5ec, #a4a7ae);
             padding: 25px 20px;
             border-radius: 30px;
             box-shadow: 0 15px 30px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.8);
-            width: 320px;
+            width: 340px;
             border: 2px solid #888;
         }
 
@@ -46,45 +46,90 @@
             color: #333;
         }
 
-        .model {
-            font-size: 12px;
-            font-weight: normal;
-        }
+        .model { font-size: 12px; font-weight: normal; }
 
         .screen-container {
             background: #4a4a4a;
             padding: 10px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .screen {
             background-color: var(--screen-bg);
-            height: 70px;
+            height: 80px;
             border-radius: 5px;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
-            text-align: right;
-            padding: 10px;
+            padding: 5px 10px;
             box-sizing: border-box;
             font-family: 'Courier New', Courier, monospace;
+            position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end;
+            text-align: right;
         }
 
-        .screen-history {
-            font-size: 14px;
-            color: #222;
-            min-height: 16px;
+        /* Small screen indicators (S, A, M, MATH) */
+        .indicators {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .indicator { opacity: 0.1; }
+        .indicator.active { opacity: 1; }
+
+        .screen-history { font-size: 14px; color: #333; min-height: 16px; margin-bottom: 5px; text-align: left; }
+        .screen-input { font-size: 24px; color: #000; font-weight: bold; word-wrap: break-word; }
+
+        /* Mode Menu styling */
+        .mode-menu {
+            position: absolute;
+            top: 15px; left: 10px; right: 10px; bottom: 5px;
+            background: var(--screen-bg);
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            font-size: 12px;
+            text-align: left;
+            z-index: 10;
+        }
+        .mode-menu.active { display: grid; }
+
+        /* Buttons Structure */
+        .btn-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            margin-top: 15px; /* Space for the labels above */
         }
 
-        .screen-input {
-            font-size: 24px;
-            color: #000;
+        /* The labels printed on the calculator body */
+        .btn-wrapper::before {
+            content: attr(data-shift);
+            position: absolute;
+            top: -16px;
+            left: 2px;
+            color: var(--btn-shift);
+            font-size: 10px;
             font-weight: bold;
         }
 
-        /* Button Grids */
+        .btn-wrapper::after {
+            content: attr(data-alpha);
+            position: absolute;
+            top: -16px;
+            right: 2px;
+            color: var(--btn-alpha);
+            font-size: 10px;
+            font-weight: bold;
+        }
+
         button {
             border: none;
             border-radius: 5px;
@@ -93,61 +138,37 @@
             box-shadow: 0 3px 0 rgba(0,0,0,0.3);
             transition: transform 0.1s, box-shadow 0.1s;
             font-size: 12px;
+            width: 100%;
             padding: 8px 0;
         }
 
-        button:active {
-            transform: translateY(3px);
-            box-shadow: 0 0 0 rgba(0,0,0,0.3);
-        }
+        button:active { transform: translateY(3px); box-shadow: 0 0 0 rgba(0,0,0,0.3); }
 
-        .top-functions {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .nav-pad {
-            grid-column: 3 / 4;
-            grid-row: 1 / 3;
-            background: var(--btn-dark);
-            border-radius: 50%;
-            height: 60px;
-            width: 60px;
-            position: relative;
-            margin: -5px auto 0;
-        }
-
-        .btn-shift { background-color: var(--btn-shift); color: #000; }
-        .btn-alpha { background-color: var(--btn-alpha); color: #fff; }
-        .btn-mode { background-color: var(--btn-dark); color: #fff; }
-        .btn-on { background-color: var(--btn-dark); color: #fff; }
+        .top-functions { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 10px; }
         
-        .sci-functions {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
+        .nav-pad {
+            grid-column: 3 / 4; grid-row: 1 / 3;
+            background: var(--btn-dark); border-radius: 50%;
+            height: 65px; width: 65px; margin: 0 auto;
+            box-shadow: inset 0 0 5px #000;
         }
 
-        .btn-sci {
-            background-color: var(--btn-dark);
-            color: #fff;
-            border-radius: 8px;
-            padding: 6px 0;
-            font-size: 11px;
-        }
+        .btn-shift-btn { background-color: var(--btn-shift); color: #000; border-radius: 10px; }
+        .btn-alpha-btn { background-color: var(--btn-alpha); color: #fff; border-radius: 10px;}
+        .btn-mode { background-color: var(--btn-dark); color: #fff; border-radius: 10px;}
+        .btn-on { background-color: var(--btn-dark); color: #fff; border-radius: 10px;}
+        
+        .sci-functions { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 20px; }
+        .btn-sci { background-color: var(--btn-dark); color: #fff; border-radius: 6px; padding: 7px 0; font-size: 11px; }
 
-        .numpad {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-        }
-
+        .numpad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
         .btn-num { background-color: var(--btn-white); color: #000; font-size: 16px; }
         .btn-op { background-color: var(--btn-white); color: #000; font-size: 16px; }
         .btn-del, .btn-ac { background-color: var(--btn-del-ac); color: #fff; }
+
+        /* Specific alignment adjustments */
+        .numpad .btn-wrapper { margin-top: 0; }
+        .numpad .btn-wrapper::before, .numpad .btn-wrapper::after { top: -14px; font-size: 9px; }
     </style>
 </head>
 <body>
@@ -160,64 +181,101 @@
 
     <div class="screen-container">
         <div class="screen">
+            <div class="indicators">
+                <span class="indicator" id="ind-s">S</span>
+                <span class="indicator" id="ind-a">A</span>
+                <span class="indicator active">Math</span>
+            </div>
+            
+            <div class="mode-menu" id="modeMenu">
+                <div>1:COMP</div><div>2:CMPLX</div>
+                <div>3:STAT</div><div>4:BASE-N</div>
+                <div>5:EQN</div><div>6:MATRIX</div>
+                <div>7:TABLE</div><div>8:VECTOR</div>
+            </div>
+
             <div class="screen-history" id="history"></div>
             <div class="screen-input" id="display">0</div>
         </div>
     </div>
 
     <div class="top-functions">
-        <button class="btn-shift" onclick="insert('SHIFT')">SHIFT</button>
-        <button class="btn-alpha" onclick="insert('ALPHA')">ALPHA</button>
-        <div class="nav-pad"></div> <button class="btn-mode" onclick="insert('MODE')">MODE</button>
+        <button class="btn-shift-btn" onclick="toggleShift()">SHIFT</button>
+        <button class="btn-alpha-btn" onclick="toggleAlpha()">ALPHA</button>
+        <div class="nav-pad"></div>
+        <button class="btn-mode" onclick="toggleMode()">MODE</button>
         <button class="btn-on" onclick="clearAll()">ON</button>
     </div>
 
     <div class="sci-functions">
-        <button class="btn-sci" onclick="insert('calc')">CALC</button>
-        <button class="btn-sci" onclick="insert('∫(')">∫</button>
-        <button class="btn-sci" onclick="insert('^-1')">x⁻¹</button>
-        <button class="btn-sci" onclick="insert('log(')">log</button>
-        <button class="btn-sci" onclick="insert('frac')">■/□</button>
-        <button class="btn-sci" onclick="insert('√(')">√</button>
+        <div class="btn-wrapper" data-shift="Solve" data-alpha="=">
+            <button class="btn-sci" data-val="calc" data-shift-val="solve(" data-alpha-val="=" onclick="btnPress(this)">CALC</button>
+        </div>
+        <div class="btn-wrapper" data-shift="d/dx" data-alpha=":">
+            <button class="btn-sci" data-val="∫(" data-shift-val="d/dx(" data-alpha-val=":" onclick="btnPress(this)">∫</button>
+        </div>
+        <div class="btn-wrapper" data-shift="x!" data-alpha="">
+            <button class="btn-sci" data-val="^-1" data-shift-val="!" onclick="btnPress(this)">x⁻¹</button>
+        </div>
+        <div class="btn-wrapper" data-shift="10^■" data-alpha="">
+            <button class="btn-sci" data-val="log(" data-shift-val="10^" onclick="btnPress(this)">log</button>
+        </div>
+        <div class="btn-wrapper" data-shift="e^■" data-alpha="">
+            <button class="btn-sci" data-val="ln(" data-shift-val="e^" onclick="btnPress(this)">ln</button>
+        </div>
+        <div class="btn-wrapper" data-shift="∛" data-alpha="">
+            <button class="btn-sci" data-val="√(" data-shift-val="∛(" onclick="btnPress(this)">√</button>
+        </div>
         
-        <button class="btn-sci" onclick="insert('^2')">x²</button>
-        <button class="btn-sci" onclick="insert('^')">x^■</button>
-        <button class="btn-sci" onclick="insert('ln(')">ln</button>
-        <button class="btn-sci" onclick="insert('sin(')">sin</button>
-        <button class="btn-sci" onclick="insert('cos(')">cos</button>
-        <button class="btn-sci" onclick="insert('tan(')">tan</button>
-
-        <button class="btn-sci" onclick="insert('(-)')">(-)</button>
-        <button class="btn-sci" onclick="insert('°\'&quot;')">°'\"</button>
-        <button class="btn-sci" onclick="insert('hyp')">hyp</button>
-        <button class="btn-sci" onclick="insert('(')">(</button>
-        <button class="btn-sci" onclick="insert(')')">)</button>
-        <button class="btn-sci" onclick="insert('S<=>D')">S⇔D</button>
+        <div class="btn-wrapper" data-shift="x³" data-alpha="">
+            <button class="btn-sci" data-val="^2" data-shift-val="^3" onclick="btnPress(this)">x²</button>
+        </div>
+        <div class="btn-wrapper" data-shift="ˣ√" data-alpha="">
+            <button class="btn-sci" data-val="^" data-shift-val="ˣ√(" onclick="btnPress(this)">x^■</button>
+        </div>
+        <div class="btn-wrapper" data-shift="sin⁻¹" data-alpha="D">
+            <button class="btn-sci" data-val="sin(" data-shift-val="asin(" data-alpha-val="D" onclick="btnPress(this)">sin</button>
+        </div>
+        <div class="btn-wrapper" data-shift="cos⁻¹" data-alpha="E">
+            <button class="btn-sci" data-val="cos(" data-shift-val="acos(" data-alpha-val="E" onclick="btnPress(this)">cos</button>
+        </div>
+        <div class="btn-wrapper" data-shift="tan⁻¹" data-alpha="F">
+            <button class="btn-sci" data-val="tan(" data-shift-val="atan(" data-alpha-val="F" onclick="btnPress(this)">tan</button>
+        </div>
+        <div class="btn-wrapper" data-shift="%" data-alpha="X">
+            <button class="btn-sci" data-val="(" data-shift-val="%" data-alpha-val="X" onclick="btnPress(this)">(</button>
+        </div>
+        <div class="btn-wrapper" data-shift="," data-alpha="Y">
+            <button class="btn-sci" data-val=")" data-shift-val="," data-alpha-val="Y" onclick="btnPress(this)">)</button>
+        </div>
+        <div class="btn-wrapper" data-shift="M-" data-alpha="M">
+            <button class="btn-sci" data-val="M+" data-shift-val="M-" data-alpha-val="M" onclick="btnPress(this)">M+</button>
+        </div>
     </div>
 
     <div class="numpad">
-        <button class="btn-num" onclick="insert('7')">7</button>
-        <button class="btn-num" onclick="insert('8')">8</button>
-        <button class="btn-num" onclick="insert('9')">9</button>
+        <div class="btn-wrapper" data-shift="CONST"><button class="btn-num" data-val="7" data-shift-val="CONST" onclick="btnPress(this)">7</button></div>
+        <div class="btn-wrapper" data-shift="CONV"><button class="btn-num" data-val="8" data-shift-val="CONV" onclick="btnPress(this)">8</button></div>
+        <div class="btn-wrapper" data-shift="CLR"><button class="btn-num" data-val="9" data-shift-val="CLR" onclick="btnPress(this)">9</button></div>
         <button class="btn-del" onclick="deleteLast()">DEL</button>
         <button class="btn-ac" onclick="clearAll()">AC</button>
 
-        <button class="btn-num" onclick="insert('4')">4</button>
-        <button class="btn-num" onclick="insert('5')">5</button>
-        <button class="btn-num" onclick="insert('6')">6</button>
-        <button class="btn-op" onclick="insert('*')">×</button>
-        <button class="btn-op" onclick="insert('/')">÷</button>
+        <div class="btn-wrapper" data-shift="MATRIX"><button class="btn-num" data-val="4" onclick="btnPress(this)">4</button></div>
+        <div class="btn-wrapper" data-shift="VECTOR"><button class="btn-num" data-val="5" onclick="btnPress(this)">5</button></div>
+        <div class="btn-wrapper"><button class="btn-num" data-val="6" onclick="btnPress(this)">6</button></div>
+        <div class="btn-wrapper" data-shift="nPr"><button class="btn-op" data-val="*" data-shift-val="P" onclick="btnPress(this)">×</button></div>
+        <div class="btn-wrapper" data-shift="nCr"><button class="btn-op" data-val="/" data-shift-val="C" onclick="btnPress(this)">÷</button></div>
 
-        <button class="btn-num" onclick="insert('1')">1</button>
-        <button class="btn-num" onclick="insert('2')">2</button>
-        <button class="btn-num" onclick="insert('3')">3</button>
-        <button class="btn-op" onclick="insert('+')">+</button>
-        <button class="btn-op" onclick="insert('-')">-</button>
+        <div class="btn-wrapper" data-shift="STAT/DIST"><button class="btn-num" data-val="1" onclick="btnPress(this)">1</button></div>
+        <div class="btn-wrapper" data-shift="CMPLX"><button class="btn-num" data-val="2" onclick="btnPress(this)">2</button></div>
+        <div class="btn-wrapper" data-shift="BASE"><button class="btn-num" data-val="3" onclick="btnPress(this)">3</button></div>
+        <div class="btn-wrapper" data-shift="Pol"><button class="btn-op" data-val="+" data-shift-val="Pol(" onclick="btnPress(this)">+</button></div>
+        <div class="btn-wrapper" data-shift="Rec"><button class="btn-op" data-val="-" data-shift-val="Rec(" onclick="btnPress(this)">-</button></div>
 
-        <button class="btn-num" onclick="insert('0')">0</button>
-        <button class="btn-num" onclick="insert('.')">.</button>
-        <button class="btn-num" onclick="insert('*10^')">x10ˣ</button>
-        <button class="btn-num" onclick="insert('Ans')">Ans</button>
+        <div class="btn-wrapper"><button class="btn-num" data-val="0" onclick="btnPress(this)">0</button></div>
+        <div class="btn-wrapper"><button class="btn-num" data-val="." onclick="btnPress(this)">.</button></div>
+        <div class="btn-wrapper" data-shift="π" data-alpha="e"><button class="btn-num" data-val="*10^" data-shift-val="π" data-alpha-val="e" onclick="btnPress(this)">x10ˣ</button></div>
+        <div class="btn-wrapper" data-shift="DRG►"><button class="btn-num" data-val="Ans" onclick="btnPress(this)">Ans</button></div>
         <button class="btn-num" onclick="calculate()" style="background: #e8e8e8;">=</button>
     </div>
 </div>
@@ -225,30 +283,104 @@
 <script>
     let display = document.getElementById('display');
     let history = document.getElementById('history');
-    let isCalculated = false;
+    let modeMenu = document.getElementById('modeMenu');
+    let indS = document.getElementById('ind-s');
+    let indA = document.getElementById('ind-a');
 
-    // Insert text into the screen
-    function insert(value) {
-        if (isCalculated && !isNaN(value)) {
-            display.innerText = value;
+    let isShift = false;
+    let isAlpha = false;
+    let isCalculated = false;
+    let inModeMenu = false;
+
+    // Toggle SHIFT State
+    function toggleShift() {
+        isShift = !isShift;
+        isAlpha = false; // Mutually exclusive
+        updateIndicators();
+    }
+
+    // Toggle ALPHA State
+    function toggleAlpha() {
+        isAlpha = !isAlpha;
+        isShift = false; // Mutually exclusive
+        updateIndicators();
+    }
+
+    // Update screen UI for Shift/Alpha
+    function updateIndicators() {
+        isShift ? indS.classList.add('active') : indS.classList.remove('active');
+        isAlpha ? indA.classList.add('active') : indA.classList.remove('active');
+    }
+
+    // Toggle Mode Menu (Fake OS logic)
+    function toggleMode() {
+        inModeMenu = !inModeMenu;
+        if (inModeMenu) {
+            modeMenu.classList.add('active');
+            display.style.opacity = '0';
+            history.style.opacity = '0';
+        } else {
+            modeMenu.classList.remove('active');
+            display.style.opacity = '1';
+            history.style.opacity = '1';
+        }
+    }
+
+    // Universal button press handler using data-attributes
+    function btnPress(btnElement) {
+        let valToInsert = btnElement.dataset.val;
+
+        // If in Mode Menu, selecting a number closes the menu and acts as selection
+        if (inModeMenu) {
+            if (!isNaN(valToInsert)) {
+                toggleMode(); 
+                clearAll();
+                history.innerText = "Mode set to " + valToInsert;
+                return;
+            }
+        }
+
+        // Apply Shift or Alpha logic based on current state
+        if (isShift && btnElement.dataset.shiftVal) {
+            valToInsert = btnElement.dataset.shiftVal;
+            isShift = false; // Reset shift after use
+        } else if (isAlpha && btnElement.dataset.alphaVal) {
+            valToInsert = btnElement.dataset.alphaVal;
+            isAlpha = false; // Reset alpha after use
+        } else {
+            // If they pressed a button that has no shift/alpha mapping, just reset the states anyway
+            isShift = false;
+            isAlpha = false;
+        }
+
+        updateIndicators(); // Re-render the little screen icons
+
+        // Handle calculation reset
+        if (isCalculated && !isNaN(valToInsert) && valToInsert !== '(') {
+            display.innerText = valToInsert;
             isCalculated = false;
         } else {
-            if (display.innerText === '0') {
-                display.innerText = value;
+            if (display.innerText === '0' && valToInsert !== '.' && valToInsert !== '^+') {
+                display.innerText = valToInsert;
             } else {
-                display.innerText += value;
+                display.innerText += valToInsert;
             }
         }
     }
 
-    // Clear everything (AC/ON)
     function clearAll() {
         display.innerText = '0';
         history.innerText = '';
         isCalculated = false;
+        inModeMenu = false;
+        modeMenu.classList.remove('active');
+        display.style.opacity = '1';
+        history.style.opacity = '1';
+        isShift = false;
+        isAlpha = false;
+        updateIndicators();
     }
 
-    // Backspace (DEL)
     function deleteLast() {
         if (display.innerText.length > 1) {
             display.innerText = display.innerText.slice(0, -1);
@@ -257,32 +389,38 @@
         }
     }
 
-    // Calculate engine
+    // Engine
     function calculate() {
         let expression = display.innerText;
         history.innerText = expression + '=';
 
         try {
-            // Replace visual operators with JS operators
+            // Replace visual logic with JS Math logic
             let parseableMath = expression
                 .replace(/×/g, '*')
                 .replace(/÷/g, '/')
-                .replace(/\^/g, '**');
+                .replace(/\^/g, '**')
+                .replace(/π/g, 'Math.PI')
+                .replace(/e\^/g, 'Math.exp(')
+                .replace(/e/g, 'Math.E');
 
-            // Handle basic scientific functions (sin, cos, tan, log, ln, sqrt)
-            // Note: A true fx-991ES plus parses trig functions in Degrees or Rads based on mode. 
-            // This is a basic implementation using native JS Math (which is in radians).
+            // Standard Trig & Logs
+            parseableMath = parseableMath.replace(/asin\(/g, 'Math.asin(');
+            parseableMath = parseableMath.replace(/acos\(/g, 'Math.acos(');
+            parseableMath = parseableMath.replace(/atan\(/g, 'Math.atan(');
             parseableMath = parseableMath.replace(/sin\(/g, 'Math.sin(');
             parseableMath = parseableMath.replace(/cos\(/g, 'Math.cos(');
             parseableMath = parseableMath.replace(/tan\(/g, 'Math.tan(');
             parseableMath = parseableMath.replace(/log\(/g, 'Math.log10(');
             parseableMath = parseableMath.replace(/ln\(/g, 'Math.log(');
+            
+            // Roots
             parseableMath = parseableMath.replace(/√\(/g, 'Math.sqrt(');
+            parseableMath = parseableMath.replace(/∛\(/g, 'Math.cbrt(');
 
-            // Execute math
             let result = eval(parseableMath);
 
-            // Handle JS precision quirks (e.g., 0.1 + 0.2)
+            // Precision fix
             result = Math.round(result * 1e12) / 1e12; 
 
             display.innerText = result;

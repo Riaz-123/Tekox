@@ -3,187 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nPr vs nCr Visualizer</title>
+    <title>Casio fx-991ES PLUS Emulator</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --secondary: #ec4899;
-            --bg: #f8fafc;
-            --card: #ffffff;
+            --calc-bg: #c9ccd3;
+            --screen-bg: #8ba28f;
+            --btn-dark: #2a2a2a;
+            --btn-gray: #5c5f66;
+            --btn-white: #e8e8e8;
+            --btn-del-ac: #ff6b6b;
+            --btn-shift: #ffd700;
+            --btn-alpha: #ff4d4d;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
             display: flex;
             justify-content: center;
-            padding: 20px;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #222;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
         }
 
-        .container {
-            background: var(--card);
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
+        .calculator {
+            background: linear-gradient(to bottom, #d4d8e1, #a4a7ae);
+            padding: 25px 20px;
+            border-radius: 30px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.8);
+            width: 320px;
+            border: 2px solid #888;
         }
 
-        h2 { text-align: center; color: #1e293b; margin-top: 0; }
+        .brand {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 14px;
+            color: #333;
+        }
 
-        .input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .model {
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        .screen-container {
+            background: #4a4a4a;
+            padding: 10px;
+            border-radius: 10px;
             margin-bottom: 20px;
         }
 
-        label { display: block; font-size: 0.875rem; font-weight: 600; color: #475569; }
-
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            margin-top: 4px;
-            box-sizing: border-box;
-        }
-
-        .results {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .card {
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            color: white;
-        }
-
-        .npr-card { background-color: var(--primary); }
-        .ncr-card { background-color: var(--secondary); }
-
-        .val { font-size: 1.5rem; font-weight: bold; display: block; }
-        .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* Visualization Bar */
-        .viz-container {
-            height: 200px;
-            display: flex;
-            align-items: flex-end;
-            gap: 20px;
+        .screen {
+            background-color: var(--screen-bg);
+            height: 70px;
+            border-radius: 5px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3);
+            text-align: right;
             padding: 10px;
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 10px;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .bar {
-            flex: 1;
-            transition: height 0.3s ease;
-            border-radius: 4px 4px 0 0;
+        .screen-history {
+            font-size: 14px;
+            color: #222;
+            min-height: 16px;
+        }
+
+        .screen-input {
+            font-size: 24px;
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Button Grids */
+        button {
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+            transition: transform 0.1s, box-shadow 0.1s;
+            font-size: 12px;
+            padding: 8px 0;
+        }
+
+        button:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0 rgba(0,0,0,0.3);
+        }
+
+        .top-functions {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .nav-pad {
+            grid-column: 3 / 4;
+            grid-row: 1 / 3;
+            background: var(--btn-dark);
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
             position: relative;
+            margin: -5px auto 0;
         }
 
-        .bar-npr { background-color: var(--primary); }
-        .bar-ncr { background-color: var(--secondary); }
-
-        .error {
-            color: #ef4444;
-            font-size: 0.8rem;
-            text-align: center;
-            margin-bottom: 10px;
-            display: none;
+        .btn-shift { background-color: var(--btn-shift); color: #000; }
+        .btn-alpha { background-color: var(--btn-alpha); color: #fff; }
+        .btn-mode { background-color: var(--btn-dark); color: #fff; }
+        .btn-on { background-color: var(--btn-dark); color: #fff; }
+        
+        .sci-functions {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
         }
+
+        .btn-sci {
+            background-color: var(--btn-dark);
+            color: #fff;
+            border-radius: 8px;
+            padding: 6px 0;
+            font-size: 11px;
+        }
+
+        .numpad {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .btn-num { background-color: var(--btn-white); color: #000; font-size: 16px; }
+        .btn-op { background-color: var(--btn-white); color: #000; font-size: 16px; }
+        .btn-del, .btn-ac { background-color: var(--btn-del-ac); color: #fff; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Permutations vs Combinations</h2>
-    
-    <div class="input-group">
-        <div>
-            <label>Total Items (n)</label>
-            <input type="number" id="n-input" value="5" min="0" max="20">
-        </div>
-        <div>
-            <label>Items to Pick (r)</label>
-            <input type="number" id="r-input" value="3" min="0" max="20">
+<div class="calculator">
+    <div class="brand">
+        <span>CASIO</span>
+        <span class="model">fx-991ES PLUS</span>
+    </div>
+
+    <div class="screen-container">
+        <div class="screen">
+            <div class="screen-history" id="history"></div>
+            <div class="screen-input" id="display">0</div>
         </div>
     </div>
 
-    <div id="error-msg" class="error">r cannot be greater than n!</div>
-
-    <div class="viz-container">
-        <div id="npr-bar" class="bar bar-npr" style="height: 0%;"></div>
-        <div id="ncr-bar" class="bar bar-ncr" style="height: 0%;"></div>
+    <div class="top-functions">
+        <button class="btn-shift" onclick="insert('SHIFT')">SHIFT</button>
+        <button class="btn-alpha" onclick="insert('ALPHA')">ALPHA</button>
+        <div class="nav-pad"></div> <button class="btn-mode" onclick="insert('MODE')">MODE</button>
+        <button class="btn-on" onclick="clearAll()">ON</button>
     </div>
 
-    <div class="results">
-        <div class="card npr-card">
-            <span class="label">nPr</span>
-            <span id="npr-val" class="val">0</span>
-        </div>
-        <div class="card ncr-card">
-            <span class="label">nCr</span>
-            <span id="ncr-val" class="val">0</span>
-        </div>
+    <div class="sci-functions">
+        <button class="btn-sci" onclick="insert('calc')">CALC</button>
+        <button class="btn-sci" onclick="insert('∫(')">∫</button>
+        <button class="btn-sci" onclick="insert('^-1')">x⁻¹</button>
+        <button class="btn-sci" onclick="insert('log(')">log</button>
+        <button class="btn-sci" onclick="insert('frac')">■/□</button>
+        <button class="btn-sci" onclick="insert('√(')">√</button>
+        
+        <button class="btn-sci" onclick="insert('^2')">x²</button>
+        <button class="btn-sci" onclick="insert('^')">x^■</button>
+        <button class="btn-sci" onclick="insert('ln(')">ln</button>
+        <button class="btn-sci" onclick="insert('sin(')">sin</button>
+        <button class="btn-sci" onclick="insert('cos(')">cos</button>
+        <button class="btn-sci" onclick="insert('tan(')">tan</button>
+
+        <button class="btn-sci" onclick="insert('(-)')">(-)</button>
+        <button class="btn-sci" onclick="insert('°\'&quot;')">°'\"</button>
+        <button class="btn-sci" onclick="insert('hyp')">hyp</button>
+        <button class="btn-sci" onclick="insert('(')">(</button>
+        <button class="btn-sci" onclick="insert(')')">)</button>
+        <button class="btn-sci" onclick="insert('S<=>D')">S⇔D</button>
+    </div>
+
+    <div class="numpad">
+        <button class="btn-num" onclick="insert('7')">7</button>
+        <button class="btn-num" onclick="insert('8')">8</button>
+        <button class="btn-num" onclick="insert('9')">9</button>
+        <button class="btn-del" onclick="deleteLast()">DEL</button>
+        <button class="btn-ac" onclick="clearAll()">AC</button>
+
+        <button class="btn-num" onclick="insert('4')">4</button>
+        <button class="btn-num" onclick="insert('5')">5</button>
+        <button class="btn-num" onclick="insert('6')">6</button>
+        <button class="btn-op" onclick="insert('*')">×</button>
+        <button class="btn-op" onclick="insert('/')">÷</button>
+
+        <button class="btn-num" onclick="insert('1')">1</button>
+        <button class="btn-num" onclick="insert('2')">2</button>
+        <button class="btn-num" onclick="insert('3')">3</button>
+        <button class="btn-op" onclick="insert('+')">+</button>
+        <button class="btn-op" onclick="insert('-')">-</button>
+
+        <button class="btn-num" onclick="insert('0')">0</button>
+        <button class="btn-num" onclick="insert('.')">.</button>
+        <button class="btn-num" onclick="insert('*10^')">x10ˣ</button>
+        <button class="btn-num" onclick="insert('Ans')">Ans</button>
+        <button class="btn-num" onclick="calculate()" style="background: #e8e8e8;">=</button>
     </div>
 </div>
 
 <script>
-    const nInput = document.getElementById('n-input');
-    const rInput = document.getElementById('r-input');
-    const nprVal = document.getElementById('npr-val');
-    const ncrVal = document.getElementById('ncr-val');
-    const nprBar = document.getElementById('npr-bar');
-    const ncrBar = document.getElementById('ncr-bar');
-    const errorMsg = document.getElementById('error-msg');
+    let display = document.getElementById('display');
+    let history = document.getElementById('history');
+    let isCalculated = false;
 
-    function factorial(num) {
-        if (num < 0) return 0;
-        if (num === 0 || num === 1) return 1;
-        let result = 1;
-        for (let i = 2; i <= num; i++) result *= i;
-        return result;
-    }
-
-    function calculate() {
-        const n = parseInt(nInput.value) || 0;
-        const r = parseInt(rInput.value) || 0;
-
-        if (r > n) {
-            errorMsg.style.display = 'block';
-            nprVal.innerText = "-";
-            ncrVal.innerText = "-";
-            nprBar.style.height = "0%";
-            ncrBar.style.height = "0%";
-            return;
+    // Insert text into the screen
+    function insert(value) {
+        if (isCalculated && !isNaN(value)) {
+            display.innerText = value;
+            isCalculated = false;
+        } else {
+            if (display.innerText === '0') {
+                display.innerText = value;
+            } else {
+                display.innerText += value;
+            }
         }
-
-        errorMsg.style.display = 'none';
-
-        // Formulas
-        const npr = factorial(n) / factorial(n - r);
-        const ncr = npr / factorial(r);
-
-        nprVal.innerText = Math.round(npr).toLocaleString();
-        ncrVal.innerText = Math.round(ncr).toLocaleString();
-
-        // Update Visualization (Normalize height relative to max)
-        const max = Math.max(npr, ncr, 1);
-        nprBar.style.height = (npr / max * 100) + "%";
-        ncrBar.style.height = (ncr / max * 100) + "%";
     }
 
-    nInput.addEventListener('input', calculate);
-    rInput.addEventListener('input', calculate);
+    // Clear everything (AC/ON)
+    function clearAll() {
+        display.innerText = '0';
+        history.innerText = '';
+        isCalculated = false;
+    }
 
-    // Initial calculation
-    calculate();
+    // Backspace (DEL)
+    function deleteLast() {
+        if (display.innerText.length > 1) {
+            display.innerText = display.innerText.slice(0, -1);
+        } else {
+            display.innerText = '0';
+        }
+    }
+
+    // Calculate engine
+    function calculate() {
+        let expression = display.innerText;
+        history.innerText = expression + '=';
+
+        try {
+            // Replace visual operators with JS operators
+            let parseableMath = expression
+                .replace(/×/g, '*')
+                .replace(/÷/g, '/')
+                .replace(/\^/g, '**');
+
+            // Handle basic scientific functions (sin, cos, tan, log, ln, sqrt)
+            // Note: A true fx-991ES plus parses trig functions in Degrees or Rads based on mode. 
+            // This is a basic implementation using native JS Math (which is in radians).
+            parseableMath = parseableMath.replace(/sin\(/g, 'Math.sin(');
+            parseableMath = parseableMath.replace(/cos\(/g, 'Math.cos(');
+            parseableMath = parseableMath.replace(/tan\(/g, 'Math.tan(');
+            parseableMath = parseableMath.replace(/log\(/g, 'Math.log10(');
+            parseableMath = parseableMath.replace(/ln\(/g, 'Math.log(');
+            parseableMath = parseableMath.replace(/√\(/g, 'Math.sqrt(');
+
+            // Execute math
+            let result = eval(parseableMath);
+
+            // Handle JS precision quirks (e.g., 0.1 + 0.2)
+            result = Math.round(result * 1e12) / 1e12; 
+
+            display.innerText = result;
+            isCalculated = true;
+        } catch (error) {
+            display.innerText = "Syntax ERROR";
+            isCalculated = true;
+        }
+    }
 </script>
 
 </body>

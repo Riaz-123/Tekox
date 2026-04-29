@@ -1,46 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ramadan pen</title>
+  <title>Ramadan Pen - Air Writing</title>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
   <style>
-    body { margin: 0; background: #050301; overflow: hidden; }
+    body { margin: 0; background: #050301; overflow: hidden; font-family: sans-serif; }
     video { display: none; }
-    canvas { width: 100%; height: 100%; transform: scaleX(-1); position: absolute; z-index: 1; }
+    canvas { width: 100vw; height: 100vh; transform: scaleX(-1); }
+    
+    #ui {
+      position: absolute; top: 20px; left: 20px; z-index: 10;
+      color: #F5D061; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 8px;
+    }
+    button { 
+      background: #F5D061; border: none; padding: 10px 20px; 
+      border-radius: 5px; cursor: pointer; font-weight: bold; 
+    }
   </style>
 </head>
 <body>
+
+  <div id="ui">
+    <h2>Ramadan Pen 🌙</h2>
+    <p>1. <b>Shift</b> dabaye rakhein likhne ke liye.</p>
+    <p>2. <b>Space</b> dabayein screen saaf karne ke liye.</p>
+    <button id="startBtn">Camera Start Karein</button>
+  </div>
+
   <video id="vid"></video>
   <canvas id="c"></canvas>
+
   <script>
-    var vid = document.getElementById('vid');
-    var c = document.getElementById('c');
-    var ctx = c.getContext('2d');
-    var arr = [];
-    var cur = [];
-    var shift = false;
-    var draw = false;
-    var sx = null;
-    var sy = null;
+    const vid = document.getElementById('vid');
+    const c = document.getElementById('c');
+    const ctx = c.getContext('2d');
+    const startBtn = document.getElementById('startBtn');
 
-    window.onkeydown = function(e) {
-      if (e.key == 'Shift') shift = true;
-      if (e.code == 'Space') arr = [];
-    }
-    
-    window.onkeyup = function(e) {
-      if (e.key == 'Shift') shift = false;
-    }
+    let lines = []; 
+    let currentPath = [];
+    let isShiftPressed = false;
+    let isDrawing = false;
+    let smoothX = null;
+    let smoothY = null;
 
-    function run(res) {
+    // Controls
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Shift') isShiftPressed = true;
+      if (e.code === 'Space') lines = [];
+    });
+    window.addEventListener('keyup', (e) => {
+      if (e.key === 'Shift') isShiftPressed = false;
+    });
+
+    function onResults(res) {
+      // Canvas size match window
       c.width = window.innerWidth;
       c.height = window.innerHeight;
-      ctx.drawImage(res.image, 0, 0, c.width, c.height);
-      ctx.fillStyle = 'rgba(10, 6, 2, 0.85)';
-      ctx.fillRect(0, 0, c.width, c.height);
 
+      ctx.save();
+      ctx.clearRect(0, 0, c.width, c.height);
+      
+      // Mirror effect handle karne ke liye flip
+      ctx.translate(c.width, 0);
+      ctx.scale(-1, 1);
+
+      // Background video draw karein (dimmed)
+      ctx.globalAlpha = 0.4;
+      ctx.drawImage(res.image, 0, 0, c.width, c.height);
+      ctx.globalAlpha = 1.0;
+
+      // Draw all saved lines
       ctx.shadowColor = '#F5D061';
       ctx.shadowBlur = 15;
       ctx.strokeStyle = '#F5D061';
@@ -48,79 +79,83 @@
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
-      for (var i = 0; i < arr.length; i++) {
+      lines.forEach(path => {
+        if (path.length < 2) return;
         ctx.beginPath();
-        for (var j = 0; j < arr[i].length; j++) {
-          if (j == 0) ctx.moveTo(arr[i][j].x, arr[i][j].y);
-          else ctx.lineTo(arr[i][j].x, arr[i][j].y);
+        ctx.moveTo(path[0].x, path[0].y);
+        for (let i = 1; i < path.length; i++) {
+          ctx.lineTo(path[i].x, path[i].y);
         }
         ctx.stroke();
-      }
+      });
 
       if (res.multiHandLandmarks && res.multiHandLandmarks.length > 0) {
-        var lm = res.multiHandLandmarks[0];
-        drawConnectors(ctx, lm, HAND_CONNECTIONS, {color: 'rgba(245, 208, 97, 0.3)', lineWidth: 2});
-        drawLandmarks(ctx, lm, {color: '#FFFFFF', lineWidth: 1, radius: 2});
+        const landmarks = res.multiHandLandmarks[0];
+        
+        // Index finger tip (Point 8)
+        const indexTip = landmarks[8];
+        const targetX = indexTip.x * c.width;
+        const targetY = indexTip.y * c.height;
 
-        var ind = lm[8];
-        var rx = ind.x * c.width;
-        var ry = ind.y * c.height;
-
-        if (sx == null) {
-          sx = rx; 
-          sy = ry;
+        // Interpolation for smoothness
+        if (smoothX === null) {
+          smoothX = targetX;
+          smoothY = targetY;
         } else {
-          sx += (rx - sx) * 0.45;
-          sy += (ry - sy) * 0.45;
+          smoothX += (targetX - smoothX) * 0.35;
+          smoothY += (targetY - smoothY) * 0.35;
         }
 
+        // Pointer dot
+        ctx.fillStyle = isShiftPressed ? '#FFFFFF' : 'rgba(245, 208, 97, 0.5)';
         ctx.beginPath();
-        ctx.arc(sx, sy, 6, 0, 2 * Math.PI);
-        if (shift) { 
-          ctx.fillStyle = '#FFFFFF'; 
-        } else { 
-          ctx.fillStyle = 'rgba(245, 208, 97, 0.4)'; 
-        }
+        ctx.arc(smoothX, smoothY, 8, 0, Math.PI * 2);
         ctx.fill();
 
-        if (shift) {
-          if (!draw) {
-            draw = true;
-            cur = [];
-            arr.push(cur);
+        // Drawing Logic
+        if (isShiftPressed) {
+          if (!isDrawing) {
+            isDrawing = true;
+            currentPath = [];
+            lines.push(currentPath);
           }
-          cur.push({x: sx, y: sy});
+          currentPath.push({x: smoothX, y: smoothY});
         } else {
-          draw = false;
+          isDrawing = false;
         }
       } else {
-        draw = false;
-        sx = null;
+        isDrawing = false;
+        smoothX = null;
       }
+      ctx.restore();
     }
 
-    var h = new Hands({
-      locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-      }
+    const hands = new Hands({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
     });
-    
-    h.setOptions({ 
-      maxNumHands: 1, 
-      modelComplexity: 1, 
-      minDetectionConfidence: 0.5, 
-      minTrackingConfidence: 0.5 
-    });
-    
-    h.onResults(run);
 
-    var cam = new Camera(vid, {
-      onFrame: async () => { await h.send({image: vid}); },
-      width: 1280, 
+    hands.setOptions({
+      maxNumHands: 1,
+      modelComplexity: 1,
+      minDetectionConfidence: 0.7,
+      minTrackingConfidence: 0.7
+    });
+
+    hands.onResults(onResults);
+
+    const camera = new Camera(vid, {
+      onFrame: async () => {
+        await hands.send({image: vid});
+      },
+      width: 1280,
       height: 720
     });
-    
-    cam.start();
+
+    startBtn.addEventListener('click', () => {
+      camera.start();
+      document.getElementById('ui').style.background = "rgba(0,0,0,0.2)";
+      startBtn.style.display = "none";
+    });
   </script>
 </body>
 </html>

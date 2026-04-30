@@ -1,227 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BG REMOVER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <title>Tekox | BG Remover Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        :root {
+            --obsidian: #020617;
+            --accent-teal: #2dd4bf;
+            --accent-blue: #3b82f6;
+            --card-bg: rgba(15, 23, 42, 0.6);
+        }
+
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Orbitron', sans-serif;
-            background-color: #000;
-            color: #00ff99;
-            text-shadow: 0 0 10px #00ff99;
-            overflow: hidden; /* Hide scrollbars from canvas */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(45, 212, 191, 0.15), transparent),
+                radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.1), transparent);
+            background-attachment: fixed;
+            min-height: 100vh;
         }
 
-        canvas#matrix-bg {
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-smart {
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+            color: var(--obsidian);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 700;
+        }
+
+        .btn-smart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(45, 212, 191, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .grid-bg {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: -1;
-            width: 100%;
-            height: 100%;
         }
 
-        .container {
-            max-width: 550px;
-            padding: 30px;
-            border-radius: 15px;
-            background: rgba(0, 20, 0, 0.85);
-            border: 1px solid #00ff99;
-            box-shadow: 0 0 25px rgba(0, 255, 153, 0.6);
-            margin: 5vh auto;
-            text-align: center;
-            animation: flicker 3s infinite alternate;
-            backdrop-filter: blur(5px);
-        }
-
-        @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% {
-                box-shadow:
-                0 0 5px #0f0,
-                0 0 10px #0f0,
-                0 0 20px #0f0,
-                0 0 40px #0f0,
-                0 0 80px #0f0;
-            }
-            20%, 24%, 55% {       
-                box-shadow: none;
-            }
-        }
-
-        h2 {
-            font-size: 2.2em;
-            margin-bottom: 20px;
-            letter-spacing: 2px;
-        }
-
-        h3#status {
-            min-height: 25px;
-            font-size: 1.1em;
-        }
-        
-        /* Custom File Upload Styling */
-        input[type="file"] {
+        #outputImage {
+            max-width: 100%;
+            border-radius: 20px;
+            border: 1px solid rgba(45, 212, 191, 0.3);
             display: none;
         }
 
-        .file-upload-label {
-            display: inline-block;
-            padding: 12px 25px;
-            margin: 10px;
-            background: transparent;
-            color: #00ff99;
-            border: 1px solid #00ff99;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .file-upload-label:hover {
-            background: #00ff99;
-            color: #000;
-            box-shadow: 0 0 20px #00ff99;
-            text-shadow: none;
-        }
-
-        button, #downloadButton {
-            padding: 12px 25px;
-            margin: 10px;
-            background: #00ff99;
-            color: #000;
-            border: 1px solid #00ff99;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            text-shadow: none;
-            text-decoration: none;
-        }
-
-        button:hover, #downloadButton:hover {
-            background: transparent;
-            color: #00ff99;
-            box-shadow: 0 0 20px #00ff99;
-            text-shadow: 0 0 10px #00ff99;
-        }
-
-        img#outputImage {
-            max-width: 90%;
-            margin-top: 20px;
+        .loader {
+            border: 3px solid rgba(45, 212, 191, 0.1);
+            border-top: 3px solid var(--accent-teal);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
             display: none;
-            border-radius: 10px;
-            border: 2px solid #00ff99;
-            box-shadow: 0 0 15px #00ff99;
         }
 
-        #downloadButton {
-            display: none;
-            background-color: #00ff99;
-        }
-
-        .whatsapp-btn {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 12px 25px;
-            background: #25D366;
-            color: white;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(37, 211, 102, 0.7);
-            transition: all 0.3s ease;
-            text-shadow: none;
-        }
-
-        .whatsapp-btn:hover {
-            background: #128C7E;
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(37, 211, 102, 1);
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
-    <canvas id="matrix-bg"></canvas>
+<body class="antialiased">
+    <div class="grid-bg"></div>
 
-    <div class="container">
-        <h2>BACKGROUND REMOVER</h2>
-        
-        <label for="imageInput" class="file-upload-label">📂 Select File</label>
-        <input type="file" id="imageInput" accept="image/*">
-        
-        <button onclick="removeBackground()">Remove</button>
-        
-        <h3 id="status">Awaiting image file...</h3>
-        
-        <img id="outputImage" alt="Processed Image">
-        
-        <a id="downloadButton" download="background_removed.png">⬇️ Download Output</a>
-        
-        <br>
-        
-        <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="whatsapp-btn">📢 Join Our WhatsApp Channel</a>
-    </div>
+    <!-- Header -->
+    <header class="w-full px-4 pt-6">
+        <nav class="max-w-6xl mx-auto glass-panel rounded-2xl px-6 py-3 flex justify-between items-center border-white/10">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center rotate-3">
+                    <i class="fa-solid fa-bolt text-slate-900 text-sm"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tighter heading-font text-white uppercase">Tekox<span class="text-teal-400">.</span></span>
+            </div>
+            <a href="https://tekox.online" class="text-sm font-medium text-slate-400 hover:text-teal-400 transition-colors">Back to Home</a>
+        </nav>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 pt-20 pb-12">
+        <div class="text-center mb-12">
+            <span class="px-4 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-[10px] font-bold tracking-widest uppercase mb-4 inline-block">
+                Neural-Link Processing
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold heading-font text-white mb-4">
+                BG Remover <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">Pro</span>
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                Utilizing high-precision automated protocols to isolate subjects and eliminate background noise instantly.
+            </p>
+        </div>
+
+        <!-- Tool Panel -->
+        <div class="glass-panel rounded-[32px] p-8 md:p-12 relative overflow-hidden shadow-2xl">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-teal-500/10 blur-[80px] rounded-full"></div>
+            
+            <div class="relative z-10 flex flex-col items-center">
+                <div class="w-full flex flex-col md:flex-row gap-4 mb-8">
+                    <label for="imageInput" class="flex-1 cursor-pointer flex items-center justify-center gap-3 bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 transition-all text-slate-300">
+                        <i class="fa-solid fa-cloud-arrow-up text-teal-400"></i>
+                        <span id="fileNameDisplay">Select Image File</span>
+                    </label>
+                    <input type="file" id="imageInput" accept="image/*" class="hidden" onchange="updateFileName()">
+                    
+                    <button onclick="removeBackground()" class="btn-smart px-10 py-4 rounded-2xl w-full md:w-auto uppercase tracking-tighter">
+                        Process Image
+                    </button>
+                </div>
+
+                <div id="statusContainer" class="flex items-center gap-3 mb-6 text-slate-400 text-sm italic">
+                    <div class="loader" id="loader"></div>
+                    <span id="status">Awaiting protocol initialization...</span>
+                </div>
+
+                <div class="w-full flex flex-col items-center gap-6">
+                    <img id="outputImage" alt="Processed Output">
+                    <a id="downloadButton" download="tekox_removed_bg.png" class="btn-smart hidden px-8 py-3 rounded-xl text-xs tracking-widest">
+                        <i class="fa-solid fa-download"></i> DOWNLOAD ASSET
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-12 border-t border-white/5 mt-10">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-teal-400 text-[10px] font-bold tracking-[0.3em] uppercase mb-1">Lead Architect: Riaz Hussain</p>
+            <p class="text-slate-600 text-[9px]">© 2026 TEKOX ECOSYSTEM • ALL PROTOCOLS VERIFIED</p>
+        </div>
+    </footer>
 
     <script>
-        // --- Matrix Background Effect ---
-        const canvas = document.getElementById('matrix-bg');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const nums = '0123456789';
-        const alphabet = katakana + latin + nums;
-
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const rainDrops = [];
-
-        for (let x = 0; x < columns; x++) {
-            rainDrops[x] = 1;
+        function updateFileName() {
+            const input = document.getElementById('imageInput');
+            const display = document.getElementById('fileNameDisplay');
+            if (input.files.length > 0) {
+                display.innerText = input.files[0].name;
+                display.classList.add('text-teal-400');
+            }
         }
 
-        const drawMatrix = () => {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#0F0';
-            ctx.font = fontSize + 'px monospace';
-
-            for (let i = 0; i < rainDrops.length; i++) {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    rainDrops[i] = 0;
-                }
-                rainDrops[i]++;
-            }
-        };
-        setInterval(drawMatrix, 30);
-        
-        // --- Image Background Removal Function ---
         async function removeBackground() {
             const fileInput = document.getElementById("imageInput").files[0];
             const statusEl = document.getElementById("status");
+            const loader = document.getElementById("loader");
             const outputImage = document.getElementById("outputImage");
             const downloadButton = document.getElementById("downloadButton");
 
-            // Reset UI
             outputImage.style.display = 'none';
-            downloadButton.style.display = 'none';
+            downloadButton.classList.add('hidden');
 
             if (!fileInput) {
-                statusEl.innerText = "⚠️ No file selected. Please choose an image.";
+                statusEl.innerText = "⚠️ SYSTEM ALERT: No file selected.";
                 return;
             }
 
@@ -229,11 +180,12 @@
             formData.append("image_file", fileInput);
             formData.append("size", "auto");
 
-            const apiKey = "4dLrLLTSwjuKThWX8FXNurav"; // Replace with your actual Remove.bg API Key
+            const apiKey = "4dLrLLTSwjuKThWX8FXNurav"; 
             const url = "https://api.remove.bg/v1.0/removebg";
 
             try {
-                statusEl.innerText = "Processing... Removing Background...";
+                loader.style.display = 'block';
+                statusEl.innerText = "Running Background Isolation Protocol...";
                 
                 const response = await fetch(url, {
                     method: "POST",
@@ -241,26 +193,22 @@
                     body: formData
                 });
 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`API Error: ${response.statusText} - ${errorText}`);
-                }
+                if (!response.ok) throw new Error("API Connection Failed");
                 
                 const blob = await response.blob();
                 const imageUrl = URL.createObjectURL(blob);
                 
-                // Display processed image
                 outputImage.src = imageUrl;
                 outputImage.style.display = "block";
                 
-                // Enable download button
                 downloadButton.href = imageUrl;
-                downloadButton.style.display = "inline-block";
+                downloadButton.classList.remove('hidden');
 
-                statusEl.innerText = "✅ Background Removed Successfully!";
+                statusEl.innerText = "✅ Processing Complete.";
             } catch (error) {
-                statusEl.innerText = "❌ Error: " + error.message;
-                console.error("Error details:", error);
+                statusEl.innerText = "❌ PROTOCOL ERROR: Check connection or API credits.";
+            } finally {
+                loader.style.display = 'none';
             }
         }
     </script>

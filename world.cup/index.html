@@ -1,203 +1,282 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PSL 11 2026</title>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <link rel="icon" type="image/x-icon" href="tekox.png">
-  <style>
-    /* Reset and Base Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 50px; /* Space for the top bar */
-    }
-
-    /* Top Sliding Bar */
-    .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: linear-gradient(90deg, #128C7E, #25D366); /* WhatsApp colors */
-      color: white;
-      padding: 10px 0;
-      font-size: 15px;
-      font-weight: 600;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-      z-index: 1000;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .marquee-content {
-      display: inline-block;
-      animation: scrollLeft 20s linear infinite;
-    }
-
-    .marquee-content a {
-      color: #fff;
-      text-decoration: none;
-      border-bottom: 1px dotted #fff;
-      margin: 0 5px;
-    }
-
-    .marquee-content a:hover {
-      color: #e0f2f1;
-    }
-
-    .divider {
-      margin: 0 15px;
-      color: #fff;
-      opacity: 0.7;
-    }
-
-    @keyframes scrollLeft {
-      0% { transform: translateX(100vw); }
-      100% { transform: translateX(-100%); }
-    }
-
-    /* Professional Title */
-    h1 {
-      margin: 25px 0 20px;
-      font-size: 28px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      background: linear-gradient(to right, #00ffcc, #00bfff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0px 4px 10px rgba(0, 255, 204, 0.3);
-    }
-
-    /* Video Player Container */
-    .player-wrapper {
-      position: relative;
-      width: 95%;
-      max-width: 900px;
-      margin: 0 auto 40px;
-      padding: 4px;
-      /* Glowing Gradient Border */
-      background: linear-gradient(45deg, #00ffcc, #ff00cc, #00bfff, #00ffcc);
-      background-size: 400%;
-      border-radius: 12px;
-      animation: glowingBorder 10s linear infinite;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-    }
-
-    @keyframes glowingBorder {
-      0% { background-position: 0 0; }
-      50% { background-position: 100% 0; }
-      100% { background-position: 0 0; }
-    }
-
-    /* Video Element */
-    video {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      background: #000;
-      display: block;
-      outline: none;
-    }
-
-    /* Custom Initial Play Button */
-    .play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 70px;
-      color: rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-      display: none;
-      text-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
-      transition: transform 0.2s ease-in-out;
-      z-index: 10;
-    }
-
-    .play-btn:hover {
-      transform: translate(-50%, -50%) scale(1.1);
-      color: #00ffcc;
-    }
-
-    .paused .play-btn {
-      display: block;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSL 11 Live | Tekox Pro Tech</title>
     
+    <!-- Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <!-- Fonts & Icons -->
+    <link rel="icon" type="image/x-icon" href="tekox.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    /* Responsive adjustments */
-    @media (max-width: 600px) {
-      h1 { font-size: 22px; }
-      .play-btn { font-size: 50px; }
-    }
-  </style>
+    <style>
+        :root {
+            --obsidian: #020617;
+            --accent-teal: #2dd4bf;
+            --accent-blue: #3b82f6;
+            --card-bg: rgba(15, 23, 42, 0.6);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(45, 212, 191, 0.15), transparent),
+                radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.1), transparent);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+
+        /* Professional Glassmorphism */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Smart Button Design */
+        .btn-smart {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: var(--obsidian);
+            font-weight: 700;
+        }
+
+        .btn-smart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(45, 212, 191, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* Background Grid */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+
+        .glow-point {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-teal);
+            box-shadow: 0 0 15px 2px var(--accent-teal);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Live Ticker Marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: scrollLeft 25s linear infinite;
+        }
+        @keyframes scrollLeft {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Video Player Specifics */
+        .video-glow-border {
+            background: linear-gradient(45deg, var(--accent-teal), var(--accent-blue), var(--accent-teal));
+            background-size: 200%;
+            animation: glowingBorder 4s linear infinite;
+        }
+        @keyframes glowingBorder {
+            0% { background-position: 0 0; }
+            50% { background-position: 100% 0; }
+            100% { background-position: 0 0; }
+        }
+
+        /* Custom Play Button States */
+        #playBtn { display: none; }
+        .paused #playBtn { display: flex; }
+        video { outline: none; }
+    </style>
 </head>
-<body>
+<body class="antialiased">
 
-  <div class="top-bar">
-    <div class="marquee-content">
-      🏏 PSL 11 2026 Live 
-      <span class="divider">|</span>
-      📲 <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank">Follow our WhatsApp Channel</a>
-      <span class="divider">|</span>
-      💬 <a href="https://wa.me/923181393964" target="_blank">Contact on WhatsApp</a>
-      <span class="divider">|</span>
-      👨‍💻 Developed by Riaz Hussain
-    </div>
-  </div>
+    <div class="grid-bg"></div>
 
-  <h1>PSL 11 2026 Live</h1>
-  
-  <div class="player-wrapper paused" id="playerWrapper">
-    <video id="video" controls playsinline></video>
-    <div id="playBtn" class="play-btn">▶️</div>
-  </div>
-  
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 w-full z-50 px-4 pt-4">
+        <nav class="max-w-6xl mx-auto glass-panel rounded-2xl px-6 py-3 flex justify-between items-center border-white/10">
+            <a href="index.html" class="flex items-center gap-2 group cursor-pointer">
+                <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center rotate-3 shadow-lg shadow-teal-500/20 group-hover:rotate-6 transition-transform">
+                    <i class="fa-solid fa-bolt text-slate-900 text-sm"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tighter heading-font text-white">TEKOX<span class="text-teal-400 text-3xl">.</span></span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="index.html#ecosystem" class="hover:text-teal-400 transition-colors">Services</a>
+                <a href="index.html#about" class="hover:text-teal-400 transition-colors">Developer</a>
+                <a href="https://wa.me/923181393964" class="btn-smart px-5 py-2 rounded-xl text-xs">
+                    REACH NOW
+                </a>
+            </div>
+        </nav>
+    </header>
 
-  <script>
-    var video = document.getElementById('video');
-    var playBtn = document.getElementById('playBtn');
-    var playerWrapper = document.getElementById('playerWrapper');
+    <!-- Main Content Application -->
+    <main class="flex-grow pt-28 pb-10 flex flex-col items-center">
+        
+        <!-- Live Ticker Broadcast Bar -->
+        <div class="w-full bg-slate-900/80 border-y border-teal-500/20 py-3 backdrop-blur-md mb-10 marquee-container relative z-40 shadow-[0_4px_20px_rgba(45,212,191,0.05)]">
+            <div class="marquee-content text-teal-400 font-bold text-sm tracking-[0.2em] uppercase flex items-center">
+                <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> HBL PSL 11 2026 LIVE STREAMING</span>
+                <span class="mx-6 text-slate-600">|</span>
+                <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="hover:text-white transition-colors flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i> Follow Updates
+                </a>
+                <span class="mx-6 text-slate-600">|</span>
+                <a href="https://wa.me/923181393964" target="_blank" class="hover:text-white transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-headset text-blue-400"></i> Premium Support
+                </a>
+                <span class="mx-6 text-slate-600">|</span>
+                <span class="text-slate-400"><i class="fa-solid fa-code text-teal-600 mr-1"></i> Developed by Riaz Hussain</span>
+            </div>
+        </div>
 
-    // Your HLS Video Source
-    var videoSrc = "https://tencentcdn5.tamashaweb.com/v1/0196159eeff41eb4611d121c76c781/0196159f51bb1ea5064913eb2a83ea/TMSHU1WEB_360p.m3u8";
-    
-    // Initialize HLS
-    if (Hls.isSupported()) {
-      var hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-    }
+        <div class="w-full max-w-5xl px-4 md:px-6">
+            
+            <!-- Page Header -->
+            <div class="text-center mb-10 relative">
+                <!-- Decorative element -->
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-teal-500/20 blur-[60px] rounded-full pointer-events-none"></div>
+                
+                <h1 class="text-4xl md:text-6xl font-extrabold heading-font text-white mb-4 tracking-tighter relative z-10">
+                    PSL 11 <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">2026</span>
+                </h1>
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold tracking-widest text-slate-300 uppercase relative z-10">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> Ultra-Low Latency Broadcast
+                </div>
+            </div>
 
-    // Manual play handling
-    playBtn.addEventListener('click', function () {
-      video.play();
-    });
+            <!-- Video Player Container -->
+            <div class="relative w-full rounded-[32px] p-1.5 video-glow-border shadow-2xl shadow-teal-500/10 mb-8">
+                <div class="relative glass-panel rounded-[28px] p-2 md:p-4 z-10 bg-slate-900/90 paused" id="playerWrapper">
+                    
+                    <!-- Video Element -->
+                    <video id="video" class="w-full aspect-video rounded-[20px] bg-black shadow-inner object-cover" controls playsinline></video>
+                    
+                    <!-- Frosted Glass Play Button -->
+                    <button id="playBtn" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-24 md:h-24 bg-slate-900/40 hover:bg-teal-500/20 border-2 border-teal-400/50 hover:border-teal-400 rounded-full items-center justify-center backdrop-blur-md transition-all group z-20 cursor-pointer shadow-[0_0_30px_rgba(45,212,191,0.2)]">
+                        <i class="fa-solid fa-play text-3xl md:text-4xl text-teal-400 group-hover:scale-110 group-hover:text-white transition-all ml-2 md:ml-3 drop-shadow-lg"></i>
+                    </button>
+                    
+                </div>
+            </div>
 
-    video.addEventListener('play', function () {
-      playerWrapper.classList.remove('paused');
-    });
+            <!-- Call to Action -->
+            <div class="text-center">
+                <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" target="_blank" class="btn-smart px-8 py-4 rounded-2xl text-sm uppercase tracking-widest shadow-xl">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Join Official Channel
+                </a>
+            </div>
 
-    // Re-show custom play button if paused natively (optional, remove if you strictly want native controls)
-    video.addEventListener('pause', function () {
-      playerWrapper.classList.add('paused');
-    });
-  </script>
+        </div>
+    </main>
 
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 mt-auto w-full">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <div class="flex items-center gap-2 justify-center md:justify-start mb-1">
+                    <i class="fa-solid fa-bolt text-teal-400 text-[10px]"></i>
+                    <span class="text-base font-bold tracking-tighter heading-font text-white uppercase">Tekox Pro</span>
+                </div>
+                <p class="text-slate-500 text-xs">Premium sports broadcasting Web</p>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-teal-400 text-xs font-bold tracking-[0.2em] uppercase mb-1">Developer: Riaz Hussain</p>
+                <p class="text-slate-600 text-[10px]">© 2026 ALL RIGHTS RESERVED</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Cursor Glow Effect
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return;
+            const glow = document.createElement('div');
+            glow.className = 'glow-point';
+            glow.style.left = e.pageX + 'px';
+            glow.style.top = e.pageY + 'px';
+            document.body.appendChild(glow);
+            
+            setTimeout(() => {
+                glow.style.transition = 'opacity 0.5s ease';
+                glow.style.opacity = '0';
+                setTimeout(() => glow.remove(), 500);
+            }, 50);
+        });
+
+        // Video Player Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.getElementById('video');
+            var playBtn = document.getElementById('playBtn');
+            var playerWrapper = document.getElementById('playerWrapper');
+
+            // Source URL
+            var videoSrc = "https://tencentcdn5.tamashaweb.com/v1/0196159eeff41eb4611d121c76c781/0196159f51bb1ea5064913eb2a83ea/TMSHU1WEB_360p.m3u8";
+            
+            // Initialize HLS
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(videoSrc);
+                hls.attachMedia(video);
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Fallback for native Safari support
+                video.src = videoSrc;
+            }
+
+            // Manual play handling via custom button
+            playBtn.addEventListener('click', function () {
+                video.play();
+            });
+
+            // Handle UI state based on video playback
+            video.addEventListener('play', function () {
+                playerWrapper.classList.remove('paused');
+            });
+
+            video.addEventListener('pause', function () {
+                playerWrapper.classList.add('paused');
+            });
+            
+            video.addEventListener('ended', function () {
+                playerWrapper.classList.add('paused');
+            });
+        });
+    </script>
 </body>
 </html>

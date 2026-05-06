@@ -1,172 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM & CNIC Database | Tekox Pro Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="tekox.png">
-    <title>SIM & CNIC Database Checker - RIAZ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --obsidian: #020617;
+            --accent-teal: #2dd4bf;
+            --accent-blue: #3b82f6;
+            --card-bg: rgba(15, 23, 42, 0.6);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--obsidian);
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 50% -20%, rgba(45, 212, 191, 0.15), transparent),
+                radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.1), transparent);
+            background-attachment: fixed;
             min-height: 100vh;
-            padding: 20px;
             display: flex;
+            flex-direction: column;
+        }
+
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+
+        /* Professional Glassmorphism */
+        .glass-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Smart Button Design */
+        .btn-smart {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-            border-bottom: 5px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .header p {
-            opacity: 0.95;
-            font-size: 15px;
-            letter-spacing: 0.5px;
-        }
-
-        .content {
-            padding: 35px 30px;
-        }
-
-        .search-type {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            background: #f4f6f9;
-            padding: 6px;
-            border-radius: 12px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .type-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-            color: #555;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .type-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
+            gap: 0.75rem;
+            color: var(--obsidian);
             font-weight: 700;
-            margin-bottom: 10px;
-            color: #2d3748;
-            font-size: 15px;
         }
 
-        .input-wrapper {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        input {
-            flex: 1;
-            padding: 14px 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            background: #f8fafc;
-            transition: all 0.3s;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(102,126,234,0.15);
-        }
-
-        button#checkBtn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 14px 35px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        button#checkBtn:hover {
+        .btn-smart:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px -5px rgba(45, 212, 191, 0.4);
+            filter: brightness(1.1);
         }
-
-        button#checkBtn:active {
-            transform: translateY(1px);
-        }
-
-        button:disabled {
-            opacity: 0.6;
+        
+        .btn-smart:disabled {
+            opacity: 0.7;
             cursor: not-allowed;
             transform: none !important;
             box-shadow: none !important;
+            filter: grayscale(0.5);
         }
 
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 30px;
+        /* Subtle Animation for BG */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+        .glow-point {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-teal);
+            box-shadow: 0 0 15px 2px var(--accent-teal);
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Custom Spinner */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid var(--accent-teal);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             animation: spin 1s linear infinite;
             margin: 0 auto;
         }
@@ -176,300 +107,224 @@
             100% { transform: rotate(360deg); }
         }
 
-        .result {
-            margin-top: 30px;
-            display: none;
-            animation: fadeIn 0.4s ease;
+        /* Tab Toggle Transitions */
+        .tab-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue));
+            color: var(--obsidian);
+            box-shadow: 0 4px 15px rgba(45, 212, 191, 0.25);
         }
-
-        .result-card {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 25px;
-            border-left: 5px solid #667eea;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        .tab-btn.inactive {
+            color: #94a3b8;
         }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e2e8f0;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .records-count {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .tab-btn.inactive:hover {
             color: white;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-        }
-
-        .search-badge {
-            background: #10b981;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .record-item {
-            background: white;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: all 0.3s;
-            border: 1px solid #f1f5f9;
-        }
-
-        .record-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            border-color: #e2e8f0;
-        }
-
-        .record-field {
-            margin-bottom: 12px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-        }
-
-        .record-field:last-child {
-            margin-bottom: 0;
-        }
-
-        .field-label {
-            font-weight: 700;
-            color: #4a5568;
-            min-width: 90px;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .field-value {
-            color: #1a202c;
-            word-break: break-word;
-            flex: 1;
-            font-size: 15px;
-            font-weight: 500;
-        }
-
-        /* --- ENHANCED FOOTER SECTION --- */
-        .credit-section {
-            text-align: center;
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 2px dashed #e2e8f0;
-        }
-
-        .credit-section h3 {
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            color: white;
-            text-decoration: none;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
-
-        .whatsapp-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
-        }
-
-        .whatsapp-btn svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-        }
-        /* -------------------------------- */
-
-        .error-message {
-            background: #fef2f2;
-            border-left: 5px solid #ef4444;
-            padding: 18px;
-            border-radius: 12px;
-            color: #b91c1c;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .example-numbers {
-            margin-top: 12px;
-            font-size: 13px;
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .example-numbers span {
-            background: #f1f5f9;
-            padding: 4px 10px;
-            border-radius: 6px;
-            margin: 0 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-block;
-            margin-bottom: 5px;
-            border: 1px solid #e2e8f0;
-            color: #475569;
-        }
-
-        .example-numbers span:hover {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-            transform: translateY(-1px);
-        }
-
-        @media (max-width: 600px) {
-            .content {
-                padding: 25px 20px;
-            }
-            
-            .input-wrapper {
-                flex-direction: column;
-            }
-            
-            button#checkBtn {
-                width: 100%;
-            }
-            
-            .field-label {
-                min-width: 80px;
-            }
+            background: rgba(255,255,255,0.05);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="card">
-            <div class="header">
-                <h1>📱 SIM & CNIC Database Checker</h1>
-                <p>Get SIM owner information by phone number or CNIC</p>
+<body class="antialiased">
+
+    <div class="grid-bg"></div>
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 w-full z-50 px-4 pt-4">
+        <nav class="max-w-6xl mx-auto glass-panel rounded-2xl px-6 py-3 flex justify-between items-center border-white/10">
+            <a href="index.html" class="flex items-center gap-2 group cursor-pointer">
+                <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center rotate-3 shadow-lg shadow-teal-500/20 group-hover:rotate-6 transition-transform">
+                    <i class="fa-solid fa-bolt text-slate-900 text-sm"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tighter heading-font text-white">TEKOX<span class="text-teal-400 text-3xl">.</span></span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                <a href="index.html#ecosystem" class="hover:text-teal-400 transition-colors">Services</a>
+                <a href="index.html#about" class="hover:text-teal-400 transition-colors">Developer</a>
+                <a href="https://wa.me/923181393964" class="btn-smart px-5 py-2 rounded-xl text-xs">
+                    REACH NOW
+                </a>
             </div>
-            <div class="content">
-                <div class="search-type">
-                    <button class="type-btn active" onclick="setSearchType('phone')">📞 Phone Number</button>
-                    <button class="type-btn" onclick="setSearchType('cnic')">🆔 CNIC Number</button>
-                </div>
+        </nav>
+    </header>
 
-                <div class="input-group">
-                    <label id="inputLabel">📞 Phone Number</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="searchInput" placeholder="Enter number (e.g., 3001234567)" autocomplete="off">
-                        <button id="checkBtn" onclick="checkQuery()">🔍 Search</button>
+    <!-- Main Content Application -->
+    <main class="flex-grow pt-32 pb-20 px-4 md:px-6 flex items-center justify-center">
+        <div class="max-w-3xl w-full">
+            
+            <!-- Page Headers -->
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500/20 to-blue-500/20 border border-teal-500/30 text-teal-400 text-2xl mb-6 shadow-lg shadow-teal-500/10">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold heading-font text-white mb-4">
+                    SIM & CNIC <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">Database</span>
+                </h1>
+                <p class="text-slate-400 text-lg">Retrieve ownership verification and network records instantly.</p>
+            </div>
+
+            <!-- Main Tool Card -->
+            <div class="glass-panel rounded-[32px] p-6 md:p-10 border-white/10 relative overflow-hidden">
+                <!-- Decorative Blur -->
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/10 blur-[80px] rounded-full pointer-events-none"></div>
+
+                <div class="relative z-10">
+                    <!-- Search Type Toggle -->
+                    <div class="flex gap-2 p-1.5 bg-slate-900/60 rounded-2xl border border-white/5 mb-8">
+                        <button id="btn-phone" class="tab-btn active flex-1 py-3 rounded-xl text-sm font-bold flex justify-center items-center gap-2" onclick="setSearchType('phone')">
+                            <i class="fa-solid fa-phone"></i> Phone Number
+                        </button>
+                        <button id="btn-cnic" class="tab-btn inactive flex-1 py-3 rounded-xl text-sm font-bold flex justify-center items-center gap-2" onclick="setSearchType('cnic')">
+                            <i class="fa-solid fa-id-card"></i> CNIC Number
+                        </button>
                     </div>
-                    <div class="example-numbers" id="exampleNumbers">
-                        💡 Try: 
-                        <span onclick="setExample('3001234567')">3001234567</span>
-                        <span onclick="setExample('3012345678')">3012345678</span>
-                        <span onclick="setExample('3023456789')">3023456789</span>
+
+                    <!-- Input Section -->
+                    <div class="space-y-4 mb-8">
+                        <label id="inputLabel" class="block text-sm font-bold text-slate-300 uppercase tracking-wider">
+                            <i class="fa-solid fa-phone text-teal-400 mr-2"></i> Enter Phone Number
+                        </label>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="relative flex-grow">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fa-solid fa-terminal text-slate-500 text-sm"></i>
+                                </div>
+                                <input type="text" id="searchInput" 
+                                    class="w-full bg-slate-900/50 border border-slate-700 focus:border-teal-400 focus:ring-1 focus:ring-teal-400 text-white rounded-2xl py-4 pl-11 pr-4 outline-none transition-all placeholder-slate-600 font-medium" 
+                                    placeholder="e.g., 3001234567" autocomplete="off">
+                            </div>
+                            <button id="checkBtn" onclick="checkQuery()" class="btn-smart py-4 px-8 rounded-2xl md:w-auto w-full text-sm tracking-wide">
+                                INITIALIZE <i class="fa-solid fa-magnifying-glass ml-1 text-xs"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Examples -->
+                        <div class="flex items-center gap-3 text-sm text-slate-500 flex-wrap pt-2" id="exampleNumbers">
+                            <span class="font-semibold text-slate-400"><i class="fa-solid fa-lightbulb text-teal-400/70 mr-1"></i> Try:</span> 
+                            <button onclick="setExample('3001234567')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">3001234567</button>
+                            <button onclick="setExample('3012345678')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">3012345678</button>
+                            <button onclick="setExample('3023456789')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">3023456789</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="loader" id="loader">
-                    <div class="spinner"></div>
-                    <p style="margin-top: 15px; color: #64748b; font-weight: 600;">Fetching data...</p>
-                </div>
+                    <!-- Loader -->
+                    <div id="loader" class="hidden py-10 text-center">
+                        <div class="spinner mb-4"></div>
+                        <p class="text-teal-400 font-semibold text-sm tracking-widest uppercase animate-pulse">Querying Database...</p>
+                    </div>
 
-                <div class="result" id="result"></div>
-                
-                <div class="credit-section">
-                    <h3>Powered by Riaz Hussain</h3>
-                    <a href="https://whatsapp.com/channel/0029Vaghq2Q2ER6qcRhijo0S" class="whatsapp-btn" target="_blank">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-                        </svg>
-                        Join WhatsApp for Updates
-                    </a>
+                    <!-- Results Container -->
+                    <div id="result" class="hidden mt-8 border-t border-white/10 pt-8">
+                        <!-- Content injected via JS -->
+                    </div>
+
                 </div>
-                
             </div>
         </div>
-    </div>
+    </main>
 
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/5 mt-auto">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <div class="flex items-center gap-2 justify-center md:justify-start mb-1">
+                    <i class="fa-solid fa-bolt text-teal-400 text-[10px]"></i>
+                    <span class="text-base font-bold tracking-tighter heading-font text-white uppercase">Tekox Pro</span>
+                </div>
+                <p class="text-slate-500 text-xs">High-performance web architecture.</p>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-teal-400 text-xs font-bold tracking-[0.2em] uppercase mb-1">Developer: Riaz Hussain</p>
+                <p class="text-slate-600 text-[10px]">© 2026 ALL RIGHTS RESERVED</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
     <script>
         const API_URL = 'https://famofc.site/api/database.php';
         let currentSearchType = 'phone';
 
+        // Custom Cursor Glow Effect
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return;
+            const glow = document.createElement('div');
+            glow.className = 'glow-point';
+            glow.style.left = e.pageX + 'px';
+            glow.style.top = e.pageY + 'px';
+            document.body.appendChild(glow);
+            
+            setTimeout(() => {
+                glow.style.transition = 'opacity 0.5s ease';
+                glow.style.opacity = '0';
+                setTimeout(() => glow.remove(), 500);
+            }, 50);
+        });
+
+        // Tab Switching Logic
         function setSearchType(type) {
             currentSearchType = type;
             
-            // Update button styles
-            document.querySelectorAll('.type-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Update input label and placeholder
+            const btnPhone = document.getElementById('btn-phone');
+            const btnCnic = document.getElementById('btn-cnic');
             const inputLabel = document.getElementById('inputLabel');
             const searchInput = document.getElementById('searchInput');
             const exampleDiv = document.getElementById('exampleNumbers');
             
+            // Update Active States
             if (type === 'phone') {
-                inputLabel.innerHTML = '📞 Phone Number';
-                searchInput.placeholder = 'Enter number (e.g., 3001234567)';
-                exampleDiv.innerHTML = '💡 Try: <span onclick="setExample(\'3001234567\')">3001234567</span> <span onclick="setExample(\'3012345678\')">3012345678</span> <span onclick="setExample(\'3023456789\')">3023456789</span>';
+                btnPhone.className = 'tab-btn active flex-1 py-3 rounded-xl text-sm font-bold flex justify-center items-center gap-2';
+                btnCnic.className = 'tab-btn inactive flex-1 py-3 rounded-xl text-sm font-bold flex justify-center items-center gap-2';
+                
+                inputLabel.innerHTML = '<i class="fa-solid fa-phone text-teal-400 mr-2"></i> Enter Phone Number';
+                searchInput.placeholder = 'e.g., 3001234567';
+                exampleDiv.innerHTML = `
+                    <span class="font-semibold text-slate-400"><i class="fa-solid fa-lightbulb text-teal-400/70 mr-1"></i> Try:</span> 
+                    <button onclick="setExample('3001234567')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">3001234567</button>
+                    <button onclick="setExample('3012345678')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">3012345678</button>
+                    <button onclick="setExample('3023456789')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">3023456789</button>
+                `;
             } else {
-                inputLabel.innerHTML = '🆔 CNIC Number';
-                searchInput.placeholder = 'Enter CNIC (e.g., 1234512345671 or 12345-1234567-1)';
-                exampleDiv.innerHTML = '💡 Try: <span onclick="setExample(\'1234512345671\')">1234512345671</span> <span onclick="setExample(\'12345-1234567-1\')">12345-1234567-1</span>';
+                btnCnic.className = 'tab-btn active flex-1 py-3 rounded-xl text-sm font-bold flex justify-center items-center gap-2';
+                btnPhone.className = 'tab-btn inactive flex-1 py-3 rounded-xl text-sm font-bold flex justify-center items-center gap-2';
+                
+                inputLabel.innerHTML = '<i class="fa-solid fa-id-card text-teal-400 mr-2"></i> Enter CNIC Number';
+                searchInput.placeholder = 'e.g., 1234512345671 or 12345-1234567-1';
+                exampleDiv.innerHTML = `
+                    <span class="font-semibold text-slate-400"><i class="fa-solid fa-lightbulb text-teal-400/70 mr-1"></i> Try:</span> 
+                    <button onclick="setExample('1234512345671')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">1234512345671</button>
+                    <button onclick="setExample('12345-1234567-1')" class="px-3 py-1 bg-slate-800 hover:bg-teal-500/20 hover:text-teal-400 rounded-lg border border-white/5 transition-colors">12345-1234567-1</button>
+                `;
             }
             
-            // Clear previous results
-            document.getElementById('result').style.display = 'none';
+            // Clear prior results on tab switch
+            document.getElementById('result').classList.add('hidden');
             searchInput.value = '';
+            searchInput.focus();
         }
 
         function setExample(value) {
             document.getElementById('searchInput').value = value;
         }
 
+        // Main Query Function
         async function checkQuery() {
             const searchQuery = document.getElementById('searchInput').value.trim();
+            const btn = document.getElementById('checkBtn');
+            const loader = document.getElementById('loader');
+            const resultDiv = document.getElementById('result');
             
             if (!searchQuery) {
-                showError('Please enter a search query');
+                showError('Please enter a valid search parameter to continue.');
                 return;
             }
 
-            // Show loader, hide previous result
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('result').style.display = 'none';
-            document.getElementById('checkBtn').disabled = true;
+            // UI State change
+            loader.classList.remove('hidden');
+            resultDiv.classList.add('hidden');
+            btn.disabled = true;
+            btn.innerHTML = 'PROCESSING...';
 
             try {
                 const response = await fetch(`${API_URL}?q=${encodeURIComponent(searchQuery)}`);
@@ -483,58 +338,69 @@
                 if (data.success) {
                     displayResult(data.data);
                 } else {
-                    showError(data.error || 'No data found');
+                    showError(data.error || 'No records found in the database.');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showError('Failed to connect to API. Please check your internet connection.');
+                showError('Protocol Failure: Unable to connect to the external API.');
             } finally {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('checkBtn').disabled = false;
+                loader.classList.add('hidden');
+                btn.disabled = false;
+                btn.innerHTML = 'INITIALIZE <i class="fa-solid fa-magnifying-glass ml-1 text-xs"></i>';
             }
         }
 
+        // Render Results using Tailwind CSS structure
         function displayResult(data) {
             const resultDiv = document.getElementById('result');
             
             if (!data.records || data.records.length === 0) {
-                showError('No records found');
+                showError('No records found for the provided query.');
                 return;
             }
 
-            const searchTypeText = data.search_type === 'phone' ? 'Phone Number' : 'CNIC';
+            const searchTypeText = data.search_type === 'phone' ? 'Phone Data' : 'CNIC Data';
             const searchValue = data.search_type === 'phone' ? data.queried_number : data.queried_cnic;
+            const recordsCount = data.records_count || data.records.length;
 
             let html = `
-                <div class="result-card">
-                    <div class="result-header">
-                        <div>
-                            <strong>📊 Search Results</strong>
-                            <div class="search-badge" style="margin-top: 5px;">${searchTypeText}: ${searchValue}</div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-white heading-font mb-1"><i class="fa-solid fa-server text-teal-400 mr-2"></i> Query Results</h3>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-800 border border-slate-700 text-xs font-mono text-slate-300">
+                            <span class="text-teal-400">${searchTypeText}:</span> ${searchValue}
                         </div>
-                        <span class="records-count">${data.records_count || data.records.length} Record(s) Found</span>
                     </div>
+                    <div class="px-4 py-2 bg-gradient-to-r from-teal-500/20 to-blue-500/20 border border-teal-500/30 rounded-xl text-teal-400 font-bold text-sm shadow-[0_0_15px_rgba(45,212,191,0.1)]">
+                        ${recordsCount} Record${recordsCount > 1 ? 's' : ''} Retrieved
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
             `;
 
             data.records.forEach((record, index) => {
                 html += `
-                    <div class="record-item">
-                        ${data.records.length > 1 ? `<div style="font-size: 12px; color: #667eea; margin-bottom: 10px; font-weight: bold;">📌 Record #${index + 1}</div>` : ''}
-                        <div class="record-field">
-                            <span class="field-label">👤 Name:</span>
-                            <span class="field-value">${escapeHtml(record.full_name || 'N/A')}</span>
-                        </div>
-                        <div class="record-field">
-                            <span class="field-label">📞 Phone:</span>
-                            <span class="field-value">${escapeHtml(record.phone || 'N/A')}</span>
-                        </div>
-                        <div class="record-field">
-                            <span class="field-label">🆔 CNIC:</span>
-                            <span class="field-value">${escapeHtml(record.cnic || 'N/A')}</span>
-                        </div>
-                        <div class="record-field">
-                            <span class="field-label">📍 Address:</span>
-                            <span class="field-value">${escapeHtml(record.address || 'N/A')}</span>
+                    <div class="bg-slate-900/60 border border-white/5 hover:border-teal-500/30 rounded-2xl p-5 md:p-6 transition-colors group">
+                        ${data.records.length > 1 ? `<div class="mb-4 inline-block px-3 py-1 bg-slate-800 rounded-lg text-xs font-bold text-slate-400 tracking-wider">RECORD #${index + 1}</div>` : ''}
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
+                            <div>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1"><i class="fa-regular fa-user mr-1 text-teal-500/70"></i> Full Name</p>
+                                <p class="text-white font-medium text-lg">${escapeHtml(record.full_name || 'N/A')}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1"><i class="fa-solid fa-phone-flip mr-1 text-teal-500/70"></i> Phone</p>
+                                <p class="text-white font-medium text-lg font-mono">${escapeHtml(record.phone || 'N/A')}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1"><i class="fa-regular fa-address-card mr-1 text-teal-500/70"></i> CNIC</p>
+                                <p class="text-white font-medium text-lg font-mono">${escapeHtml(record.cnic || 'N/A')}</p>
+                            </div>
+                            <div class="md:col-span-2">
+                                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mb-1"><i class="fa-solid fa-location-dot mr-1 text-teal-500/70"></i> Address</p>
+                                <p class="text-slate-300 font-medium">${escapeHtml(record.address || 'N/A')}</p>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -542,19 +408,26 @@
 
             html += `</div>`;
             resultDiv.innerHTML = html;
-            resultDiv.style.display = 'block';
+            resultDiv.classList.remove('hidden');
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
+        // Render Error State
         function showError(message) {
             const resultDiv = document.getElementById('result');
             resultDiv.innerHTML = `
-                <div class="error-message">
-                    <strong>⚠️ Error:</strong> ${escapeHtml(message)}
+                <div class="bg-red-500/10 border border-red-500/30 rounded-2xl p-5 flex items-start gap-4 text-red-400">
+                    <div class="mt-0.5"><i class="fa-solid fa-triangle-exclamation text-xl"></i></div>
+                    <div>
+                        <h4 class="font-bold text-red-400 mb-1">Exception Occurred</h4>
+                        <p class="text-sm text-red-400/80">${escapeHtml(message)}</p>
+                    </div>
                 </div>
             `;
-            resultDiv.style.display = 'block';
+            resultDiv.classList.remove('hidden');
         }
 
+        // Security Utility
         function escapeHtml(text) {
             if (!text) return 'N/A';
             const div = document.createElement('div');
@@ -562,9 +435,10 @@
             return div.innerHTML;
         }
 
-        // Allow Enter key to submit
+        // Allow Enter key submission
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 checkQuery();
             }
         });
